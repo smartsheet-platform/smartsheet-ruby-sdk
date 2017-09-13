@@ -1,8 +1,8 @@
-# Smartsheet::Ruby::Sdk
+# Smartsheet Ruby SDK
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/smartsheet/ruby/sdk`. To experiment with that code, run `bin/console` for an interactive prompt.
+This is an SDK to simplify connecting to the [Smartsheet API](http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
 
-TODO: Delete this and the text above, and describe your gem
+*Please note that this SDK is beta and may change significantly in the future.*
 
 ## Installation
 

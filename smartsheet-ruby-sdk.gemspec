@@ -2,11 +2,11 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'smartsheet/ruby/sdk/version'
+require 'smartsheet/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'smartsheet-ruby-sdk'
-  spec.version       = Smartsheet::Ruby::Sdk::VERSION
+  spec.version       = Smartsheet::VERSION
   spec.author        = 'Smartsheet'
 
   spec.summary       = 'An SDK to simplify connecting to the Smartsheet API from Ruby applications.'
