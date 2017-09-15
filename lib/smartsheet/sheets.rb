@@ -22,14 +22,14 @@ module Smartsheet
       end
     end
 
-    def get(params: {}, header_override: {}, **path_context)
-      Faraday.get build_url('sheets', :id, context: path_context), params do |req|
+    def get(id, params: {}, header_override: {})
+      Faraday.get build_url('sheets', id), params do |req|
         build_headers(header_override).apply(req)
       end
     end
 
-    def get_version(header_override: {}, **path_context)
-      Faraday.get build_url('sheets', :id, 'version', context: path_context), {} do |req|
+    def get_version(id, header_override: {})
+      Faraday.get build_url('sheets', id, 'version'), {} do |req|
         build_headers(header_override).apply(req)
       end
     end
@@ -43,8 +43,8 @@ module Smartsheet
       end
     end
 
-    def create_in_folder(body: {}, header_override: {}, **path_context)
-      Faraday.post build_url('folders', :folder_id, 'sheets', context: path_context), {} do |req|
+    def create_in_folder(folder_id, body: {}, header_override: {})
+      Faraday.post build_url('folders', folder_id, 'sheets'), {} do |req|
         build_headers(header_override)
           .sending_json
           .apply(req)
@@ -52,9 +52,8 @@ module Smartsheet
       end
     end
 
-    def create_in_workspace(body: {}, header_override: {}, **path_context)
-      url = build_url('workspaces', :workspace_id, 'sheets', context: path_context)
-      Faraday.post url, {} do |req|
+    def create_in_workspace(workspace_id, body: {}, header_override: {})
+      Faraday.post build_url('workspaces', workspace_id, 'sheets'), {} do |req|
         build_headers(header_override)
           .sending_json
           .apply(req)
@@ -62,8 +61,8 @@ module Smartsheet
       end
     end
 
-    def update(body: {}, header_override: {}, **path_context)
-      Faraday.put build_url('sheets', :id, context: path_context), {} do |req|
+    def update(id, body: {}, header_override: {})
+      Faraday.put build_url('sheets', id), {} do |req|
         build_headers(header_override)
           .sending_json
           .apply(req)
@@ -71,8 +70,8 @@ module Smartsheet
       end
     end
 
-    def delete(header_override: {}, **path_context)
-      Faraday.delete build_url('sheets', :id, context: path_context), {} do |req|
+    def delete(id, header_override: {})
+      Faraday.delete build_url('sheets', id), {} do |req|
         build_headers(header_override).apply(req)
       end
     end
