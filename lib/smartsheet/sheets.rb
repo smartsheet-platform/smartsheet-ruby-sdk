@@ -2,12 +2,14 @@ require 'faraday'
 require 'json'
 require_relative 'api/urls'
 require_relative 'api/headers'
+require_relative 'api/endpoints'
 
 module Smartsheet
   # Sheet endpoint resources
   class Sheets
     include Smartsheet::API::URLs
     include Smartsheet::API::Headers
+    extend Smartsheet::API::Endpoints
 
     attr_reader :token
     private :token
@@ -16,64 +18,42 @@ module Smartsheet
       @token = token
     end
 
-    def list(params: {}, header_override: {})
-      Faraday.get build_url('sheets'), params do |req|
-        build_headers(header_override).apply(req)
-      end
-    end
+    def_endpoint symbol: :list,
+                 method: :get,
+                 url: ['sheets'],
+                 has_params: true
 
-    def get(id, params: {}, header_override: {})
-      Faraday.get build_url('sheets', id), params do |req|
-        build_headers(header_override).apply(req)
-      end
-    end
+    def_endpoint symbol: :get,
+                 method: :get,
+                 url: ['sheets', :id],
+                 has_params: true
 
-    def get_version(id, header_override: {})
-      Faraday.get build_url('sheets', id, 'version'), {} do |req|
-        build_headers(header_override).apply(req)
-      end
-    end
+    def_endpoint symbol: :get_version,
+                 method: :get,
+                 url: ['sheets', :id, 'version']
 
-    def create(body: {}, header_override: {})
-      Faraday.post build_url('sheets'), {} do |req|
-        build_headers(header_override)
-          .sending_json
-          .apply(req)
-        req.body = body.to_json
-      end
-    end
+    def_endpoint symbol: :create,
+                 method: :post,
+                 url: ['sheets'],
+                 body_type: :json
 
-    def create_in_folder(folder_id, body: {}, header_override: {})
-      Faraday.post build_url('folders', folder_id, 'sheets'), {} do |req|
-        build_headers(header_override)
-          .sending_json
-          .apply(req)
-        req.body = body.to_json
-      end
-    end
+    def_endpoint symbol: :create_in_folder,
+                 method: :post,
+                 url: ['folders', :folder_id, 'sheets'],
+                 body_type: :json
 
-    def create_in_workspace(workspace_id, body: {}, header_override: {})
-      Faraday.post build_url('workspaces', workspace_id, 'sheets'), {} do |req|
-        build_headers(header_override)
-          .sending_json
-          .apply(req)
-        req.body = body.to_json
-      end
-    end
+    def_endpoint symbol: :create_in_workspace,
+                 method: :post,
+                 url: ['workspaces', :workspace_id, 'sheets'],
+                 body_type: :json
 
-    def update(id, body: {}, header_override: {})
-      Faraday.put build_url('sheets', id), {} do |req|
-        build_headers(header_override)
-          .sending_json
-          .apply(req)
-        req.body = body.to_json
-      end
-    end
+    def_endpoint symbol: :update,
+                 method: :put,
+                 url: ['sheets', :id],
+                 body_type: :json
 
-    def delete(id, header_override: {})
-      Faraday.delete build_url('sheets', id), {} do |req|
-        build_headers(header_override).apply(req)
-      end
-    end
+    def_endpoint symbol: :delete,
+                 method: :delete,
+                 url: ['sheets', :id]
   end
 end
