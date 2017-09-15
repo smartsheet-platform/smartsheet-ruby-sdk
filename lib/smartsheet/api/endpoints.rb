@@ -5,6 +5,12 @@ require_relative 'headers'
 
 module Smartsheet
   module API
+    # Mixin module for declaring Smartsheet endpoints in a data-driven manner
+    # Mixin expects:
+    # - token(): the API token to attach to requests
+    # Mixin provides:
+    # - def_endpoint(description)
+    # - make_request(description, params = {}, header_override = {}, body = nil, path_context = {})
     module Endpoints
       def self.extended(base)
         base.include Smartsheet::API::URLs
@@ -18,6 +24,7 @@ module Smartsheet
 
           Faraday.send(description[:method], full_url, params) do |req|
             header_builder = build_headers(header_override)
+            header_builder.endpoint_specific = description[:headers] if description[:headers]
             header_builder.sending_json if sending_json && body_provided
             header_builder.apply(req)
 
@@ -28,6 +35,18 @@ module Smartsheet
         end
       end
 
+      # Creates an endpoint method.
+      # `description` expects:
+      # - symbol: the symbol of the method to create
+      # - method: the HTTP method of the endpoint (:get | :put | :post | :delete)
+      # - url: an array of string-convertible objects and symbol-placeholders representing URL path
+      #     segments. Any symbols in this array will be expected as named parameters in the created
+      #     method
+      # - has_params (optional): if set to a truthy value, includes a 'params' argument for URL
+      #     parameters
+      # - body_type: if non-null, includes a 'body' argument for the request body.
+      #     If assigned the value :json, the request will be setup to send JSON, and the body will
+      #     be converted to json before being submitted
       def def_endpoint(description)
         requires_path_context = description[:url].any? { |segment| segment.is_a? Symbol }
 

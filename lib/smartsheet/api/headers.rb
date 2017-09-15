@@ -1,7 +1,7 @@
 module Smartsheet
   module API
     # Tools for building Smartsheet API request headers
-    # Mixin requires:
+    # Mixin expects:
     # - token(): the API token to attach to requests
     # Mixin provides:
     # - build_headers(): generates a default HeaderBuilder
