@@ -70,6 +70,12 @@ module Smartsheet
           end
         end
       end
+
+      def def_endpoints(**descriptions)
+        descriptions.each do |symbol, description|
+          def_endpoint({ symbol: symbol }.merge!(description))
+        end
+      end
     end
   end
 end
