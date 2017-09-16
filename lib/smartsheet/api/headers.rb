@@ -2,9 +2,9 @@ module Smartsheet
   module API
     # Tools for building Smartsheet API request headers
     # Mixin expects:
-    # - token(): the API token to attach to requests
+    # - .token(): the API token to attach to requests
     # Mixin provides:
-    # - build_headers(): generates a default HeaderBuilder
+    # - #build_headers(): generates a default HeaderBuilder
     module Headers
       def build_headers(overrides = {})
         HeaderBuilder.new(token, overrides)
