@@ -7,16 +7,18 @@ module Smartsheet
   module API
     # Mixin module for declaring Smartsheet endpoints in a data-driven manner
     # Mixin expects:
-    # - token(): the API token to attach to requests
+    # - .token(): the API token to attach to requests
     # Mixin provides:
-    # - def_endpoint(description)
-    # - make_request(description, params = {}, header_override = {}, body = nil, path_context = {})
+    # - #def_endpoint(description)
+    # - #def_endpoints(**descriptions)
+    # - .make_request(description, params = {}, header_override = {}, body = nil, path_context = {})
     module Endpoints
       def self.extended(base)
         base.include Smartsheet::API::URLs
         base.include Smartsheet::API::Headers
 
-        base.send(:define_method, :make_request) do |description, params = {}, header_override = {}, body = nil, path_context = {}|
+        base.send(:define_method, :make_request) \
+        do |description, params = {}, header_override = {}, body = nil, path_context = {}|
           full_url = build_url(*description[:url], context: path_context)
           supports_body = !description[:body_type].nil?
           body_provided = !body.nil?
@@ -44,33 +46,57 @@ module Smartsheet
       #     method
       # - has_params (optional): if set to a truthy value, includes a 'params' argument for URL
       #     parameters
-      # - body_type: if non-null, includes a 'body' argument for the request body.
+      # - headers (optional): a hash of additional headers this endpoint requires by default.
+      #     This overrides universal Smartsheet request headers, and is overridden by any headers
+      #     passed in by the SDK's client on call.
+      # - body_type (optional): if non-nil, includes a 'body' argument for the request body.
       #     If assigned the value :json, the request will be setup to send JSON, and the body will
       #     be converted to json before being submitted
       def def_endpoint(description)
+        has_body_type = !description[:body_type].nil?
         requires_path_context = description[:url].any? { |segment| segment.is_a? Symbol }
 
-        if description[:body_type]
-          if requires_path_context
-            define_method description[:symbol] do |params: {}, header_override: {}, body: nil, **path_context|
-              make_request(description, params, header_override, body, path_context)
-            end
-          else
-            define_method description[:symbol] do |params: {}, header_override: {}, body: nil|
-              make_request(description, params, header_override, body)
-            end
-          end
-        elsif requires_path_context
-          define_method description[:symbol] do |params: {}, header_override: {}, **path_context|
-            make_request(description, params, header_override, nil, path_context)
-          end
+        case [has_body_type, requires_path_context]
+        when [true,          true]
+          def_full_endpoint(description)
+        when [true,          false]
+          def_body_endpoint(description)
+        when [false,         true]
+          def_path_endpoint(description)
+        when [false,         false]
+          def_simple_endpoint(description)
         else
-          define_method description[:symbol] do |params: {}, header_override: {}|
-            make_request(description, params, header_override)
-          end
+          raise 'This should be exhaustive!'
         end
       end
 
+      def def_full_endpoint(description)
+        define_method description[:symbol] \
+            do |params: {}, header_override: {}, body: nil, **path_context|
+          make_request(description, params, header_override, body, path_context)
+        end
+      end
+
+      def def_body_endpoint(description)
+        define_method description[:symbol] do |params: {}, header_override: {}, body: nil|
+          make_request(description, params, header_override, body)
+        end
+      end
+
+      def def_path_endpoint(description)
+        define_method description[:symbol] do |params: {}, header_override: {}, **path_context|
+          make_request(description, params, header_override, nil, path_context)
+        end
+      end
+
+      def def_simple_endpoint(description)
+        define_method description[:symbol] do |params: {}, header_override: {}|
+          make_request(description, params, header_override)
+        end
+      end
+
+      # Creates endpoint methods based on the structure expected by def_endpoint. Accepts a
+      # hashsplat of symbols to descriptions (sans symbols).
       def def_endpoints(**descriptions)
         descriptions.each do |symbol, description|
           def_endpoint({ symbol: symbol }.merge!(description))
