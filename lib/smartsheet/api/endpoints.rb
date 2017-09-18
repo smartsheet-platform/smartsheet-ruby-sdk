@@ -20,17 +20,17 @@ module Smartsheet
         base.send(:define_method, :make_request) \
         do |description, params = {}, header_override = {}, body = nil, path_context = {}|
           full_url = build_url(*description[:url], context: path_context)
-          supports_body = !description[:body_type].nil?
-          body_provided = !body.nil?
+          headers = description[:headers]
+          supports_body = description.key? :body_type
           sending_json = description[:body_type] == :json
 
           Faraday.send(description[:method], full_url, params) do |req|
             header_builder = build_headers(header_override)
-            header_builder.endpoint_specific = description[:headers] if description[:headers]
-            header_builder.sending_json if sending_json && body_provided
+            header_builder.endpoint_specific = headers if headers
+            header_builder.sending_json if sending_json && body
             header_builder.apply(req)
 
-            if supports_body && body_provided
+            if supports_body && body
               req.body = sending_json ? body.to_json : body
             end
           end
@@ -44,8 +44,7 @@ module Smartsheet
       # - url: an array of string-convertible objects and symbol-placeholders representing URL path
       #     segments. Any symbols in this array will be expected as named parameters in the created
       #     method
-      # - has_params (optional): if set to a truthy value, includes a 'params' argument for URL
-      #     parameters
+      # - has_params (optional): if truthy, includes a 'params' argument for URL parameters
       # - headers (optional): a hash of additional headers this endpoint requires by default.
       #     This overrides universal Smartsheet request headers, and is overridden by any headers
       #     passed in by the SDK's client on call.
@@ -53,7 +52,7 @@ module Smartsheet
       #     If assigned the value :json, the request will be setup to send JSON, and the body will
       #     be converted to json before being submitted
       def def_endpoint(description)
-        has_body_type = !description[:body_type].nil?
+        has_body_type = description.key? :body_type
         requires_path_context = description[:url].any? { |segment| segment.is_a? Symbol }
 
         case [has_body_type, requires_path_context]
@@ -96,7 +95,7 @@ module Smartsheet
       end
 
       # Creates endpoint methods based on the structure expected by def_endpoint. Accepts a
-      # hashsplat of symbols to descriptions (sans symbols).
+      # hashsplat of symbols to endpoint-descriptions-sans-symbols.
       def def_endpoints(**descriptions)
         descriptions.each do |symbol, description|
           def_endpoint({ symbol: symbol }.merge!(description))
