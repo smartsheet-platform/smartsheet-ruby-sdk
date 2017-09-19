@@ -1,39 +1,30 @@
 require 'faraday'
 require 'json'
-require_relative 'urls'
-require_relative 'headers'
+require_relative 'endpoint_spec'
+require_relative 'request_spec'
 
 module Smartsheet
   module API
     # Mixin module for declaring Smartsheet endpoints in a data-driven manner
     # Mixin expects:
-    # - .token(): the API token to attach to requests
+    # - .client(): the client through which requests are made
     # Mixin provides:
     # - #def_endpoint(description)
     # - #def_endpoints(**descriptions)
     # - .make_request(description, params = {}, header_override = {}, body = nil, path_context = {})
     module Endpoints
       def self.extended(base)
-        base.include Smartsheet::API::URLs
-        base.include Smartsheet::API::Headers
-
         base.send(:define_method, :make_request) \
-        do |description, params = {}, header_override = {}, body = nil, path_context = {}|
-          full_url = build_url(*description[:url], context: path_context)
-          headers = description[:headers]
-          supports_body = description.key? :body_type
-          sending_json = description[:body_type] == :json
+        do |endpoint_spec, params = {}, header_overrides = {}, body = nil, path_args = {}|
+          request_spec =
+            RequestSpec.new(
+              path_args: path_args,
+              params: params,
+              header_overrides: header_overrides,
+              body: body
+            )
 
-          Faraday.send(description[:method], full_url, params) do |req|
-            header_builder = build_headers(header_override)
-            header_builder.endpoint_specific = headers if headers
-            header_builder.sending_json if sending_json && body
-            header_builder.apply(req)
-
-            if supports_body && body
-              req.body = sending_json ? body.to_json : body
-            end
-          end
+          client.send(endpoint_spec: endpoint_spec, request_spec: request_spec)
         end
       end
 
@@ -52,45 +43,44 @@ module Smartsheet
       #     If assigned the value :json, the request will be setup to send JSON, and the body will
       #     be converted to json before being submitted
       def def_endpoint(description)
-        has_body_type = description.key? :body_type
-        requires_path_context = description[:url].any? { |segment| segment.is_a? Symbol }
+        spec = EndpointSpec.new(description)
 
-        case [has_body_type, requires_path_context]
+        case [spec.requires_body?, spec.requires_path_args?]
         when [true,          true]
-          def_full_endpoint(description)
+          def_full_endpoint(spec)
         when [true,          false]
-          def_body_endpoint(description)
+          def_body_endpoint(spec)
         when [false,         true]
-          def_path_endpoint(description)
+          def_path_endpoint(spec)
         when [false,         false]
-          def_simple_endpoint(description)
+          def_simple_endpoint(spec)
         else
           raise 'This should be exhaustive!'
         end
       end
 
-      def def_full_endpoint(description)
-        define_method description[:symbol] \
+      def def_full_endpoint(endpoint_spec)
+        define_method endpoint_spec.symbol \
             do |params: {}, header_override: {}, body: nil, **path_context|
-          make_request(description, params, header_override, body, path_context)
+          make_request(endpoint_spec, params, header_override, body, path_context)
         end
       end
 
-      def def_body_endpoint(description)
-        define_method description[:symbol] do |params: {}, header_override: {}, body: nil|
-          make_request(description, params, header_override, body)
+      def def_body_endpoint(endpoint_spec)
+        define_method endpoint_spec.symbol do |params: {}, header_override: {}, body: nil|
+          make_request(endpoint_spec, params, header_override, body)
         end
       end
 
-      def def_path_endpoint(description)
-        define_method description[:symbol] do |params: {}, header_override: {}, **path_context|
-          make_request(description, params, header_override, nil, path_context)
+      def def_path_endpoint(endpoint_spec)
+        define_method endpoint_spec.symbol do |params: {}, header_override: {}, **path_context|
+          make_request(endpoint_spec, params, header_override, nil, path_context)
         end
       end
 
-      def def_simple_endpoint(description)
-        define_method description[:symbol] do |params: {}, header_override: {}|
-          make_request(description, params, header_override)
+      def def_simple_endpoint(endpoint_spec)
+        define_method endpoint_spec.symbol do |params: {}, header_override: {}|
+          make_request(endpoint_spec, params, header_override)
         end
       end
 
