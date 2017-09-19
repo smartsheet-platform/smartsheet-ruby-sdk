@@ -5,11 +5,11 @@ module Smartsheet
   class Sheets
     extend Smartsheet::API::Endpoints
 
-    attr_reader :token
-    private :token
+    attr_reader :client
+    private :client
 
-    def initialize(token)
-      @token = token
+    def initialize(client)
+      @client = client
     end
 
     def_endpoints(
