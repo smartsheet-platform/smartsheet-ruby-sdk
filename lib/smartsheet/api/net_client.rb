@@ -1,70 +1,35 @@
-require_relative 'headers'
-require_relative 'urls'
+require 'faraday'
+require_relative 'request_spec'
+require_relative 'request_builder'
 
 module Smartsheet
   module API
-    class RequestBuilder
-      def initialize(token, endpoint_spec, request_spec, req)
-        @token = token
-        @endpoint_spec = endpoint_spec
-        @request_spec = request_spec
-        @req = req
-      end
-
-      def apply
-        build_url
-        build_headers
-        build_params
-        build_body
-      end
-
-      private
-
-      attr_reader :token, :endpoint_spec, :request_spec, :req
-
-      def build_url
-        url =
-          Smartsheet::API::UrlBuilder
-          .new
-          .for_endpoint(endpoint_spec)
-          .for_request(request_spec)
-          .build
-
-        req.url(url)
-      end
-
-      def build_headers
-        req.headers =
-          Smartsheet::API::HeaderBuilder
-          .new(token)
-          .for_endpoint(endpoint_spec)
-          .for_request(request_spec)
-          .build
-      end
-
-      def build_params
-        req.params = request_spec.params
-      end
-
-      def build_body
-        req.body = request_spec.body if request_spec.body
-      end
-    end
-
     class NetClient
       def initialize(token)
         @token = token
       end
+
+      def make_request(endpoint_spec, params: {}, header_overrides: {}, body: nil, **url_args)
+        request_spec =
+          RequestSpec.new(
+            url_args: url_args,
+            params: params,
+            header_overrides: header_overrides,
+            body: body
+          )
+
+        send(endpoint_spec: endpoint_spec, request_spec: request_spec)
+      end
+
+      private
+
+      attr_reader :token
 
       def send(endpoint_spec:, request_spec:)
         Faraday.send(endpoint_spec.method) do |req|
           RequestBuilder.new(token, endpoint_spec, request_spec, req).apply
         end
       end
-
-      private
-
-      attr_reader :token
     end
   end
 end

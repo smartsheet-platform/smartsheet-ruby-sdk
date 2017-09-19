@@ -2,26 +2,16 @@ module Smartsheet
   module API
     # Constructs headers for accessing the Smartsheet API
     class HeaderBuilder
-      def initialize(token)
+      def initialize(token, endpoint_spec, request_spec)
         @token = token
-        @endpoint_spec = nil
-        @request_spec = nil
-      end
-
-      def for_endpoint(endpoint_spec)
-        self.endpoint_spec = endpoint_spec
-        self
-      end
-
-      def for_request(request_spec)
-        self.request_spec = request_spec
-        self
+        @endpoint_spec = endpoint_spec
+        @request_spec = request_spec
       end
 
       def build
         base_headers
           .merge(endpoint_headers)
-          .merge(json_header)
+          .merge(content_type)
           .merge(request_headers)
       end
 
@@ -42,12 +32,9 @@ module Smartsheet
         endpoint_spec.headers
       end
 
-      def json_header
-        if endpoint_spec.sending_json? && request_spec.body
-          { :'Content-Type' => 'application/json' }
-        else
-          {}
-        end
+      def content_type
+        return {} unless request_spec.body
+        endpoint_spec.sending_json? ? { :'Content-Type' => 'application/json' } : {}
       end
 
       def request_headers

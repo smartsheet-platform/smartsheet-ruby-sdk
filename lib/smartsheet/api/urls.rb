@@ -4,24 +4,14 @@ module Smartsheet
     class UrlBuilder
       API_URL = 'https://api.smartsheet.com/2.0'.freeze
 
-      def initialize
-        @segments = nil
-        @args = nil
-      end
+      def initialize(endpoint_spec, request_spec)
+        @segments = endpoint_spec.url_segments
+        @args = request_spec.url_args
 
-      def for_endpoint(endpoint_spec)
-        self.segments = endpoint_spec.url_segments
-        self
-      end
-
-      def for_request(request_spec)
-        self.args = request_spec.path_args
-        self
+        validate_spec_compatibility
       end
 
       def build
-        validate_spec_compatibility
-
         segments
           .collect { |seg| seg.is_a?(Symbol) ? args[seg] : seg }
           .unshift(API_URL)
