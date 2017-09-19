@@ -1,15 +1,18 @@
 require 'minitest/autorun'
 require 'ostruct'
 require_relative '../../../lib/smartsheet/api/headers'
+require_relative '../../../lib/smartsheet/api/endpoint_spec'
+require_relative '../../../lib/smartsheet/api/request_spec'
 
 describe Smartsheet::API::HeaderBuilder do
   before do
-    @header_builder = Smartsheet::API::HeaderBuilder.new('0123456789')
+    @token = '0123456789'
   end
 
   it 'applies defaults' do
-    headers = @header_builder
-                  .for_endpoint()
+    headers = Smartsheet::API::HeaderBuilder.new(@token,
+                                                 Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
+                                                 Smartsheet::API::RequestSpec.new(params:{}, header_overrides: {}, body:{}))
                   .build()
 
     headers.wont_be_nil
@@ -19,9 +22,11 @@ describe Smartsheet::API::HeaderBuilder do
     headers[:'User-Agent'].must_equal 'smartsheet-ruby-sdk'
   end
 
-  it 'applies sending json' do
-    @header_builder.sending_json
-    headers = @header_builder.build()
+  it 'applies body_type json' do
+    headers = Smartsheet::API::HeaderBuilder.new(@token,
+                                                 Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :json),
+                                                 Smartsheet::API::RequestSpec.new(params:{}, header_overrides: {}, body:{}))
+                  .build()
 
     headers.wont_be_nil
     headers.must_be_kind_of Hash
@@ -29,8 +34,10 @@ describe Smartsheet::API::HeaderBuilder do
   end
 
   it 'applies overrides' do
-    @header_builder.with_overrides({SomeOverride: 'someValue', Authorization: 'someAuth'})
-    headers = @header_builder.build()
+    headers = Smartsheet::API::HeaderBuilder.new(@token,
+                                                 Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
+                                                 Smartsheet::API::RequestSpec.new(params:{}, header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}, body:{}))
+                  .build()
 
     headers.wont_be_nil
     headers.must_be_kind_of Hash
