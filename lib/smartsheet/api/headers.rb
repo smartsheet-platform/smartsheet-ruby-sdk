@@ -1,54 +1,44 @@
 module Smartsheet
   module API
-    # Tools for building Smartsheet API request headers
-    # Mixin requires:
-    # - token(): the API token to attach to requests
-    # Mixin provides:
-    # - build_headers(): generates a default HeaderBuilder
-    module Headers
-      def build_headers(overrides = {})
-        HeaderBuilder.new(token, overrides)
+    # Constructs headers for accessing the Smartsheet API
+    class HeaderBuilder
+      def initialize(token, endpoint_spec, request_spec)
+        @token = token
+        @endpoint_spec = endpoint_spec
+        @request_spec = request_spec
       end
 
-      # Constructs standard headers for accessing the Smartsheet API
-      class HeaderBuilder
-        attr_accessor :endpoint_specific, :overrides
-        attr_reader :token
-        private :token
+      def build
+        base_headers
+          .merge(endpoint_headers)
+          .merge(content_type)
+          .merge(request_headers)
+      end
 
-        def initialize(token, overrides = {})
-          @token = token
-          @endpoint_specific = {}
-          @overrides = overrides
-        end
+      private
 
-        def sending_json
-          endpoint_specific[:'Content-Type'] = 'application/json'
-          self
-        end
+      attr_accessor :endpoint_spec, :request_spec
+      attr_reader :token
 
-        def with_overrides(overrides)
-          self.overrides = overrides
-          self
-        end
+      def base_headers
+        {
+          :Accept => 'application/json',
+          :Authorization => "Bearer #{token}",
+          :'User-Agent' => 'smartsheet-ruby-sdk'
+        }
+      end
 
-        def apply(req)
-          req.headers =
-            base_headers
-            .merge(endpoint_specific)
-            .merge(overrides)
-          req
-        end
+      def endpoint_headers
+        endpoint_spec.headers
+      end
 
-        private
+      def content_type
+        return {} unless request_spec.body
+        endpoint_spec.sending_json? ? { :'Content-Type' => 'application/json' } : {}
+      end
 
-        def base_headers
-          {
-            :Accept => 'application/json',
-            :Authorization => "Bearer #{token}",
-            :'User-Agent' => 'smartsheet-ruby-sdk'
-          }
-        end
+      def request_headers
+        request_spec.header_overrides
       end
     end
   end

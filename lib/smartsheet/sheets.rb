@@ -1,79 +1,208 @@
-require 'faraday'
-require 'json'
-require_relative 'api/urls'
-require_relative 'api/headers'
+require_relative 'api/endpoint_spec'
+require_relative 'api/request_spec'
 
 module Smartsheet
-  # Sheet endpoint resources
+  # Sheet resource endpoints
   class Sheets
-    include Smartsheet::API::URLs
-    include Smartsheet::API::Headers
+    attr_reader :client
+    private :client
 
-    attr_reader :token
-    private :token
-
-    def initialize(token)
-      @token = token
+    def initialize(client)
+      @client = client
     end
 
-    def list(params: {}, header_override: {})
-      Faraday.get build_url('sheets'), params do |req|
-        build_headers(header_override).apply(req)
-      end
+    def list(params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['sheets'])
+      request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
+        header_overrides: header_overrides
+      )
+      client.make_request(endpoint_spec, request_spec)
     end
 
-    def get(id, params: {}, header_override: {})
-      Faraday.get build_url('sheets', id), params do |req|
-        build_headers(header_override).apply(req)
-      end
+    def get(sheet_id:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['sheets', :sheet_id])
+      request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
+        header_overrides: header_overrides,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
     end
 
-    def get_version(id, header_override: {})
-      Faraday.get build_url('sheets', id, 'version'), {} do |req|
-        build_headers(header_override).apply(req)
-      end
+    def get_version(sheet_id:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['sheets', :sheet_id, 'version'])
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
     end
 
-    def create(body: {}, header_override: {})
-      Faraday.post build_url('sheets'), {} do |req|
-        build_headers(header_override)
-          .sending_json
-          .apply(req)
-        req.body = body.to_json
-      end
+    def get_as_excel(sheet_id:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :get,
+        ['sheets', :sheet_id],
+        headers: { Accept: 'application/vnd.ms-excel' }
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
     end
 
-    def create_in_folder(folder_id, body: {}, header_override: {})
-      Faraday.post build_url('folders', folder_id, 'sheets'), {} do |req|
-        build_headers(header_override)
-          .sending_json
-          .apply(req)
-        req.body = body.to_json
-      end
+    def get_as_pdf(sheet_id:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :get,
+        ['sheets', :sheet_id],
+        headers: { Accept: 'application/pdf' }
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
+        header_overrides: header_overrides,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
     end
 
-    def create_in_workspace(workspace_id, body: {}, header_override: {})
-      Faraday.post build_url('workspaces', workspace_id, 'sheets'), {} do |req|
-        build_headers(header_override)
-          .sending_json
-          .apply(req)
-        req.body = body.to_json
-      end
+    def get_as_csv(sheet_id:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :get,
+        ['sheets', :sheet_id],
+        headers: { Accept: 'text/csv' }
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
     end
 
-    def update(id, body: {}, header_override: {})
-      Faraday.put build_url('sheets', id), {} do |req|
-        build_headers(header_override)
-          .sending_json
-          .apply(req)
-        req.body = body.to_json
-      end
+    def create(body:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :get,
+        ['sheets'],
+        body_type: :json
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        body: body
+      )
+      client.make_request(endpoint_spec, request_spec)
     end
 
-    def delete(id, header_override: {})
-      Faraday.delete build_url('sheets', id), {} do |req|
-        build_headers(header_override).apply(req)
-      end
+    def create_in_folder(folder_id:, body:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :post,
+        ['folders', :folder_id, 'sheets'],
+        body_type: :json
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        body: body,
+        folder_id: folder_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def create_in_workspace(workspace_id:, body:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :post,
+        ['workspaces', :workspace_id, 'sheets'],
+        body_type: :json
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        body: body,
+        workspace_id: workspace_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def create_from_template(body:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :get,
+        ['sheets'],
+        body_type: :json
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
+        header_overrides: header_overrides,
+        body: body
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def create_in_folder_from_template(folder_id:, body:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :post,
+        ['folders', :folder_id, 'sheets'],
+        body_type: :json
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
+        header_overrides: header_overrides,
+        body: body,
+        folder_id: folder_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def create_in_workspace_from_template(workspace_id:, body:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :post,
+        ['workspaces', :workspace_id, 'sheets'],
+        body_type: :json
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
+        header_overrides: header_overrides,
+        body: body,
+        workspace_id: workspace_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def copy(sheet_id:, body:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :post,
+        ['sheets', :sheet_id, 'copy'],
+        body_type: :json
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
+        header_overrides: header_overrides,
+        body: body,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def update(sheet_id:, body:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :put,
+        ['sheets', :sheet_id],
+        body_type: :json
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        body: body,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def delete(sheet_id:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+        :delete,
+        ['sheets', :sheet_id]
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
     end
   end
 end
