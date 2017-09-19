@@ -20,7 +20,6 @@ module Smartsheet
 
       private
 
-      attr_accessor
       attr_reader :token, :endpoint_spec, :request_spec, :req
 
       def build_url
