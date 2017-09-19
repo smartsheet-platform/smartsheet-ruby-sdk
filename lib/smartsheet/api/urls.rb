@@ -19,15 +19,13 @@ module Smartsheet
         self
       end
 
-      def apply(req)
+      def build
         validate_spec_compatibility
 
-        req.url(
-          segments
+        segments
           .collect { |seg| seg.is_a?(Symbol) ? args[seg] : seg }
           .unshift(API_URL)
           .join('/')
-        )
       end
 
       private

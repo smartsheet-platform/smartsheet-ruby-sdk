@@ -18,12 +18,11 @@ module Smartsheet
         self
       end
 
-      def apply(req)
-        req.headers =
-          base_headers
-            .merge(endpoint_headers)
-            .merge(json_header)
-            .merge(request_headers)
+      def build
+        base_headers
+          .merge(endpoint_headers)
+          .merge(json_header)
+          .merge(request_headers)
       end
 
       private

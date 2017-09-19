@@ -14,9 +14,8 @@ module Smartsheet
       def apply
         build_url
         build_headers
-
-        request_spec.attach_params(req)
-        request_spec.attach_body(req)
+        build_params
+        build_body
       end
 
       private
@@ -25,19 +24,31 @@ module Smartsheet
       attr_reader :token, :endpoint_spec, :request_spec, :req
 
       def build_url
-        Smartsheet::API::UrlBuilder
+        url =
+          Smartsheet::API::UrlBuilder
           .new
           .for_endpoint(endpoint_spec)
           .for_request(request_spec)
-          .apply(req)
+          .build
+
+        req.url(url)
       end
 
       def build_headers
-        Smartsheet::API::HeaderBuilder
+        req.headers =
+          Smartsheet::API::HeaderBuilder
           .new(token)
           .for_endpoint(endpoint_spec)
           .for_request(request_spec)
-          .apply(req)
+          .build
+      end
+
+      def build_params
+        req.params = request_spec.params
+      end
+
+      def build_body
+        req.body = request_spec.body if request_spec.body
       end
     end
 
