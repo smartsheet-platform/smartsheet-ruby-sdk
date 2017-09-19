@@ -36,5 +36,12 @@ describe Smartsheet::API::UrlBuilder do
           .for_request(Smartsheet::API::RequestSpec.new(path_args: {a_id: 123}, params:{}, header_overrides: {}, body:{}))
       -> {@url_builder.build()}.must_raise RuntimeError
     end
+
+    it 'raises on extra symbol' do
+      @url_builder
+          .for_endpoint(Smartsheet::API::EndpointSpec.new({symbol: :asdf, method: :get, url: ['a', :a_id]}))
+          .for_request(Smartsheet::API::RequestSpec.new(path_args: {a_id: 123, b_id: 234}, params:{}, header_overrides: {}, body:{}))
+      -> {@url_builder.build()}.must_raise RuntimeError
+    end
   end
 end
