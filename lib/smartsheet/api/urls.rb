@@ -33,8 +33,8 @@ module Smartsheet
       attr_accessor :segments, :args
 
       def validate_spec_compatibility
-        segment_vars = segments.select { |seg| seg.is_a? Symbol }.to_set
-        arg_keys = args.keys.to_set
+        segment_vars = segments.select { |seg| seg.is_a? Symbol }
+        arg_keys = args.keys
 
         validate_args_present(segment_vars, arg_keys)
         validate_args_match(segment_vars, arg_keys)
@@ -44,7 +44,7 @@ module Smartsheet
         missing_args = segment_vars - arg_keys
         return if missing_args.empty?
 
-        missing_args_string = missing_args.to_a.join(', ')
+        missing_args_string = missing_args.join(', ')
         raise "Missing request parameters [#{missing_args_string}]"
       end
 
@@ -52,7 +52,7 @@ module Smartsheet
         extra_args = arg_keys - segment_vars
         return if extra_args.empty?
 
-        extra_args_string = extra_args.to_a.join(', ')
+        extra_args_string = extra_args.join(', ')
         raise "Unexpected request parameters [#{extra_args_string}]"
       end
     end
