@@ -1,5 +1,5 @@
 require_relative '../test_helper'
-require_relative '../../lib/smartsheet/api/net_client'
+require 'smartsheet/api/net_client'
 
 module Smartsheet
   module Test

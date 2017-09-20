@@ -1,7 +1,7 @@
 require_relative '../../test_helper'
-require_relative '../../../lib/smartsheet/api/headers'
-require_relative '../../../lib/smartsheet/api/endpoint_spec'
-require_relative '../../../lib/smartsheet/api/request_spec'
+require 'smartsheet/api/headers'
+require 'smartsheet/api/endpoint_spec'
+require 'smartsheet/api/request_spec'
 
 describe Smartsheet::API::HeaderBuilder do
   TOKEN = '0123456789'
@@ -10,7 +10,7 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
-        Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {}, body: {}))
+        Smartsheet::API::RequestSpec.new)
                   .build()
 
     headers.wont_be_nil
@@ -24,7 +24,7 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :json),
-        Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {}, body: {}))
+        Smartsheet::API::RequestSpec.new(body: {}))
                   .build()
 
     headers.wont_be_nil
@@ -36,7 +36,7 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
-        Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}, body: {}))
+        Smartsheet::API::RequestSpec.new(header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}))
                   .build()
 
     headers.wont_be_nil
