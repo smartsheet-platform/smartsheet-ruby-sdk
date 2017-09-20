@@ -4,13 +4,11 @@ require_relative '../../../lib/smartsheet/api/endpoint_spec'
 require_relative '../../../lib/smartsheet/api/request_spec'
 
 describe Smartsheet::API::HeaderBuilder do
-  before do
-    @token = '0123456789'
-  end
+  TOKEN = '0123456789'
 
   it 'applies defaults' do
     headers = Smartsheet::API::HeaderBuilder.new(
-        @token,
+        TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
         Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {}, body: {}))
                   .build()
@@ -18,13 +16,13 @@ describe Smartsheet::API::HeaderBuilder do
     headers.wont_be_nil
     headers.must_be_kind_of Hash
     headers[:Accept].must_equal 'application/json'
-    headers[:Authorization].must_equal 'Bearer 0123456789'
+    headers[:Authorization].must_equal 'Bearer ' + TOKEN
     headers[:'User-Agent'].must_equal 'smartsheet-ruby-sdk'
   end
 
   it 'applies body_type json' do
     headers = Smartsheet::API::HeaderBuilder.new(
-        @token,
+        TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :json),
         Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {}, body: {}))
                   .build()
@@ -36,7 +34,7 @@ describe Smartsheet::API::HeaderBuilder do
 
   it 'applies overrides' do
     headers = Smartsheet::API::HeaderBuilder.new(
-        @token,
+        TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
         Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}, body: {}))
                   .build()
