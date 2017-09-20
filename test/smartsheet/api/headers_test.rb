@@ -9,9 +9,10 @@ describe Smartsheet::API::HeaderBuilder do
   end
 
   it 'applies defaults' do
-    headers = Smartsheet::API::HeaderBuilder.new(@token,
-                                                 Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
-                                                 Smartsheet::API::RequestSpec.new(params:{}, header_overrides: {}, body:{}))
+    headers = Smartsheet::API::HeaderBuilder.new(
+        @token,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
+        Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {}, body: {}))
                   .build()
 
     headers.wont_be_nil
@@ -22,9 +23,10 @@ describe Smartsheet::API::HeaderBuilder do
   end
 
   it 'applies body_type json' do
-    headers = Smartsheet::API::HeaderBuilder.new(@token,
-                                                 Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :json),
-                                                 Smartsheet::API::RequestSpec.new(params:{}, header_overrides: {}, body:{}))
+    headers = Smartsheet::API::HeaderBuilder.new(
+        @token,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :json),
+        Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {}, body: {}))
                   .build()
 
     headers.wont_be_nil
@@ -33,9 +35,10 @@ describe Smartsheet::API::HeaderBuilder do
   end
 
   it 'applies overrides' do
-    headers = Smartsheet::API::HeaderBuilder.new(@token,
-                                                 Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
-                                                 Smartsheet::API::RequestSpec.new(params:{}, header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}, body:{}))
+    headers = Smartsheet::API::HeaderBuilder.new(
+        @token,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
+        Smartsheet::API::RequestSpec.new(params: {}, header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}, body: {}))
                   .build()
 
     headers.wont_be_nil

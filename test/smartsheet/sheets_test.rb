@@ -39,7 +39,6 @@ class SheetTest < Minitest::Test
             method: :get,
             url: ['sheets', :sheet_id],
             args: {sheet_id: 123},
-            has_params: true,
             headers: {Accept: 'application/vnd.ms-excel'}
         },
         {
@@ -55,7 +54,6 @@ class SheetTest < Minitest::Test
             method: :get,
             url: ['sheets', :sheet_id],
             args: {sheet_id: 123},
-            has_params: true,
             headers: {Accept: 'text/csv'}
         },
         {
