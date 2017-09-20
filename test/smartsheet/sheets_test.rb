@@ -82,6 +82,20 @@ class SheetTest < Minitest::Test
             has_params: true
         },
         {
+            symbol: :create_from_template,
+            method: :post,
+            url: ['sheets'],
+            args: {body: {}},
+            has_params: true
+        },
+        {
+            symbol: :create_in_folder_from_template,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets'],
+            args: {folder_id: 123, body: {}},
+            has_params: true
+        },
+        {
             symbol: :copy,
             method: :post,
             url: ['sheets', :sheet_id, 'copy'],
