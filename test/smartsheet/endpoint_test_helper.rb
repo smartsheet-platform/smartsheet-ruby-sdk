@@ -98,19 +98,3 @@ module Smartsheet
     end
   end
 end
-
-
-
-# describe Smartsheet::Sheets do
-#   before do
-#
-#   end
-#   it 'stubbing works' do
-#     expected_endpoint_spec = Smartsheet::API::EndpointSpec.new :get, ['sheets']
-#     @mock_client
-#         .expects(:make_request)
-#         .with() {|endpoint_spec, request_spec| (endpoint_spec.method.must_equal :get) && (endpoint_spec.url_segments.must_equal ['sheets']) }
-#
-#     @smartsheet_client.sheets.list
-#   end
-# end

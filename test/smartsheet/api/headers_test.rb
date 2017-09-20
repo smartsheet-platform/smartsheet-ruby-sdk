@@ -1,5 +1,4 @@
-require 'minitest/autorun'
-require 'ostruct'
+require_relative '../../test_helper'
 require_relative '../../../lib/smartsheet/api/headers'
 require_relative '../../../lib/smartsheet/api/endpoint_spec'
 require_relative '../../../lib/smartsheet/api/request_spec'
