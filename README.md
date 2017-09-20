@@ -1,4 +1,4 @@
-# Smartsheet Ruby SDK
+# Smartsheet Ruby SDK [![Build Status](https://travis-ci.org/armstnp/smartsheet-ruby-sdk.svg?branch=master)](https://travis-ci.org/armstnp/smartsheet-ruby-sdk)
 
 This is an SDK to simplify connecting to the [Smartsheet API](http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
 
