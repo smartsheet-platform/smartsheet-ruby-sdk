@@ -39,13 +39,14 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get_as_excel(sheet_id:, header_overrides: {})
+    def get_as_excel(sheet_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
         :get,
         ['sheets', :sheet_id],
         headers: { Accept: 'application/vnd.ms-excel' }
       )
       request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
         header_overrides: header_overrides,
         sheet_id: sheet_id
       )
@@ -66,13 +67,14 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get_as_csv(sheet_id:, header_overrides: {})
+    def get_as_csv(sheet_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
         :get,
         ['sheets', :sheet_id],
         headers: { Accept: 'text/csv' }
       )
       request_spec = Smartsheet::API::RequestSpec.new(
+        params: params,
         header_overrides: header_overrides,
         sheet_id: sheet_id
       )
@@ -81,7 +83,7 @@ module Smartsheet
 
     def create(body:, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
-        :get,
+        :post,
         ['sheets'],
         body_type: :json
       )
@@ -122,7 +124,7 @@ module Smartsheet
 
     def create_from_template(body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
-        :get,
+        :post,
         ['sheets'],
         body_type: :json
       )
