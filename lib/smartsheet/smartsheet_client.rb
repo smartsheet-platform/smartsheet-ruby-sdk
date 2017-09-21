@@ -9,13 +9,7 @@ module Smartsheet
     attr_reader :sheets
 
     def initialize(token)
-      conn = Faraday.new do |faraday|
-        faraday.use API::Middleware::ErrorTranslator
-        faraday.use API::Middleware::ResponseParser
-        faraday.adapter Faraday.default_adapter
-      end
-
-      @net_client = API::NetClient.new(token, conn)
+      @net_client = API::NetClient.new(token)
 
       @sheets = Sheets.new(@net_client)
     end
