@@ -74,8 +74,6 @@ describe Smartsheet::API::RetryLogic do
   end
 
   it 'uses user defined backoff' do
-    srand 1234
-
     backoff_called = false
     backoff = Proc.new do |i|
       backoff_called = true
