@@ -1,8 +1,8 @@
 require_relative '../../test_helper'
-require 'smartsheet/api/retry'
+require 'smartsheet/api/retry_logic'
 require 'timecop'
 
-describe Smartsheet::API::Retry do
+describe Smartsheet::API::RetryLogic do
   before do
     Timecop.freeze
   end
@@ -12,7 +12,7 @@ describe Smartsheet::API::Retry do
   end
 
   it 'does not retry on success' do
-    retry_logic = Smartsheet::API::Retry.new do
+    retry_logic = Smartsheet::API::RetryLogic.new do
       true
     end
 
@@ -26,8 +26,23 @@ describe Smartsheet::API::Retry do
     run_count.must_equal 1
   end
 
+  it 'result is returned on success' do
+    retry_logic = Smartsheet::API::RetryLogic.new do
+      true
+    end
+
+    stub_sleep(retry_logic)
+
+    expected_result = {success: true}
+    result = retry_logic.run do
+      expected_result
+    end
+
+    result.must_equal expected_result
+  end
+
   it 'does not exceed time limit' do
-    retry_logic = Smartsheet::API::Retry.new do
+    retry_logic = Smartsheet::API::RetryLogic.new do
       false
     end
 
@@ -44,7 +59,7 @@ describe Smartsheet::API::Retry do
 
   it 'retries the correct number of times' do
     srand 1234
-    retry_logic = Smartsheet::API::Retry.new do
+    retry_logic = Smartsheet::API::RetryLogic.new do
       false
     end
 
@@ -67,7 +82,7 @@ describe Smartsheet::API::Retry do
       1
     end
 
-    retry_logic = Smartsheet::API::Retry.new(backoff_method: backoff) do
+    retry_logic = Smartsheet::API::RetryLogic.new(backoff_method: backoff) do
       false
     end
 
@@ -84,7 +99,7 @@ describe Smartsheet::API::Retry do
 
   it 'does not exceed user defined time limit' do
     max_retry_time = 10
-    retry_logic = Smartsheet::API::Retry.new(max_retry_time: max_retry_time) do
+    retry_logic = Smartsheet::API::RetryLogic.new(max_retry_time: max_retry_time) do
       false
     end
 
@@ -100,7 +115,7 @@ describe Smartsheet::API::Retry do
   end
 
   it 'returns if successful after retry' do
-    retry_logic = Smartsheet::API::Retry.new do |attempt_count|
+    retry_logic = Smartsheet::API::RetryLogic.new do |attempt_count|
       # fails until second attempt
       attempt_count >= 2
     end

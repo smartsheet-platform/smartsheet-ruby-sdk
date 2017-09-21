@@ -1,6 +1,6 @@
 module Smartsheet
   module API
-    class Retry
+    class RetryLogic
       DEFAULT_MAX_RETRY_TIME = 15
 
       DEFAULT_BACKOFF_METHOD = Proc.new do |iteration|
