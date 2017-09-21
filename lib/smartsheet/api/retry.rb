@@ -3,34 +3,33 @@ module Smartsheet
     class Retry
       DEFAULT_MAX_RETRY_TIME = 15
 
-      DEFAULT_BACKOFF = Proc.new do |iteration|
+      DEFAULT_BACKOFF_METHOD = Proc.new do |iteration|
         2 ** iteration + rand
       end
 
-      def initialize(max_retry_time = DEFAULT_MAX_RETRY_TIME, backoff_method = DEFAULT_BACKOFF, &method_to_run)
+      def initialize(max_retry_time: DEFAULT_MAX_RETRY_TIME, backoff_method: DEFAULT_BACKOFF_METHOD, &check_success)
         @max_retry_time = max_retry_time
         @backoff_method = backoff_method
-        @method_to_run = method_to_run
+        @check_success = check_success
       end
 
-      def run(&check_success)
-        end_time = Time.new.sec + @max_retry_time
+      def run(&method_to_run)
+        end_time = Time.now.to_i + @max_retry_time
 
-        _run(check_success, end_time, 0)
+        _run(method_to_run, end_time, 0)
       end
 
       private
 
-      def _run(check_success, end_time, iteration)
-        result = @method_to_run.call
-        backoff = @backoff_method.call(iteration)
+      def _run(method_to_run, end_time, iteration)
+        result = method_to_run.call
 
-        return result if check_success.call(result) || Time.new.sec + backoff > end_time
+        return result if @check_success.call(result) || Time.now.to_i + @backoff_method.call(iteration) >= end_time
 
-        sleep backoff
+        sleep @backoff_method.call(iteration)
 
         iteration += 1
-        _run(check_success, end_time, iteration)
+        _run(method_to_run, end_time, iteration)
       end
     end
   end
