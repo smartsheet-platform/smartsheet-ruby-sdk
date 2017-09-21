@@ -10,7 +10,11 @@ describe Smartsheet::API::NetClient do
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'])
     @request_spec = Smartsheet::API::RequestSpec.new
 
-    Faraday.stubs(:get).yields @request
+    response = mock
+    response.stubs(:body).returns {}
+    conn = mock
+    conn.stubs(:get).yields(@request).returns response
+    Faraday.stubs(:new).returns(conn)
     @client = Smartsheet::API::NetClient.new(TOKEN)
     @stub_request_builder = mock
     @stub_request_builder.stubs(:apply)
