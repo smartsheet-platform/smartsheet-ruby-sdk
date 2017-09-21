@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'mocha', '~> 1.3'
+  spec.add_development_dependency 'timecop', '~> 0.9.1'
   spec.add_development_dependency 'rubocop', '~> 0.49.1'
   spec.add_development_dependency 'reek', '~> 4.7.2'
   spec.add_development_dependency 'rubycritic', '~> 3.2.3'
