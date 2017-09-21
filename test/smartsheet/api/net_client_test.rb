@@ -1,5 +1,5 @@
 require_relative '../../test_helper'
-require 'smartsheet/api/headers'
+require 'smartsheet/api/net_client'
 require 'faraday'
 
 describe Smartsheet::API::NetClient do
