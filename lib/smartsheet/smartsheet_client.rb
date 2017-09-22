@@ -5,10 +5,11 @@ require_relative 'api/middleware/response_parser'
 require_relative 'endpoints/sheets/sheets'
 require_relative 'endpoints/server_info/server_info'
 require_relative 'endpoints/contacts/contacts'
+require_relative 'endpoints/search/search'
 
 module Smartsheet
   class SmartsheetClient
-    attr_reader :sheets, :server_info, :contacts
+    attr_reader :sheets, :server_info, :contacts, :search
 
     def initialize(token)
       @net_client = API::NetClient.new(token)
@@ -16,6 +17,7 @@ module Smartsheet
       @sheets = Sheets.new(@net_client)
       @server_info = ServerInfo.new(@net_client)
       @contacts = Contacts.new(@net_client)
+      @search = Search.new(@net_client)
     end
   end
 end
