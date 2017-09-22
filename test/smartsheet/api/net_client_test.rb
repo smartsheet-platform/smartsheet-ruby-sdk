@@ -3,7 +3,7 @@ require 'smartsheet/api/net_client'
 require 'faraday'
 
 describe Smartsheet::API::NetClient do
-  TOKEN = '0123456789'
+  TOKEN = '0123456789'.freeze
 
   before do
     @request = Faraday::Request.new
@@ -12,9 +12,16 @@ describe Smartsheet::API::NetClient do
 
     response = mock
     response.stubs(:body).returns {}
+
     conn = mock
     conn.stubs(:get).yields(@request).returns response
-    Faraday.stubs(:new).returns(conn)
+    conn.expects(:use).with(Smartsheet::API::Middleware::ErrorTranslator)
+    conn.expects(:use).with(Smartsheet::API::Middleware::ResponseParser)
+    faraday_adapter = Faraday.default_adapter
+    Faraday.stubs(:default_adapter).returns(faraday_adapter)
+    conn.expects(:adapter).with(faraday_adapter)
+
+    Faraday.stubs(:new).yields(conn).returns(conn)
     @client = Smartsheet::API::NetClient.new(TOKEN)
     @stub_request_builder = mock
     @stub_request_builder.stubs(:apply)
