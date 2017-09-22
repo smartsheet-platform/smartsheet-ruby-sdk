@@ -12,16 +12,14 @@ module Smartsheet
         end
 
         def call(env)
-          response = @app.call(env)
+          @app.call(env).on_complete do |response_env|
+            if response_env[:response_headers]['content-type'] =~ /\bjson\b/
+              hash_body = JSON.parse(response_env[:body])
+              response_env[:body] = RecursiveOpenStruct.new(hash_body, recurse_over_arrays: true)
+            end
 
-          if env[:response_headers]['content-type'] =~ /\bjson\b/
-            hash_body = JSON.parse(env[:body])
-            env[:body] = RecursiveOpenStruct.new(hash_body, recurse_over_arrays: true)
+            response_env[:body] = Response.from_result response_env[:body]
           end
-
-          env[:body] = Response.from_result env[:body]
-
-          response
         end
       end
     end
