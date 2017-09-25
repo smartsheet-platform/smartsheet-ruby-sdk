@@ -1,8 +1,8 @@
 require 'faraday'
-require_relative 'request_builder'
-require_relative 'retry_logic'
-require_relative 'middleware/error_translator'
-require_relative 'middleware/response_parser'
+require 'smartsheet/api/request_builder'
+require 'smartsheet/api/retry_logic'
+require 'smartsheet/api/middleware/error_translator'
+require 'smartsheet/api/middleware/response_parser'
 
 module Smartsheet
   module API
@@ -37,9 +37,8 @@ module Smartsheet
       end
 
       def create_retry_logic
-        @retry_logic = RetryLogic.new do
-          # call request check method here
-          true
+        @retry_logic = RetryLogic.new do |response|
+          !response.should_retry?
         end
       end
 
