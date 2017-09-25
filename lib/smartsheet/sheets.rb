@@ -3,11 +3,12 @@ require_relative '../../api/request_spec'
 require_relative 'discussions'
 require_relative 'comments'
 require_relative 'columns'
+require_relative 'rows'
 
 module Smartsheet
   # Sheet resource endpoints
   class Sheets
-    attr_reader :client, :discussions, :comments, :columns
+    attr_reader :client, :discussions, :comments, :columns, :rows
     private :client
 
     def initialize(client)
@@ -15,6 +16,7 @@ module Smartsheet
       @discussions = Discussions.new(client)
       @comments = Comments.new(client)
       @columns = Columns.new(client)
+      @rows = Rows.new(client)
     end
 
     def list(params: {}, header_overrides: {})
