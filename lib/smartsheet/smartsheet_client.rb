@@ -2,7 +2,7 @@ require_relative 'api/net_client'
 require_relative 'api/middleware/error_translator'
 require_relative 'api/middleware/response_parser'
 
-require_relative 'sheets'
+require_relative 'endpoints/sheets/sheets'
 
 module Smartsheet
   class SmartsheetClient

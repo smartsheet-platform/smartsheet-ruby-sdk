@@ -1,6 +1,6 @@
 require 'faraday'
-require_relative '../test_helper'
-require_relative 'endpoint_test_helper'
+require_relative '../../../test_helper'
+require_relative '../endpoint_test_helper'
 
 class SheetTest < Minitest::Test
   extend Smartsheet::Test::EndpointHelper
@@ -8,8 +8,8 @@ class SheetTest < Minitest::Test
   attr_accessor :mock_client
   attr_accessor :smartsheet_client
 
-  def category
-    :sheets
+  def category_selector(smartsheet_client)
+    smartsheet_client.sheets
   end
 
   def self.endpoints

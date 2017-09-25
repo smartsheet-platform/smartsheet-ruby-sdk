@@ -1,5 +1,5 @@
-require_relative 'api/endpoint_spec'
-require_relative 'api/request_spec'
+require_relative '../../api/endpoint_spec'
+require_relative '../../api/request_spec'
 
 module Smartsheet
   # Sheet resource endpoints

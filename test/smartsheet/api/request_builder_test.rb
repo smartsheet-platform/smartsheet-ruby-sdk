@@ -2,7 +2,7 @@ require_relative '../../test_helper'
 require 'smartsheet/api/headers'
 require 'faraday'
 
-describe Smartsheet::API::NetClient do
+describe Smartsheet::API::RequestBuilder do
   TOKEN = '0123456789'
 
   before do
