@@ -1,4 +1,3 @@
-require 'faraday'
 require_relative '../../../test_helper'
 require_relative '../endpoint_test_helper'
 
