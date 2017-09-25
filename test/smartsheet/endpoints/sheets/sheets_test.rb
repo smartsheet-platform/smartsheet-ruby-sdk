@@ -8,7 +8,7 @@ class SheetTest < Minitest::Test
   attr_accessor :mock_client
   attr_accessor :smartsheet_client
 
-  def category_selector(smartsheet_client)
+  def category
     smartsheet_client.sheets
   end
 

@@ -42,7 +42,7 @@ module Smartsheet
             Smartsheet::API::UrlBuilder.new(endpoint_spec, request_spec)
           end
 
-          category_selector(@smartsheet_client).send(endpoint[:symbol], **endpoint[:args])
+          category.send(endpoint[:symbol], **endpoint[:args])
         end
       end
 
@@ -52,7 +52,7 @@ module Smartsheet
             assert_equal(endpoint[:headers], endpoint_spec.headers)
           end
 
-          category_selector(@smartsheet_client).send(endpoint[:symbol], **endpoint[:args])
+          category.send(endpoint[:symbol], **endpoint[:args])
         end
       end
 
@@ -62,7 +62,7 @@ module Smartsheet
             assert_equal(endpoint[:args].key?(:body), endpoint_spec.requires_body?)
           end
 
-          category_selector(@smartsheet_client).send(endpoint[:symbol], **endpoint[:args])
+          category.send(endpoint[:symbol], **endpoint[:args])
         end
       end
 
@@ -73,7 +73,7 @@ module Smartsheet
             assert_equal(endpoint[:url], endpoint_spec.url_segments)
           end
 
-          category_selector(@smartsheet_client).send(endpoint[:symbol], **endpoint[:args])
+          category.send(endpoint[:symbol], **endpoint[:args])
         end
       end
 
@@ -82,7 +82,7 @@ module Smartsheet
           @mock_client.stubs(:make_request)
 
           assert_raises(ArgumentError) do
-            category_selector(@smartsheet_client).send(endpoint[:symbol], **endpoint[:args], params: {p: ''})
+            category.send(endpoint[:symbol], **endpoint[:args], params: {p: ''})
           end
         end
       end
@@ -94,7 +94,7 @@ module Smartsheet
             assert_equal(params, request_spec.params)
           end
 
-          category_selector(@smartsheet_client).send(endpoint[:symbol], **endpoint[:args], params: params)
+          category.send(endpoint[:symbol], **endpoint[:args], params: params)
         end
       end
 
@@ -104,7 +104,7 @@ module Smartsheet
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(header_overrides, request_spec.header_overrides)
           end
-          category_selector(@smartsheet_client).send(endpoint[:symbol], **endpoint[:args], header_overrides: header_overrides)
+          category.send(endpoint[:symbol], **endpoint[:args], header_overrides: header_overrides)
         end
       end
     end
