@@ -1,14 +1,16 @@
 require_relative '../../api/endpoint_spec'
 require_relative '../../api/request_spec'
+require_relative 'discussions'
 
 module Smartsheet
   # Sheet resource endpoints
   class Sheets
-    attr_reader :client
+    attr_reader :client, :discussions
     private :client
 
     def initialize(client)
       @client = client
+      @discussions = Discussions.new(client)
     end
 
     def list(params: {}, header_overrides: {})

@@ -26,6 +26,7 @@ module Smartsheet
         define_accepts_header_overrides(endpoint)
         define_valid_body(endpoint)
         define_valid_headers(endpoint) unless endpoint[:headers].nil?
+        define_valid_url(endpoint)
 
         if endpoint[:has_params]
           define_accepts_params(endpoint)
@@ -34,8 +35,19 @@ module Smartsheet
         end
       end
 
+      def define_valid_url(endpoint)
+        define_method "test_#{endpoint[:symbol]}_valid_url" do
+          @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
+            # this validates the URL
+            Smartsheet::API::UrlBuilder.new(endpoint_spec, request_spec)
+          end
+
+          category_selector(@smartsheet_client).send(endpoint[:symbol], **endpoint[:args])
+        end
+      end
+
       def define_valid_headers(endpoint)
-        define_method "test_#{endpoint[:symbol]}_has_body" do
+        define_method "test_#{endpoint[:symbol]}_valid_headers" do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:headers], endpoint_spec.headers)
           end
@@ -45,7 +57,7 @@ module Smartsheet
       end
 
       def define_valid_body(endpoint)
-        define_method "test_#{endpoint[:symbol]}_has_body" do
+        define_method "test_#{endpoint[:symbol]}_valid_body" do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:args].key?(:body), endpoint_spec.requires_body?)
           end
