@@ -1,5 +1,5 @@
 require_relative '../../test_helper'
-require 'smartsheet/api/headers'
+require 'smartsheet/api/header_builder'
 require 'faraday'
 
 describe Smartsheet::API::RequestBuilder do

@@ -1,5 +1,6 @@
-require_relative 'urls'
-require_relative 'headers'
+require_relative 'url_builder'
+require_relative 'header_builder'
+require_relative 'body_builder'
 
 module Smartsheet
   module API
@@ -37,7 +38,7 @@ module Smartsheet
       end
 
       def build_body
-        req.body = request_spec.body if request_spec.body
+        req.body = Smartsheet::API::BodyBuilder.new(endpoint_spec, request_spec).build
       end
     end
   end

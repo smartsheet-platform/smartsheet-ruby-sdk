@@ -1,5 +1,5 @@
 require_relative '../../test_helper'
-require 'smartsheet/api/urls'
+require 'smartsheet/api/url_builder'
 require 'smartsheet/api/endpoint_spec'
 require 'smartsheet/api/request_spec'
 
