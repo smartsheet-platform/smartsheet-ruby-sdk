@@ -3,14 +3,25 @@ require 'smartsheet/api/net_client'
 require 'faraday'
 
 describe Smartsheet::API::NetClient do
-  TOKEN = '0123456789'
+  TOKEN = '0123456789'.freeze
 
   before do
     @request = Faraday::Request.new
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'])
     @request_spec = Smartsheet::API::RequestSpec.new
 
-    Faraday.stubs(:get).yields @request
+    response = mock
+    response.stubs(:body).returns {}
+
+    conn = mock
+    conn.stubs(:get).yields(@request).returns response
+    conn.expects(:use).with(Smartsheet::API::Middleware::ErrorTranslator)
+    conn.expects(:use).with(Smartsheet::API::Middleware::ResponseParser)
+    faraday_adapter = Faraday.default_adapter
+    Faraday.stubs(:default_adapter).returns(faraday_adapter)
+    conn.expects(:adapter).with(faraday_adapter)
+
+    Faraday.stubs(:new).yields(conn).returns(conn)
     @client = Smartsheet::API::NetClient.new(TOKEN)
     @stub_request_builder = mock
     @stub_request_builder.stubs(:apply)

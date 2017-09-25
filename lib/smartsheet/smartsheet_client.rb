@@ -1,4 +1,6 @@
 require_relative 'api/net_client'
+require_relative 'api/middleware/error_translator'
+require_relative 'api/middleware/response_parser'
 
 require_relative 'sheets'
 
