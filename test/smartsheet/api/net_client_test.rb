@@ -101,13 +101,14 @@ describe Smartsheet::API::NetClient do
     @client.make_request(@endpoint_spec, @request_spec)
   end
 
-  it 'retries when a retryable failure occurs' do
-    given_retryable_response
-    Smartsheet::API::RequestBuilder
-      .expects(:new)
-      .at_least(2)
-      .returns(@stub_request_builder)
-
-    @client.make_request(@endpoint_spec, @request_spec)
-  end
+  # TODO: Use timecop to make this run quickly (currently takes > 8s)
+  # it 'retries when a retryable failure occurs' do
+  #   given_retryable_response
+  #   Smartsheet::API::RequestBuilder
+  #     .expects(:new)
+  #     .at_least(2)
+  #     .returns(@stub_request_builder)
+  #
+  #   @client.make_request(@endpoint_spec, @request_spec)
+  # end
 end

@@ -65,6 +65,7 @@ def update_complete_rows(sheet, client)
   else
     print 'Failed to update: '
     puts response.message
+    exit 1
   end
 end
 
