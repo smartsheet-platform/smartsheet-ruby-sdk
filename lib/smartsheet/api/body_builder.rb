@@ -1,3 +1,5 @@
+require 'json'
+
 module Smartsheet
   module API
     # Constructs bodys for accessing the Smartsheet API
@@ -8,17 +10,25 @@ module Smartsheet
       end
 
       def build
-        endpoint_spec.file_upload? ?
-            file_body :
-            simple_body
+        if endpoint_spec.sending_json?
+          json_body
+        elsif endpoint_spec.file_upload?
+          file_body
+        else
+          request_spec.body
+        end
       end
 
       private
 
       attr_accessor :endpoint_spec, :request_spec
 
-      def simple_body
-        request_spec.body if request_spec.body
+      def json_body
+        return nil if request_spec.body.nil?
+
+        request_spec.body.is_a?(String) ?
+            request_spec.body :
+            request_spec.body.to_json
       end
       
       def file_body
