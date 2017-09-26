@@ -33,11 +33,14 @@ describe Smartsheet::API::BodyBuilder do
     @request_spec = Smartsheet::API::RequestSpec.new(filename: 'file')
   end
 
+  def when_body_is_built
+    Smartsheet::API::BodyBuilder.new(@endpoint_spec, @request_spec)
+        .build
+  end
 
   it 'formats JSON body as JSON string' do
     given_json_body
-    body = Smartsheet::API::BodyBuilder.new(@endpoint_spec, @request_spec)
-                  .build
+    body = when_body_is_built
 
     body.wont_be_nil
     body.must_equal @some_body.to_json
@@ -45,8 +48,7 @@ describe Smartsheet::API::BodyBuilder do
 
   it 'returns request body if not JSON' do
     given_non_json_body
-    body = Smartsheet::API::BodyBuilder.new(@endpoint_spec, @request_spec)
-               .build
+    body = when_body_is_built
 
     body.wont_be_nil
     body.must_equal @some_body
@@ -54,8 +56,7 @@ describe Smartsheet::API::BodyBuilder do
 
   it 'does not format JSON strings as JSON strings' do
     given_string_json_body
-    body = Smartsheet::API::BodyBuilder.new(@endpoint_spec, @request_spec)
-               .build
+    body = when_body_is_built
 
     body.wont_be_nil
     body.must_equal @some_body
@@ -63,8 +64,7 @@ describe Smartsheet::API::BodyBuilder do
 
   it 'does not format nil JSON bodies' do
     given_nil_json_body
-    body = Smartsheet::API::BodyBuilder.new(@endpoint_spec, @request_spec)
-               .build
+    body = when_body_is_built
 
     body.must_be_nil
   end
@@ -74,8 +74,7 @@ describe Smartsheet::API::BodyBuilder do
     File.stubs(:open)
 
     given_file_body
-    body = Smartsheet::API::BodyBuilder.new(@endpoint_spec, @request_spec)
-               .build
+    body = when_body_is_built
 
     body.must_be_kind_of Hash
     body[:file].must_be_kind_of Faraday::UploadIO
