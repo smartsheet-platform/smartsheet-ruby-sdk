@@ -1,7 +1,7 @@
 require_relative '../../../test_helper'
 require_relative '../endpoint_test_helper'
 
-class HomeTest < Minitest::Test
+class SightsTest < Minitest::Test
   extend Smartsheet::Test::EndpointHelper
 
   attr_accessor :mock_client
