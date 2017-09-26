@@ -14,7 +14,7 @@ class SheetAttachmentTest < Minitest::Test
   def self.endpoints
     [
         {
-            symbol: :list_attachments,
+            symbol: :list,
             method: :get,
             url: ['sheets', :sheet_id, 'attachments'],
             args: {sheet_id: 123},
@@ -22,7 +22,7 @@ class SheetAttachmentTest < Minitest::Test
             headers: nil
         },
         {
-            symbol: :get_attachment,
+            symbol: :get,
             method: :get,
             url: ['sheets', :sheet_id, 'attachments', :attachment_id],
             args: {sheet_id: 123, attachment_id: 234},

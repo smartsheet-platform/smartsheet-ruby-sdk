@@ -7,7 +7,7 @@ module Smartsheet
       @client = client
     end
 
-    def list_attachments(sheet_id:, params: {}, header_overrides: {})
+    def list(sheet_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['sheets', :sheet_id, 'attachments'])
       request_spec = Smartsheet::API::RequestSpec.new(
           params: params,
@@ -17,7 +17,7 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get_attachment(sheet_id:, attachment_id:, header_overrides: {})
+    def get(sheet_id:, attachment_id:, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['sheets', :sheet_id, 'attachments', :attachment_id])
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,

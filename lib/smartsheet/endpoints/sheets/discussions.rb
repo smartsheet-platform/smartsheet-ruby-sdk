@@ -1,10 +1,14 @@
+require 'smartsheet/endpoints/sheets/discussions_attachments'
+
 module Smartsheet
   class Discussions
-    attr_reader :client
+    attr_reader :client, :attachments
     private :client
 
     def initialize(client)
       @client = client
+
+      @attachments = DiscussionsAttachments.new(client)
     end
 
     def create_on_row(sheet_id:, row_id:, body:, header_overrides: {})
