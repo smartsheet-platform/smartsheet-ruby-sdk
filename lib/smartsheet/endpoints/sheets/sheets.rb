@@ -1,9 +1,9 @@
-require_relative '../../api/endpoint_spec'
-require_relative '../../api/request_spec'
-require_relative 'discussions'
-require_relative 'comments'
-require_relative 'columns'
-require_relative 'rows'
+require 'smartsheet/api/endpoint_spec'
+require 'smartsheet/api/request_spec'
+require 'smartsheet/endpoints/sheets/discussions'
+require 'smartsheet/endpoints/sheets/comments'
+require 'smartsheet/endpoints/sheets/columns'
+require 'smartsheet/endpoints/sheets/rows'
 
 module Smartsheet
   # Sheet resource endpoints

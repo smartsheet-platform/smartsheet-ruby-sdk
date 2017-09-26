@@ -1,16 +1,17 @@
-require_relative 'api/net_client'
-require_relative 'api/middleware/error_translator'
-require_relative 'api/middleware/response_parser'
+require 'smartsheet/api/net_client'
+require 'smartsheet/api/middleware/error_translator'
+require 'smartsheet/api/middleware/response_parser'
 
-require_relative 'endpoints/sheets/sheets'
-require_relative 'endpoints/server_info/server_info'
-require_relative 'endpoints/contacts/contacts'
-require_relative 'endpoints/search/search'
-require_relative 'endpoints/folders/folders'
+require 'smartsheet/endpoints/sheets/sheets'
+require 'smartsheet/endpoints/server_info/server_info'
+require 'smartsheet/endpoints/contacts/contacts'
+require 'smartsheet/endpoints/search/search'
+require 'smartsheet/endpoints/folders/folders'
+require 'smartsheet/endpoints/groups/groups'
 
 module Smartsheet
   class SmartsheetClient
-    attr_reader :sheets, :server_info, :contacts, :search, :folders
+    attr_reader :sheets, :server_info, :contacts, :search, :folders, :groups
 
     def initialize(token)
       @net_client = API::NetClient.new(token)
@@ -20,6 +21,7 @@ module Smartsheet
       @contacts = Contacts.new(@net_client)
       @search = Search.new(@net_client)
       @folders = Folders.new(@net_client)
+      @groups = Groups.new(@net_client)
     end
   end
 end
