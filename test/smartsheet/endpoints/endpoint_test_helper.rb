@@ -68,7 +68,7 @@ module Smartsheet
       end
 
       def define_valid_file(endpoint)
-        define_method "test_#{endpoint[:symbol]}_valid_body" do
+        define_method "test_#{endpoint[:symbol]}_valid_file" do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:args].key?(:filename), endpoint_spec.sending_file?)
           end
