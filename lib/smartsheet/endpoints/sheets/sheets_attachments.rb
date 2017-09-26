@@ -48,7 +48,7 @@ module Smartsheet
     end
 
     def attach_file(sheet_id:, filename:, content_type: '', header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['sheets', :sheet_id, 'attachments'], file_upload: true)
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['sheets', :sheet_id, 'attachments'], body_type: :file)
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           filename: filename,

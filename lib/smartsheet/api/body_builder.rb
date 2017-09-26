@@ -12,7 +12,7 @@ module Smartsheet
       def build
         if endpoint_spec.sending_json?
           json_body
-        elsif endpoint_spec.file_upload?
+        elsif endpoint_spec.sending_file?
           file_body
         else
           request_spec.body
