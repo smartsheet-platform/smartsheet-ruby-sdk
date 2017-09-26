@@ -46,5 +46,16 @@ module Smartsheet
       )
       client.make_request(endpoint_spec, request_spec)
     end
+
+    def attach_file(sheet_id:, filename:, content_type: '', header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['sheets', :sheet_id, 'attachments', :attachment_id], file_upload: true)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          header_overrides: header_overrides,
+          filename: filename,
+          content_type: content_type,
+          sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
   end
 end

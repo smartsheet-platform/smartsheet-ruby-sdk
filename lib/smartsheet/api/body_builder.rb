@@ -8,6 +8,8 @@ module Smartsheet
       end
 
       def build
+        endpoint_spec.file_upload? ?
+            file_body :
             simple_body
       end
 
@@ -17,6 +19,10 @@ module Smartsheet
 
       def simple_body
         request_spec.body if request_spec.body
+      end
+      
+      def file_body
+        Faraday::UploadIO.new(request_spec.filename, request_spec.content_type)
       end
     end
   end

@@ -25,6 +25,10 @@ module Smartsheet
         spec.key? :body_type
       end
 
+      def file_upload?
+        spec[:file_upload] == true
+      end
+
       def sending_json?
         requires_body? && spec[:body_type] == :json
       end
