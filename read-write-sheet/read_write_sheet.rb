@@ -21,7 +21,7 @@ def column_map(sheet)
 end
 
 def get_cell_by_column(row, column_id)
-  row.cells.find { |cell| cell.columnId == column_id}
+  row.cells.find {|cell| cell.columnId == column_id}
 end
 
 def get_cell_by_column_name(row, column_name, column_map)

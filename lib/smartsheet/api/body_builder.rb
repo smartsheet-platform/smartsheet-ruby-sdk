@@ -10,7 +10,10 @@ module Smartsheet
       end
 
       def build
-        json_body if endpoint_spec.sending_json?
+        body = request_spec.body
+        body = json_body if endpoint_spec.sending_json?
+
+        body
       end
 
       private
@@ -18,9 +21,7 @@ module Smartsheet
       attr_accessor :endpoint_spec, :request_spec
 
       def json_body
-        if request_spec.body.nil?
-          return nil
-        end
+        return nil if request_spec.body.nil?
 
         request_spec.body.is_a?(String) ?
             request_spec.body :
