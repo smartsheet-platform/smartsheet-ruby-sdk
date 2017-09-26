@@ -4,7 +4,7 @@ module Smartsheet
   module API
     class EndpointSpec
       VALID_METHODS = %i[get put post delete].freeze
-      VALID_SPEC_KEYS = %i[headers body_type file_upload].freeze
+      VALID_SPEC_KEYS = %i[headers body_type].freeze
 
       attr_reader :method, :url_segments
 
