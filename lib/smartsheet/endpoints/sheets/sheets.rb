@@ -212,5 +212,43 @@ module Smartsheet
       )
       client.make_request(endpoint_spec, request_spec)
     end
+
+    def list_for_org(params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get,['users', 'sheets'])
+      request_spec = Smartsheet::API::RequestSpec.new(
+          header_overrides: header_overrides,
+          params: params
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def get_publish_status(sheet_id:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get,['sheets', :sheet_id, 'publish'])
+      request_spec = Smartsheet::API::RequestSpec.new(
+          header_overrides: header_overrides,
+          sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def set_publish_status(sheet_id:, body:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:put,['sheets', :sheet_id, 'publish'], body_type: :json)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          header_overrides: header_overrides,
+          body: body,
+          sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def send_via_email(sheet_id:, body:, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post,['sheets', :sheet_id, 'emails'], body_type: :json)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          header_overrides: header_overrides,
+          body: body,
+          sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
   end
 end

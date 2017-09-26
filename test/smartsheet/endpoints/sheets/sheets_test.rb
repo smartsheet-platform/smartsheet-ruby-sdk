@@ -112,7 +112,35 @@ class SheetTest < Minitest::Test
             method: :delete,
             url: ['sheets', :sheet_id],
             args: {sheet_id: 123}
-        }
+        },
+        {
+            symbol: :list_for_org,
+            method: :get,
+            url: ['users', 'sheets'],
+            args: {},
+            has_params: true
+        },
+        {
+            symbol: :get_publish_status,
+            method: :get,
+            url: ['sheets', :sheet_id, 'publish'],
+            args: {sheet_id: 123},
+            has_params: false
+        },
+        {
+            symbol: :set_publish_status,
+            method: :put,
+            url: ['sheets', :sheet_id, 'publish'],
+            args: {sheet_id: 123, body: {}},
+            has_params: false
+        },
+        {
+            symbol: :send_via_email,
+            method: :post,
+            url: ['sheets', :sheet_id, 'emails'],
+            args: {sheet_id: 123, body: {}},
+            has_params: false
+        },
     ]
   end
 
