@@ -1,14 +1,22 @@
-require_relative 'api/endpoint_spec'
-require_relative 'api/request_spec'
+require 'smartsheet/api/endpoint_spec'
+require 'smartsheet/api/request_spec'
+require 'smartsheet/endpoints/sheets/discussions'
+require 'smartsheet/endpoints/sheets/comments'
+require 'smartsheet/endpoints/sheets/columns'
+require 'smartsheet/endpoints/sheets/rows'
 
 module Smartsheet
   # Sheet resource endpoints
   class Sheets
-    attr_reader :client
+    attr_reader :client, :discussions, :comments, :columns, :rows
     private :client
 
     def initialize(client)
       @client = client
+      @discussions = Discussions.new(client)
+      @comments = Comments.new(client)
+      @columns = Columns.new(client)
+      @rows = Rows.new(client)
     end
 
     def list(params: {}, header_overrides: {})
