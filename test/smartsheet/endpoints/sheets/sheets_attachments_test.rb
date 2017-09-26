@@ -25,7 +25,7 @@ class SheetAttachmentTest < Minitest::Test
             symbol: :get_attachment,
             method: :get,
             url: ['sheets', :sheet_id, 'attachments', :attachment_id],
-            args: {sheet_id: 123, attachment_id: 123},
+            args: {sheet_id: 123, attachment_id: 234},
             has_params: false,
             headers: nil
         },
@@ -41,7 +41,15 @@ class SheetAttachmentTest < Minitest::Test
             symbol: :delete,
             method: :delete,
             url: ['sheets', :sheet_id, 'attachments', :attachment_id],
-            args: {sheet_id: 123, attachment_id: 123},
+            args: {sheet_id: 123, attachment_id: 234},
+            has_params: false,
+            headers: nil
+        },
+        {
+            symbol: :attach_file,
+            method: :post,
+            url: ['sheets', :sheet_id, 'attachments'],
+            args: {sheet_id: 123, filename: 'file', content_type: 'content_type'},
             has_params: false,
             headers: nil
         },
