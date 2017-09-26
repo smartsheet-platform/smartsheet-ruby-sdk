@@ -4,7 +4,7 @@ require 'smartsheet/endpoints/sheets/discussions'
 require 'smartsheet/endpoints/sheets/comments'
 require 'smartsheet/endpoints/sheets/columns'
 require 'smartsheet/endpoints/sheets/rows'
-require 'smartsheet/endpoints/sheets/attachments'
+require 'smartsheet/endpoints/sheets/sheets_attachments'
 
 module Smartsheet
   # Sheet resource endpoints
