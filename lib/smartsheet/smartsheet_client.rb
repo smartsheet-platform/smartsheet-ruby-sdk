@@ -9,10 +9,11 @@ require 'smartsheet/endpoints/search/search'
 require 'smartsheet/endpoints/folders/folders'
 require 'smartsheet/endpoints/groups/groups'
 require 'smartsheet/endpoints/home/home'
+require 'smartsheet/endpoints/reports/reports'
 
 module Smartsheet
   class SmartsheetClient
-    attr_reader :sheets, :server_info, :contacts, :search, :folders, :groups, :home
+    attr_reader :sheets, :server_info, :contacts, :search, :folders, :groups, :home, :reports
 
     def initialize(token)
       @net_client = API::NetClient.new(token)
@@ -24,6 +25,7 @@ module Smartsheet
       @folders = Folders.new(@net_client)
       @groups = Groups.new(@net_client)
       @home = Home.new(@net_client)
+      @reports = Reports.new(@net_client)
     end
   end
 end
