@@ -17,7 +17,6 @@ describe Smartsheet::API::NetClient do
     conn.stubs(:get).yields(@request).returns @response
     conn.expects(:use).with(Smartsheet::API::Middleware::ErrorTranslator)
     conn.expects(:use).with(Smartsheet::API::Middleware::ResponseParser)
-    conn.stubs(:request)
     faraday_adapter = Faraday.default_adapter
     Faraday.stubs(:default_adapter).returns(faraday_adapter)
     conn.expects(:adapter).with(faraday_adapter)

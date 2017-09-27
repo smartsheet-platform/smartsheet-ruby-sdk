@@ -9,9 +9,8 @@ describe Smartsheet::API::HeaderBuilder do
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
         Smartsheet::API::RequestSpec.new)
-                  .build()
+                  .build
 
-    headers.wont_be_nil
     headers.must_be_kind_of Hash
     headers[:Accept].must_equal 'application/json'
     headers[:Authorization].must_equal 'Bearer ' + TOKEN
@@ -23,9 +22,8 @@ describe Smartsheet::API::HeaderBuilder do
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :json),
         Smartsheet::API::RequestSpec.new(body: {}))
-                  .build()
+                  .build
 
-    headers.wont_be_nil
     headers.must_be_kind_of Hash
     headers[:'Content-Type'].must_equal 'application/json'
   end
@@ -35,12 +33,47 @@ describe Smartsheet::API::HeaderBuilder do
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
         Smartsheet::API::RequestSpec.new(header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}))
-                  .build()
+                  .build
 
-    headers.wont_be_nil
     headers.must_be_kind_of Hash
     headers[:SomeOverride].must_equal 'someValue'
     headers[:Authorization].must_equal 'someAuth'
     headers[:Accept].must_equal 'application/json'
+  end
+
+  it 'applies user defined content_type for uploads' do
+    File.stubs(:size).returns(10)
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
+        Smartsheet::API::RequestSpec.new(content_type: 'someContentType'))
+                  .build
+
+    headers.must_be_kind_of Hash
+    headers[:'Content-Type'].must_equal 'someContentType'
+  end
+
+  it 'applies content length correctly for uploads' do
+    File.stubs(:size).returns(10)
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
+        Smartsheet::API::RequestSpec.new)
+                  .build
+
+    headers.must_be_kind_of Hash
+    headers[:'Content-Length'].must_equal '10'
+  end
+
+  it 'applies content disposition correctly for uploads' do
+    File.stubs(:size).returns(10)
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
+        Smartsheet::API::RequestSpec.new(filename: 'someFile'))
+                  .build
+
+    headers.must_be_kind_of Hash
+    headers[:'Content-Disposition'].must_equal 'attachment; filename="someFile"'
   end
 end
