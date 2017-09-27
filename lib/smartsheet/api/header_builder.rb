@@ -10,9 +10,11 @@ module Smartsheet
 
       def build
         base_headers
-          .merge(endpoint_headers)
-          .merge(content_type)
-          .merge(request_headers)
+            .merge(endpoint_headers)
+            .merge(content_type)
+            .merge(content_disposition)
+            .merge(content_length)
+            .merge(request_headers)
       end
 
       private
@@ -22,9 +24,9 @@ module Smartsheet
 
       def base_headers
         {
-          :Accept => 'application/json',
-          :Authorization => "Bearer #{token}",
-          :'User-Agent' => 'smartsheet-ruby-sdk'
+            Accept: 'application/json',
+            Authorization: "Bearer #{token}",
+            'User-Agent': 'smartsheet-ruby-sdk'
         }
       end
 
@@ -34,7 +36,25 @@ module Smartsheet
 
       def content_type
         if endpoint_spec.sending_json? && request_spec.body
-          { :'Content-Type' => 'application/json' }
+          {'Content-Type': 'application/json'}
+        elsif endpoint_spec.sending_file?
+          {'Content-Type': request_spec.content_type}
+        else
+          {}
+        end
+      end
+
+      def content_disposition
+        if endpoint_spec.sending_file?
+          {'Content-Disposition': "attachment; filename=\"#{request_spec.filename}\""}
+        else
+          {}
+        end
+      end
+
+      def content_length
+        if endpoint_spec.sending_file?
+          {'Content-Length': File.size(request_spec.filename).to_s}
         else
           {}
         end
