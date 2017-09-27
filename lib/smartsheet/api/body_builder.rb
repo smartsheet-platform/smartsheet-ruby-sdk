@@ -10,10 +10,13 @@ module Smartsheet
       end
 
       def build
-        body = request_spec.body
-        body = json_body if endpoint_spec.sending_json?
-
-        body
+        if endpoint_spec.sending_json?
+          json_body
+        elsif endpoint_spec.sending_file?
+          file_body
+        else
+          request_spec.body
+        end
       end
 
       private
@@ -26,6 +29,10 @@ module Smartsheet
         request_spec.body.is_a?(String) ?
             request_spec.body :
             request_spec.body.to_json
+      end
+      
+      def file_body
+        { file: Faraday::UploadIO.new(File.open(request_spec.filename), request_spec.content_type, request_spec.filename) }
       end
     end
   end

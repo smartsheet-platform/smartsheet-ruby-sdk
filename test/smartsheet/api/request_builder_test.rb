@@ -3,8 +3,6 @@ require 'smartsheet/api/header_builder'
 require 'faraday'
 
 describe Smartsheet::API::RequestBuilder do
-  TOKEN = '0123456789'
-
   before do
     @request = OpenStruct.new
     @request.stubs(:url)

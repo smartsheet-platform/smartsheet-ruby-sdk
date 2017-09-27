@@ -5,19 +5,19 @@ require 'faraday'
 require 'ostruct'
 
 describe Smartsheet::API::NetClient do
-  TOKEN = '0123456789'.freeze
-
   before do
     @request = Faraday::Request.new
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'])
     @request_spec = Smartsheet::API::RequestSpec.new
 
     @response = mock
+    @response.stubs(:body).returns Smartsheet::API::Response.from_result({})
 
     conn = mock
     conn.stubs(:get).yields(@request).returns @response
     conn.expects(:use).with(Smartsheet::API::Middleware::ErrorTranslator)
     conn.expects(:use).with(Smartsheet::API::Middleware::ResponseParser)
+    conn.stubs(:request)
     faraday_adapter = Faraday.default_adapter
     Faraday.stubs(:default_adapter).returns(faraday_adapter)
     conn.expects(:adapter).with(faraday_adapter)
@@ -28,24 +28,7 @@ describe Smartsheet::API::NetClient do
     @stub_request_builder.stubs(:apply)
   end
 
-  def given_response(result)
-    @response.stubs(:body).returns Smartsheet::API::Response.from_result(result)
-  end
-
-  def given_successful_response
-    given_response({})
-  end
-
-  def given_failed_response
-    given_response OpenStruct.new(errorCode: 1001)
-  end
-
-  def given_retryable_response
-    given_response OpenStruct.new(errorCode: 4002)
-  end
-
   it 'sets token' do
-    given_successful_response
     Smartsheet::API::RequestBuilder
       .expects(:new)
       .returns(@stub_request_builder)
@@ -57,7 +40,6 @@ describe Smartsheet::API::NetClient do
   end
 
   it 'sets endpoint spec' do
-    given_successful_response
     Smartsheet::API::RequestBuilder
       .expects(:new)
       .returns(@stub_request_builder)
@@ -69,7 +51,6 @@ describe Smartsheet::API::NetClient do
   end
 
   it 'sets request spec' do
-    given_successful_response
     Smartsheet::API::RequestBuilder
       .expects(:new)
       .returns(@stub_request_builder)
@@ -81,7 +62,6 @@ describe Smartsheet::API::NetClient do
   end
 
   it 'sets request' do
-    given_successful_response
     Smartsheet::API::RequestBuilder
       .expects(:new)
       .returns(@stub_request_builder)
@@ -91,24 +71,4 @@ describe Smartsheet::API::NetClient do
 
     @client.make_request(@endpoint_spec, @request_spec)
   end
-
-  it 'does not retry when a non-retryable failure occurs' do
-    given_failed_response
-    Smartsheet::API::RequestBuilder
-      .expects(:new)
-      .returns(@stub_request_builder)
-
-    @client.make_request(@endpoint_spec, @request_spec)
-  end
-
-  # TODO: Use timecop to make this run quickly (currently takes > 8s)
-  # it 'retries when a retryable failure occurs' do
-  #   given_retryable_response
-  #   Smartsheet::API::RequestBuilder
-  #     .expects(:new)
-  #     .at_least(2)
-  #     .returns(@stub_request_builder)
-  #
-  #   @client.make_request(@endpoint_spec, @request_spec)
-  # end
 end

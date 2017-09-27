@@ -1,4 +1,5 @@
 require 'smartsheet/api/net_client'
+require 'smartsheet/api/retrying_net_client'
 require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'
 
@@ -24,22 +25,24 @@ module Smartsheet
     attr_reader :update_requests, :users, :webhooks, :workspaces
 
     def initialize(token)
-      @net_client = API::NetClient.new(token)
+      net_client = API::NetClient.new(token)
+      retry_logic = API::RetryLogic.new
+      retrying_client = API::RetryingNetClient.new(net_client, retry_logic)
 
-      @contacts = Contacts.new(@net_client)
-      @folders = Folders.new(@net_client)
-      @groups = Groups.new(@net_client)
-      @home = Home.new(@net_client)
-      @reports = Reports.new(@net_client)
-      @search = Search.new(@net_client)
-      @server_info = ServerInfo.new(@net_client)
-      @sheets = Sheets.new(@net_client)
-      @sights = Sights.new(@net_client)
-      @templates = Templates.new(@net_client)
-      @update_requests = UpdateRequests.new(@net_client)
-      @users = Users.new(@net_client)
-      @webhooks = Webhooks.new(@net_client)
-      @workspaces = Workspaces.new(@net_client)
+      @contacts = Contacts.new(retrying_client)
+      @folders = Folders.new(retrying_client)
+      @groups = Groups.new(retrying_client)
+      @home = Home.new(retrying_client)
+      @reports = Reports.new(retrying_client)
+      @search = Search.new(retrying_client)
+      @server_info = ServerInfo.new(retrying_client)
+      @sheets = Sheets.new(retrying_client)
+      @sights = Sights.new(retrying_client)
+      @templates = Templates.new(retrying_client)
+      @update_requests = UpdateRequests.new(retrying_client)
+      @users = Users.new(retrying_client)
+      @webhooks = Webhooks.new(retrying_client)
+      @workspaces = Workspaces.new(retrying_client)
     end
   end
 end

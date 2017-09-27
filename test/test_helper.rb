@@ -6,3 +6,15 @@ require 'smartsheet/smartsheet_client'
 
 require 'minitest/autorun'
 require 'mocha/mini_test'
+
+TOKEN = '0123456789'.freeze
+
+module Smartsheet
+  module Test
+    def stub_sleep(obj)
+      obj.stubs(:sleep).with do |time|
+        Timecop.travel(Time.now + time)
+      end
+    end
+  end
+end

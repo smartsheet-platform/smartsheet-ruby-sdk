@@ -9,7 +9,7 @@ module Smartsheet
           @mock_client = mock
           @mock_client.stubs(:token).returns('a_token')
 
-          Smartsheet::API::NetClient.stubs(:new).returns(@mock_client)
+          Smartsheet::API::RetryingNetClient.stubs(:new).returns(@mock_client)
 
           @smartsheet_client = Smartsheet::SmartsheetClient.new('a_token')
         end
@@ -25,6 +25,7 @@ module Smartsheet
         define_endpoint_spec_is_valid(endpoint)
         define_accepts_header_overrides(endpoint)
         define_valid_body(endpoint)
+        define_valid_file(endpoint)
         define_valid_headers(endpoint) unless endpoint[:headers].nil?
         define_valid_url(endpoint)
 
@@ -59,7 +60,17 @@ module Smartsheet
       def define_valid_body(endpoint)
         define_method "test_#{endpoint[:symbol]}_valid_body" do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
-            assert_equal(endpoint[:args].key?(:body), endpoint_spec.requires_body?)
+            assert_equal(endpoint[:args].key?(:body), (endpoint_spec.requires_body?() && !endpoint_spec.sending_file?()))
+          end
+
+          category.send(endpoint[:symbol], **endpoint[:args])
+        end
+      end
+
+      def define_valid_file(endpoint)
+        define_method "test_#{endpoint[:symbol]}_valid_file" do
+          @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
+            assert_equal(endpoint[:args].key?(:filename), endpoint_spec.sending_file?)
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])

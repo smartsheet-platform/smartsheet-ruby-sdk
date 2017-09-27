@@ -4,11 +4,12 @@ require 'smartsheet/endpoints/sheets/discussions'
 require 'smartsheet/endpoints/sheets/comments'
 require 'smartsheet/endpoints/sheets/columns'
 require 'smartsheet/endpoints/sheets/rows'
+require 'smartsheet/endpoints/sheets/sheets_attachments'
 
 module Smartsheet
   # Sheet resource endpoints
   class Sheets
-    attr_reader :client, :discussions, :comments, :columns, :rows
+    attr_reader :client, :discussions, :comments, :columns, :rows, :attachments
     private :client
 
     def initialize(client)
@@ -17,6 +18,7 @@ module Smartsheet
       @comments = Comments.new(client)
       @columns = Columns.new(client)
       @rows = Rows.new(client)
+      @attachments = SheetsAttachments.new(client)
     end
 
     def list(params: {}, header_overrides: {})

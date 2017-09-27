@@ -21,6 +21,15 @@ class DiscussionsTest < Minitest::Test
             has_params: false,
             headers: nil
         },
+        # TODO: Write this!
+        # {
+        #     symbol: :create_on_row_with_attachment,
+        #     method: :post,
+        #     url: ['sheets', :sheet_id, 'rows', :row_id, 'discussions'],
+        #     args: {sheet_id: 123, row_id: 234, body: {}},
+        #     has_params: false,
+        #     headers: nil
+        # },
         {
             symbol: :create_on_sheet,
             method: :post,
@@ -29,6 +38,15 @@ class DiscussionsTest < Minitest::Test
             has_params: false,
             headers: nil
         },
+        # TODO: Write this!
+        # {
+        #     symbol: :create_on_sheet_with_attachment,
+        #     method: :post,
+        #     url: ['sheets', :sheet_id, 'discussions'],
+        #     args: {sheet_id: 123, body: {}},
+        #     has_params: false,
+        #     headers: nil
+        # },
         {
             symbol: :delete,
             method: :delete,
