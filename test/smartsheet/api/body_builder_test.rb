@@ -76,7 +76,6 @@ describe Smartsheet::API::BodyBuilder do
     given_file_body
     body = when_body_is_built
 
-    body.must_be_kind_of Hash
-    body[:file].must_be_kind_of Faraday::UploadIO
+    body.must_be_kind_of Faraday::UploadIO
   end
 end

@@ -54,7 +54,7 @@ module Smartsheet
 
       def content_length
         if endpoint_spec.sending_file?
-          {'Content-Length': File.size?(request_spec.filename).to_s}
+          {'Content-Length': File.size(request_spec.filename).to_s}
         else
           {}
         end
