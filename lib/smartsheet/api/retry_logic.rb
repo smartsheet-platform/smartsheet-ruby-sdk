@@ -10,25 +10,27 @@ module Smartsheet
         @backoff_method = backoff_method
       end
 
-      def run(finish_pred, &method_to_run)
+      def run(should_retry, &method_to_run)
         end_time = Time.now.to_i + max_retry_time
 
-        _run(method_to_run, finish_pred, end_time, 0)
+        _run(method_to_run, should_retry, end_time, 0)
       end
 
       private
 
       attr_reader :backoff_method, :max_retry_time
 
-      def _run(method_to_run, finish_pred, end_time, iteration)
+      def _run(method_to_run, should_retry, end_time, iteration)
         result = method_to_run.call
 
-        return result if finish_pred.call(result) || Time.now.to_i + backoff_method.call(iteration) >= end_time
+        backoff = backoff_method.call(iteration)
 
-        sleep backoff_method.call(iteration)
+        return result unless should_retry.call(result) && Time.now.to_i + backoff < end_time
+
+        sleep backoff
 
         iteration += 1
-        _run(method_to_run, finish_pred, end_time, iteration)
+        _run(method_to_run, should_retry, end_time, iteration)
       end
     end
   end

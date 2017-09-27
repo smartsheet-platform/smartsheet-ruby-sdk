@@ -1,7 +1,7 @@
 module Smartsheet
   module API
     class RetryingNetClient
-      RETRY_CHECK = ->(response) { !response.should_retry? }
+      RETRY_CHECK = ->(response) { response.should_retry? }
 
       def initialize(client, retrier = nil)
         @client = client

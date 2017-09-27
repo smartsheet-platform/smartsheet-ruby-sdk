@@ -5,8 +5,8 @@ require 'timecop'
 describe Smartsheet::API::RetryLogic do
   include Smartsheet::Test
 
-  ALWAYS_RETRY = proc { false }
-  NEVER_RETRY = proc { true }
+  ALWAYS_RETRY = proc { true }
+  NEVER_RETRY = proc { false }
 
   before do
     Timecop.freeze
@@ -109,7 +109,7 @@ describe Smartsheet::API::RetryLogic do
     stub_sleep(retry_logic)
 
     attempt_count = 0
-    retry_logic.run(proc { |attempt| attempt >= 2 }) do
+    retry_logic.run(proc { |attempt| attempt < 2 }) do
       attempt_count += 1
       attempt_count
     end
