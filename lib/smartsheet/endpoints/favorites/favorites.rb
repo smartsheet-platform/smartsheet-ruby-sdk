@@ -136,7 +136,7 @@ module Smartsheet
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['favorites'] + url)
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
-          params: {objectIds: object_ids}
+          params: {objectIds: object_ids.join(',')}
       )
       client.make_request(endpoint_spec, request_spec)
     end
