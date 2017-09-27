@@ -2,19 +2,19 @@ require 'smartsheet/endpoints/share/share'
 
 module Smartsheet
   class WorkspacesShare
-    attr_reader :client, :url
-    private :client, :url
+    attr_reader :client
+    private :client
+
+    URL = ['workspaces', :workspace_id].freeze
 
     def initialize(client)
       @client = client
-
-      @url = ['workspaces', :workspace_id]
     end
 
     def delete(workspace_id:, share_id:, header_overrides: {})
       delete_share(
           share_id: share_id,
-          url: url,
+          url: URL,
           header_overrides: header_overrides,
           workspace_id: workspace_id
       )
@@ -23,7 +23,7 @@ module Smartsheet
     def get(workspace_id:, share_id:, header_overrides: {})
       get_share(
           share_id: share_id,
-          url: url,
+          url: URL,
           header_overrides: header_overrides,
           workspace_id: workspace_id
       )
@@ -31,7 +31,7 @@ module Smartsheet
 
     def list(workspace_id:, params: {}, header_overrides: {})
       list_share(
-          url: url,
+          url: URL,
           header_overrides: header_overrides,
           params: params,
           workspace_id: workspace_id
@@ -40,7 +40,7 @@ module Smartsheet
 
     def create(workspace_id:, body:, params: {}, header_overrides: {})
       create_share(
-          url: url,
+          url: URL,
           header_overrides: header_overrides,
           params: params,
           body: body,
@@ -51,7 +51,7 @@ module Smartsheet
     def update(workspace_id:, share_id:, body:, header_overrides: {})
       update_share(
           share_id: share_id,
-          url: url,
+          url: URL,
           header_overrides: header_overrides,
           body: body,
           workspace_id: workspace_id
