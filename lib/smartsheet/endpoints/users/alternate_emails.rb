@@ -8,7 +8,11 @@ module Smartsheet
     end
 
     def add(user_id:, body:, header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['users', :user_id, 'alternateemails'], body_type: :json)
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['users', :user_id, 'alternateemails'],
+          body_type: :json
+      )
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           body: body,
@@ -18,7 +22,10 @@ module Smartsheet
     end
 
     def make_primary(user_id:, alternate_email_id:, header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['users', :user_id, 'alternateemails', :alternate_email_id, 'makeprimary'])
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['users', :user_id, 'alternateemails', :alternate_email_id, 'makeprimary']
+      )
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           alternate_email_id: alternate_email_id,
@@ -28,7 +35,10 @@ module Smartsheet
     end
 
     def delete(user_id:, alternate_email_id:, header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['users', :user_id, 'alternateemails', :alternate_email_id])
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :delete,
+          ['users', :user_id, 'alternateemails', :alternate_email_id]
+      )
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           alternate_email_id: alternate_email_id,
@@ -38,7 +48,10 @@ module Smartsheet
     end
 
     def get(user_id:, alternate_email_id:, header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['users', :user_id, 'alternateemails', :alternate_email_id])
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :get,
+          ['users', :user_id, 'alternateemails', :alternate_email_id]
+      )
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           alternate_email_id: alternate_email_id,
