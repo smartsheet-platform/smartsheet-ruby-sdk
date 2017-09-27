@@ -33,14 +33,10 @@ module Smartsheet
       end
 
       def content_type
-        content_type = nil
-
-        content_type = 'application/json' if endpoint_spec.sending_json? && request_spec.body
-
-        if content_type.nil?
-          {}
+        if endpoint_spec.sending_json? && request_spec.body
+          { :'Content-Type' => 'application/json' }
         else
-          { :'Content-Type' => content_type }
+          {}
         end
       end
 

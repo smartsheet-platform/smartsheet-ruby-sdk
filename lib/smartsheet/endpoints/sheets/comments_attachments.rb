@@ -8,7 +8,11 @@ module Smartsheet
     end
 
     def attach_url(sheet_id:, comment_id:, body:, header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['sheets', :sheet_id, 'comments', :comment_id, 'attachments'], body_type: :json)
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['sheets', :sheet_id, 'comments', :comment_id, 'attachments'],
+          body_type: :json
+      )
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           body: body,
@@ -19,7 +23,11 @@ module Smartsheet
     end
 
     def attach_file(sheet_id:, comment_id:, filename:, content_type: '', header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['sheets', :sheet_id, 'comments', :comment_id, 'attachments'], body_type: :file)
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['sheets', :sheet_id, 'comments', :comment_id, 'attachments'],
+          body_type: :file
+      )
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           filename: filename,
