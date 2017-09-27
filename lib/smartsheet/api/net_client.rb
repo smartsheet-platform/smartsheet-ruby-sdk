@@ -22,8 +22,6 @@ module Smartsheet
 
       def create_connection
         @conn = Faraday.new do |conn|
-          conn.request :multipart
-          conn.request :url_encoded
           conn.use API::Middleware::ErrorTranslator
           conn.use API::Middleware::ResponseParser
 
