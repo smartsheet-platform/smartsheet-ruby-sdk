@@ -13,12 +13,14 @@ require 'smartsheet/endpoints/reports/reports'
 require 'smartsheet/endpoints/sights/sights'
 require 'smartsheet/endpoints/templates/templates'
 require 'smartsheet/endpoints/update_requests/update_requests'
+require 'smartsheet/endpoints/users/users'
 
 
 module Smartsheet
   class SmartsheetClient
     attr_reader :sheets, :server_info, :contacts, :search, :folders
     attr_reader :groups, :home, :reports, :sights, :templates, :update_requests
+    attr_reader :users
 
     def initialize(token)
       @net_client = API::NetClient.new(token)
@@ -34,6 +36,7 @@ module Smartsheet
       @sights = Sights.new(@net_client)
       @templates = Templates.new(@net_client)
       @update_requests = UpdateRequests.new(@net_client)
+      @users = Users.new(@net_client)
     end
   end
 end
