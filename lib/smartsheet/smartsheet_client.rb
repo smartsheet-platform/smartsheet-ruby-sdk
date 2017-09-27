@@ -5,6 +5,7 @@ require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'
 
 require 'smartsheet/endpoints/contacts/contacts'
+require 'smartsheet/endpoints/favorites/favorites'
 require 'smartsheet/endpoints/folders/folders'
 require 'smartsheet/endpoints/groups/groups'
 require 'smartsheet/endpoints/home/home'
@@ -22,8 +23,8 @@ require 'smartsheet/endpoints/workspaces/workspaces'
 
 module Smartsheet
   class SmartsheetClient
-    attr_reader :contacts, :folders, :groups, :home, :reports, :search, :server_info, :sheets, :sights, :templates
-    attr_reader :update_requests, :users, :webhooks, :workspaces
+    attr_reader :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info, :sheets, :sights
+    attr_reader :templates, :update_requests, :users, :webhooks, :workspaces
 
     def initialize(token)
       net_client = API::NetClient.new(token)
@@ -31,6 +32,7 @@ module Smartsheet
       retrying_client = API::RetryingNetClient.new(net_client, retry_logic)
 
       @contacts = Contacts.new(retrying_client)
+      @favorites = Favorites.new(retrying_client)
       @folders = Folders.new(retrying_client)
       @groups = Groups.new(retrying_client)
       @home = Home.new(retrying_client)
