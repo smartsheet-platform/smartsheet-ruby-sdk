@@ -4,8 +4,6 @@ require 'smartsheet/api/endpoint_spec'
 require 'smartsheet/api/request_spec'
 
 describe Smartsheet::API::HeaderBuilder do
-  TOKEN = '0123456789'
-
   it 'applies defaults' do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,

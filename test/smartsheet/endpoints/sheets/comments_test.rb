@@ -21,6 +21,15 @@ class CommentsTest < Minitest::Test
             has_params: false,
             headers: nil
         },
+        # TODO: Add this!
+        # {
+        #     symbol: :add_with_file,
+        #     method: :post,
+        #     url: ['sheets', :sheet_id, 'rows', :row_id, 'discussions'],
+        #     args: {sheet_id: 123, row_id: 234, body: {}},
+        #     has_params: false,
+        #     headers: nil
+        # },
         {
             symbol: :update,
             method: :put,

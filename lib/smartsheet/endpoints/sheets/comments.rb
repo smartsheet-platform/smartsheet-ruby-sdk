@@ -1,10 +1,14 @@
+require 'smartsheet/endpoints/sheets/comments_attachments'
+
 module Smartsheet
   class Comments
-    attr_reader :client
+    attr_reader :client, :attachments
     private :client
 
     def initialize(client)
       @client = client
+
+      @attachments = CommentsAttachments.new(client)
     end
 
     def add(sheet_id:, discussion_id:, body:, header_overrides: {})

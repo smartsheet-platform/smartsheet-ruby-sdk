@@ -29,10 +29,13 @@ module Smartsheet
       end
 
       def create_connection
-        @conn = Faraday.new do |faraday|
-          faraday.use API::Middleware::ErrorTranslator
-          faraday.use API::Middleware::ResponseParser
-          faraday.adapter Faraday.default_adapter
+        @conn = Faraday.new do |conn|
+          conn.request :multipart
+          conn.request :url_encoded
+          conn.use API::Middleware::ErrorTranslator
+          conn.use API::Middleware::ResponseParser
+
+          conn.adapter Faraday.default_adapter
         end
       end
 

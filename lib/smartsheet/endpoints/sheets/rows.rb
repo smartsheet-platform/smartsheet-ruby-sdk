@@ -1,10 +1,14 @@
+require 'smartsheet/endpoints/sheets/rows_attachments'
+
 module Smartsheet
   class Rows
-    attr_reader :client
+    attr_reader :client, :attachments
     private :client
 
     def initialize(client)
       @client = client
+
+      @attachments = RowsAttachments.new(client)
     end
 
     def add(sheet_id:, body:, params: {}, header_overrides: {})

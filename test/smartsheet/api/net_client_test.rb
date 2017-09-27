@@ -5,8 +5,6 @@ require 'faraday'
 require 'ostruct'
 
 describe Smartsheet::API::NetClient do
-  TOKEN = '0123456789'.freeze
-
   before do
     @request = Faraday::Request.new
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'])
@@ -18,6 +16,7 @@ describe Smartsheet::API::NetClient do
     conn.stubs(:get).yields(@request).returns @response
     conn.expects(:use).with(Smartsheet::API::Middleware::ErrorTranslator)
     conn.expects(:use).with(Smartsheet::API::Middleware::ResponseParser)
+    conn.stubs(:request)
     faraday_adapter = Faraday.default_adapter
     Faraday.stubs(:default_adapter).returns(faraday_adapter)
     conn.expects(:adapter).with(faraday_adapter)
