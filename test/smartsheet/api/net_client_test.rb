@@ -5,6 +5,8 @@ require 'faraday'
 require 'ostruct'
 
 describe Smartsheet::API::NetClient do
+  include Smartsheet::Test
+
   TOKEN = '0123456789'.freeze
 
   before do
@@ -88,25 +90,6 @@ describe Smartsheet::API::NetClient do
       .with do |_token, _endpoint_spec, _request_spec, req|
       req.must_equal @request
     end
-
-    @client.make_request(@endpoint_spec, @request_spec)
-  end
-
-  it 'does not retry when a non-retryable failure occurs' do
-    given_failed_response
-    Smartsheet::API::RequestBuilder
-      .expects(:new)
-      .returns(@stub_request_builder)
-
-    @client.make_request(@endpoint_spec, @request_spec)
-  end
-
-  it 'retries when a retryable failure occurs' do
-    given_retryable_response
-    Smartsheet::API::RequestBuilder
-      .expects(:new)
-      .at_least(2)
-      .returns(@stub_request_builder)
 
     @client.make_request(@endpoint_spec, @request_spec)
   end
