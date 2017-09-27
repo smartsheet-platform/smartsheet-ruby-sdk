@@ -1,10 +1,14 @@
+require_relative 'workspaces_share'
+
 module Smartsheet
   class Workspaces
-    attr_reader :client
+    attr_reader :client, :share
     private :client
 
     def initialize(client)
       @client = client
+
+      @share = WorkspacesShare.new(client)
     end
 
     def copy(workspace_id:, body:, params: {}, header_overrides: {})

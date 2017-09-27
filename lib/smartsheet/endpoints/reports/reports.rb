@@ -1,10 +1,15 @@
+require_relative 'reports_share'
+
 module Smartsheet
   class Reports
-    attr_reader :client
+
+    attr_reader :client, :share
     private :client
 
     def initialize(client)
       @client = client
+
+      @share = ReportsShare.new(client)
     end
 
     def get(report_id:, params: {}, header_overrides: {})

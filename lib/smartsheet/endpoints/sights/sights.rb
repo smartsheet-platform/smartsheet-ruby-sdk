@@ -1,10 +1,14 @@
+require_relative 'sights_share'
+
 module Smartsheet
   class Sights
-    attr_reader :client
+    attr_reader :client, :share
     private :client
 
     def initialize(client)
       @client = client
+
+      @share = SightsShare.new(client)
     end
 
     def copy(sight_id:, body:, header_overrides: {})
