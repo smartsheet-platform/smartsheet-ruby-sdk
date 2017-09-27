@@ -3,6 +3,8 @@ require 'smartsheet/api/retry_logic'
 require 'timecop'
 
 describe Smartsheet::API::RetryLogic do
+  include Smartsheet::Test
+
   before do
     Timecop.freeze
   end
@@ -128,12 +130,4 @@ describe Smartsheet::API::RetryLogic do
 
     attempt_count.must_equal 2
   end
-
-  def stub_sleep(obj)
-    obj.stubs(:sleep).with do |time|
-      Timecop.travel(Time.now + time)
-    end
-  end
-
 end
-
