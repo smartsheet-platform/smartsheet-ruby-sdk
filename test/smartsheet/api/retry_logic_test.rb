@@ -5,6 +5,9 @@ require 'timecop'
 describe Smartsheet::API::RetryLogic do
   include Smartsheet::Test
 
+  ALWAYS_RETRY = proc { false }
+  NEVER_RETRY = proc { true }
+
   before do
     Timecop.freeze
   end
@@ -14,14 +17,12 @@ describe Smartsheet::API::RetryLogic do
   end
 
   it 'does not retry on success' do
-    retry_logic = Smartsheet::API::RetryLogic.new do
-      true
-    end
+    retry_logic = Smartsheet::API::RetryLogic.new
 
     stub_sleep(retry_logic)
 
     run_count = 0
-    retry_logic.run do
+    retry_logic.run(NEVER_RETRY) do
       run_count += 1
     end
 
@@ -29,14 +30,12 @@ describe Smartsheet::API::RetryLogic do
   end
 
   it 'result is returned on success' do
-    retry_logic = Smartsheet::API::RetryLogic.new do
-      true
-    end
+    retry_logic = Smartsheet::API::RetryLogic.new
 
     stub_sleep(retry_logic)
 
-    expected_result = {success: true}
-    result = retry_logic.run do
+    expected_result = { success: true }
+    result = retry_logic.run(NEVER_RETRY) do
       expected_result
     end
 
@@ -44,16 +43,13 @@ describe Smartsheet::API::RetryLogic do
   end
 
   it 'does not exceed time limit' do
-    retry_logic = Smartsheet::API::RetryLogic.new do
-      false
-    end
+    retry_logic = Smartsheet::API::RetryLogic.new
 
     stub_sleep(retry_logic)
 
     start_time = Time.now.to_i
 
-    retry_logic.run do
-
+    retry_logic.run(ALWAYS_RETRY) do
     end
 
     Time.now.to_i.must_be :<=, start_time + 15
@@ -61,14 +57,12 @@ describe Smartsheet::API::RetryLogic do
 
   it 'retries the correct number of times' do
     srand 1234
-    retry_logic = Smartsheet::API::RetryLogic.new do
-      false
-    end
+    retry_logic = Smartsheet::API::RetryLogic.new
 
     stub_sleep(retry_logic)
 
     run_count = 0
-    retry_logic.run do
+    retry_logic.run(ALWAYS_RETRY) do
       run_count += 1
     end
 
@@ -77,19 +71,17 @@ describe Smartsheet::API::RetryLogic do
 
   it 'uses user defined backoff' do
     backoff_called = false
-    backoff = Proc.new do |i|
+    backoff = proc do
       backoff_called = true
       1
     end
 
-    retry_logic = Smartsheet::API::RetryLogic.new(backoff_method: backoff) do
-      false
-    end
+    retry_logic = Smartsheet::API::RetryLogic.new(backoff_method: backoff)
 
     stub_sleep(retry_logic)
 
     run_count = 0
-    retry_logic.run do
+    retry_logic.run(ALWAYS_RETRY) do
       run_count += 1
     end
 
@@ -99,31 +91,25 @@ describe Smartsheet::API::RetryLogic do
 
   it 'does not exceed user defined time limit' do
     max_retry_time = 10
-    retry_logic = Smartsheet::API::RetryLogic.new(max_retry_time: max_retry_time) do
-      false
-    end
+    retry_logic = Smartsheet::API::RetryLogic.new(max_retry_time: max_retry_time)
 
     stub_sleep(retry_logic)
 
     start_time = Time.now.to_i
 
-    retry_logic.run do
-
+    retry_logic.run(ALWAYS_RETRY) do
     end
 
     Time.now.to_i.must_be :<=, start_time + max_retry_time
   end
 
   it 'returns if successful after retry' do
-    retry_logic = Smartsheet::API::RetryLogic.new do |attempt_count|
-      # fails until second attempt
-      attempt_count >= 2
-    end
+    retry_logic = Smartsheet::API::RetryLogic.new
 
     stub_sleep(retry_logic)
 
     attempt_count = 0
-    retry_logic.run do
+    retry_logic.run(proc { |attempt| attempt >= 2 }) do
       attempt_count += 1
       attempt_count
     end
