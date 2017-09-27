@@ -6,8 +6,6 @@ require 'timecop'
 describe Smartsheet::API::RetryingNetClient do
   include Smartsheet::Test
 
-  TOKEN = '0123456789'.freeze
-
   before do
     @response = mock
     @client = mock
