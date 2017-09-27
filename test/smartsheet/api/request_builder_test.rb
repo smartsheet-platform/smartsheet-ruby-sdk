@@ -9,9 +9,9 @@ describe Smartsheet::API::RequestBuilder do
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'])
 
     @some_url = 'some/url'
-    @some_header = {h: ''}
-    @some_body = {b: ''}
-    @some_params = {p: ''}
+    @some_header = { h: '' }
+    @some_body = { b: '' }
+    @some_params = { p: '' }
 
     mock_url_builder = mock
     mock_url_builder.stubs(:build).returns(@some_url)
@@ -22,7 +22,6 @@ describe Smartsheet::API::RequestBuilder do
     mock_body_builder = mock
     mock_body_builder.stubs(:build).returns(@some_body)
     Smartsheet::API::BodyBuilder.stubs(:new).returns(mock_body_builder)
-
   end
 
   it 'sets url' do
@@ -30,15 +29,15 @@ describe Smartsheet::API::RequestBuilder do
 
     @request.expects(:url).with(@some_url)
     Smartsheet::API::RequestBuilder
-        .new(TOKEN, @endpoint_spec, request_spec, @request)
-        .apply
+      .new(TOKEN, @endpoint_spec, request_spec)
+      .apply(@request)
   end
 
   it 'sets header' do
     request_spec = Smartsheet::API::RequestSpec.new
     Smartsheet::API::RequestBuilder
-        .new(TOKEN, @endpoint_spec, request_spec, @request)
-        .apply
+      .new(TOKEN, @endpoint_spec, request_spec)
+      .apply(@request)
 
     @request.headers.must_equal @some_header
   end
@@ -46,8 +45,8 @@ describe Smartsheet::API::RequestBuilder do
   it 'sets params' do
     request_spec = Smartsheet::API::RequestSpec.new(params: @some_params)
     Smartsheet::API::RequestBuilder
-        .new(TOKEN, @endpoint_spec, request_spec, @request)
-        .apply
+      .new(TOKEN, @endpoint_spec, request_spec)
+      .apply(@request)
 
     @request.params.must_equal @some_params
   end
@@ -55,8 +54,8 @@ describe Smartsheet::API::RequestBuilder do
   it 'sets body' do
     request_spec = Smartsheet::API::RequestSpec.new(body: @some_body)
     Smartsheet::API::RequestBuilder
-        .new(TOKEN, @endpoint_spec, request_spec, @request)
-        .apply
+      .new(TOKEN, @endpoint_spec, request_spec)
+      .apply(@request)
 
     @request.body.must_equal @some_body
   end

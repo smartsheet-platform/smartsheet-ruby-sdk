@@ -13,7 +13,7 @@ module Smartsheet
 
       def make_request(endpoint_spec, request_spec)
         response = conn.send(endpoint_spec.method) do |req|
-          RequestBuilder.new(token, endpoint_spec, request_spec, req).apply
+          RequestBuilder.new(token, endpoint_spec, request_spec).apply(req)
         end
         response.body
       end

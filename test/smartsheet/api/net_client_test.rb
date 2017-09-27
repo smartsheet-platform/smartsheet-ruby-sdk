@@ -31,7 +31,7 @@ describe Smartsheet::API::NetClient do
     Smartsheet::API::RequestBuilder
       .expects(:new)
       .returns(@stub_request_builder)
-      .with do |token, _endpoint_spec, _request_spec, _req|
+      .with do |token, _endpoint_spec, _request_spec|
       token.must_equal TOKEN
     end
 
@@ -42,7 +42,7 @@ describe Smartsheet::API::NetClient do
     Smartsheet::API::RequestBuilder
       .expects(:new)
       .returns(@stub_request_builder)
-      .with do |_token, endpoint_spec, _request_spec, _req|
+      .with do |_token, endpoint_spec, _request_spec|
       endpoint_spec.must_equal @endpoint_spec
     end
 
@@ -53,7 +53,7 @@ describe Smartsheet::API::NetClient do
     Smartsheet::API::RequestBuilder
       .expects(:new)
       .returns(@stub_request_builder)
-      .with do |_token, _endpoint_spec, request_spec, _req|
+      .with do |_token, _endpoint_spec, request_spec|
       request_spec.must_equal @request_spec
     end
 
@@ -64,9 +64,10 @@ describe Smartsheet::API::NetClient do
     Smartsheet::API::RequestBuilder
       .expects(:new)
       .returns(@stub_request_builder)
-      .with do |_token, _endpoint_spec, _request_spec, req|
-      req.must_equal @request
-    end
+
+    @stub_request_builder
+      .expects(:apply)
+      .with(@request)
 
     @client.make_request(@endpoint_spec, @request_spec)
   end
