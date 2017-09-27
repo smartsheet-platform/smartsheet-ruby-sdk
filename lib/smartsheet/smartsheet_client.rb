@@ -1,6 +1,6 @@
-require 'smartsheet/api/net_client'
+require 'smartsheet/api/faraday_net_client'
+require 'smartsheet/api/retrying_net_client_adapter'
 require 'smartsheet/api/retry_logic'
-require 'smartsheet/api/retrying_net_client'
 require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'
 
@@ -27,9 +27,9 @@ module Smartsheet
     attr_reader :templates, :update_requests, :users, :webhooks, :workspaces
 
     def initialize(token)
-      net_client = API::NetClient.new(token)
+      net_client = API::FaradayNetClient.new(token)
       retry_logic = API::RetryLogic.new
-      retrying_client = API::RetryingNetClient.new(net_client, retry_logic)
+      retrying_client = API::RetryingNetClientAdapter.new(net_client, retry_logic)
 
       @contacts = Contacts.new(retrying_client)
       @favorites = Favorites.new(retrying_client)

@@ -1,20 +1,26 @@
 require 'faraday'
-require 'smartsheet/api/request_builder'
+require 'smartsheet/api/request'
 require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'
 
 module Smartsheet
   module API
-    class NetClient
+    class FaradayNetClient
       def initialize(token)
         @token = token
         create_connection
       end
 
       def make_request(endpoint_spec, request_spec)
+        request = Request.new(token, endpoint_spec, request_spec)
+
         response = conn.send(endpoint_spec.method) do |req|
-          RequestBuilder.new(token, endpoint_spec, request_spec).apply(req)
+          req.url(request.url)
+          req.headers = request.headers
+          req.params = request.params
+          req.body = request.body
         end
+
         response.body
       end
 
