@@ -1,4 +1,5 @@
 require 'smartsheet/api/net_client'
+require 'smartsheet/api/retry_logic'
 require 'smartsheet/api/retrying_net_client'
 require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'

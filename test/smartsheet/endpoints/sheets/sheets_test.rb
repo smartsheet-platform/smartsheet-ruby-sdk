@@ -141,6 +141,13 @@ class SheetTest < Minitest::Test
             args: {sheet_id: 123, body: {}},
             has_params: false
         },
+        {
+            symbol: :list_image_urls,
+            method: :post,
+            url: ['imageurls'],
+            args: {body: {}},
+            has_params: false
+        },
     ]
   end
 
