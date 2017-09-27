@@ -7,6 +7,8 @@ require 'smartsheet/smartsheet_client'
 require 'minitest/autorun'
 require 'mocha/mini_test'
 
+TOKEN = '0123456789'.freeze
+
 module Smartsheet
   module Test
     def stub_sleep(obj)
