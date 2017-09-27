@@ -1,4 +1,5 @@
 require 'smartsheet/api/net_client'
+require 'smartsheet/api/retrying_net_client'
 require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'
 
@@ -14,14 +15,16 @@ module Smartsheet
     attr_reader :sheets, :server_info, :contacts, :search, :folders, :groups
 
     def initialize(token)
-      @net_client = API::NetClient.new(token)
+      net_client = API::NetClient.new(token)
+      retry_logic = API::RetryLogic.new
+      retrying_client = API::RetryingNetClient.new(net_client, retry_logic)
 
-      @sheets = Sheets.new(@net_client)
-      @server_info = ServerInfo.new(@net_client)
-      @contacts = Contacts.new(@net_client)
-      @search = Search.new(@net_client)
-      @folders = Folders.new(@net_client)
-      @groups = Groups.new(@net_client)
+      @sheets = Sheets.new(retrying_client)
+      @server_info = ServerInfo.new(retrying_client)
+      @contacts = Contacts.new(retrying_client)
+      @search = Search.new(retrying_client)
+      @folders = Folders.new(retrying_client)
+      @groups = Groups.new(retrying_client)
     end
   end
 end

@@ -9,7 +9,7 @@ module Smartsheet
           @mock_client = mock
           @mock_client.stubs(:token).returns('a_token')
 
-          Smartsheet::API::NetClient.stubs(:new).returns(@mock_client)
+          Smartsheet::API::RetryingNetClient.stubs(:new).returns(@mock_client)
 
           @smartsheet_client = Smartsheet::SmartsheetClient.new('a_token')
         end
