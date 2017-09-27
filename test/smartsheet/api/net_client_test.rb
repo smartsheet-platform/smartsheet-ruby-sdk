@@ -5,8 +5,6 @@ require 'faraday'
 require 'ostruct'
 
 describe Smartsheet::API::NetClient do
-  include Smartsheet::Test
-
   TOKEN = '0123456789'.freeze
 
   before do

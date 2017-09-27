@@ -21,6 +21,10 @@ describe Smartsheet::API::RequestBuilder do
     mock_header_builder = mock
     mock_header_builder.stubs(:build).returns(@some_header)
     Smartsheet::API::HeaderBuilder.stubs(:new).returns(mock_header_builder)
+    mock_body_builder = mock
+    mock_body_builder.stubs(:build).returns(@some_body)
+    Smartsheet::API::BodyBuilder.stubs(:new).returns(mock_body_builder)
+
   end
 
   it 'sets url' do
