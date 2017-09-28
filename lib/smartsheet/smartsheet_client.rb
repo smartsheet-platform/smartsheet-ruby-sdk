@@ -16,6 +16,7 @@ require 'smartsheet/endpoints/server_info/server_info'
 require 'smartsheet/endpoints/sheets/sheets'
 require 'smartsheet/endpoints/sights/sights'
 require 'smartsheet/endpoints/templates/templates'
+require 'smartsheet/endpoints/token/token'
 require 'smartsheet/endpoints/update_requests/update_requests'
 require 'smartsheet/endpoints/users/users'
 require 'smartsheet/endpoints/webhooks/webhooks'
@@ -25,7 +26,7 @@ require 'smartsheet/endpoints/workspaces/workspaces'
 module Smartsheet
   class SmartsheetClient
     attr_reader :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info, :sheets, :sights
-    attr_reader :templates, :update_requests, :users, :webhooks, :workspaces
+    attr_reader :templates, :token, :update_requests, :users, :webhooks, :workspaces
 
     def initialize(token)
       net_client = API::FaradayNetClient.new
@@ -44,6 +45,7 @@ module Smartsheet
       @sheets = Sheets.new(request_client)
       @sights = Sights.new(request_client)
       @templates = Templates.new(request_client)
+      @token = Token.new(request_client)
       @update_requests = UpdateRequests.new(request_client)
       @users = Users.new(request_client)
       @webhooks = Webhooks.new(request_client)

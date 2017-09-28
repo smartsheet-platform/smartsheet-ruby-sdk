@@ -4,7 +4,7 @@ module Smartsheet
   module API
     class EndpointSpec
       VALID_METHODS = %i[get put post delete].freeze
-      VALID_SPEC_KEYS = %i[headers body_type].freeze
+      VALID_SPEC_KEYS = %i[headers body_type no_auth].freeze
 
       attr_reader :method, :url_segments
 
@@ -19,6 +19,10 @@ module Smartsheet
       def validate
         validate_keys
         validate_methods
+      end
+
+      def requires_auth?
+        !spec.key?(:no_auth)
       end
 
       def requires_body?

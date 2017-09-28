@@ -83,6 +83,7 @@ class FavoritesTest < Minitest::Test
             url: ['favorites', 'folder'],
             args: {folder_ids: [123, 234, 345]},
             has_params: false,
+            expected_params: {objectIds: '123,234,345'},
             headers: nil
         },
         {
@@ -91,6 +92,7 @@ class FavoritesTest < Minitest::Test
             url: ['favorites', 'report'],
             args: {report_ids: [123, 234, 345]},
             has_params: false,
+            expected_params: {objectIds: '123,234,345'},
             headers: nil
         },
         {
@@ -99,6 +101,7 @@ class FavoritesTest < Minitest::Test
             url: ['favorites', 'sheet'],
             args: {sheet_ids: [123, 234, 345]},
             has_params: false,
+            expected_params: {objectIds: '123,234,345'},
             headers: nil
         },
         {
@@ -107,6 +110,7 @@ class FavoritesTest < Minitest::Test
             url: ['favorites', 'sights'],
             args: {sight_ids: [123, 234, 345]},
             has_params: false,
+            expected_params: {objectIds: '123,234,345'},
             headers: nil
         },
         {
@@ -115,6 +119,7 @@ class FavoritesTest < Minitest::Test
             url: ['favorites', 'template'],
             args: {template_ids: [123, 234, 345]},
             has_params: false,
+            expected_params: {objectIds: '123,234,345'},
             headers: nil
         },
         {
@@ -123,6 +128,7 @@ class FavoritesTest < Minitest::Test
             url: ['favorites', 'workspace'],
             args: {workspace_ids: [123, 234, 345]},
             has_params: false,
+            expected_params: {objectIds: '123,234,345'},
             headers: nil
         },
     ]

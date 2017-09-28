@@ -12,13 +12,13 @@ describe Smartsheet::API::Request do
     @some_params = { p: '' }
 
     mock_url_builder = mock
-    mock_url_builder.stubs(:build).returns(@some_url)
+    mock_url_builder.stubs(:build).returns(@some_url.clone)
     Smartsheet::API::UrlBuilder.stubs(:new).returns(mock_url_builder)
     mock_header_builder = mock
-    mock_header_builder.stubs(:build).returns(@some_header)
+    mock_header_builder.stubs(:build).returns(@some_header.clone)
     Smartsheet::API::HeaderBuilder.stubs(:new).returns(mock_header_builder)
     mock_body_builder = mock
-    mock_body_builder.stubs(:build).returns(@some_body)
+    mock_body_builder.stubs(:build).returns(@some_body.clone)
     Smartsheet::API::BodyBuilder.stubs(:new).returns(mock_body_builder)
   end
 
