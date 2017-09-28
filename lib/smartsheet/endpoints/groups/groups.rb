@@ -7,27 +7,30 @@ module Smartsheet
       @client = client
     end
 
-    def create(body:, header_overrides: {})
+    def create(body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['groups'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body
       )
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def delete(group_id:, header_overrides: {})
+    def delete(group_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['groups', :group_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           group_id: group_id
       )
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get(group_id:, header_overrides: {})
+    def get(group_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['groups', :group_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           group_id: group_id
       )
@@ -43,9 +46,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def update(group_id:, body:, header_overrides: {})
+    def update(group_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:put, ['groups', :group_id], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           group_id: group_id
@@ -53,9 +57,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def add_members(group_id:, body:, header_overrides: {})
+    def add_members(group_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['groups', :group_id, 'members'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           group_id: group_id
@@ -63,9 +68,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def remove_member(group_id:, user_id:, header_overrides: {})
+    def remove_member(group_id:, user_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['groups', :group_id, 'members', :user_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           group_id: group_id,
           user_id: user_id

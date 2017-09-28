@@ -7,20 +7,20 @@ module Smartsheet
       @client = client
     end
 
-    def search_all(query:, header_overrides: {})
+    def search_all(query:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['search'])
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
-          params: {query: query}
+          params: params.merge({query: query})
       )
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def search_sheet(sheet_id:, query:, header_overrides: {})
+    def search_sheet(sheet_id:, query:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['search', 'sheets', :sheet_id])
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
-          params: {query: query},
+          params: params.merge({query: query}),
           sheet_id: sheet_id
       )
       client.make_request(endpoint_spec, request_spec)

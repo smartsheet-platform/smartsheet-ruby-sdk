@@ -26,12 +26,7 @@ module Smartsheet
         define_valid_file(endpoint)
         define_valid_headers(endpoint) unless endpoint[:headers].nil?
         define_valid_url(endpoint)
-
-        if endpoint[:has_params]
-          define_accepts_params(endpoint)
-        else
-          define_doesnt_accept_params(endpoint)
-        end
+        define_accepts_params(endpoint)
       end
 
       def define_valid_url(endpoint)
