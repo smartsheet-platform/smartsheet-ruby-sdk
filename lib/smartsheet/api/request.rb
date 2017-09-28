@@ -11,6 +11,10 @@ module Smartsheet
         @request_spec = request_spec
       end
 
+      def method
+        endpoint_spec.method
+      end
+
       def url
         Smartsheet::API::UrlBuilder.new(endpoint_spec, request_spec).build
       end

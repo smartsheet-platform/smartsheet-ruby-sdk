@@ -1,5 +1,6 @@
 require 'smartsheet/api/faraday_net_client'
 require 'smartsheet/api/retrying_net_client_adapter'
+require 'smartsheet/api/request_client'
 require 'smartsheet/api/retry_logic'
 require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'
@@ -27,25 +28,26 @@ module Smartsheet
     attr_reader :templates, :update_requests, :users, :webhooks, :workspaces
 
     def initialize(token)
-      net_client = API::FaradayNetClient.new(token)
+      net_client = API::FaradayNetClient.new
       retry_logic = API::RetryLogic.new
       retrying_client = API::RetryingNetClientAdapter.new(net_client, retry_logic)
+      request_client = API::RequestClient.new(token, retrying_client)
 
-      @contacts = Contacts.new(retrying_client)
-      @favorites = Favorites.new(retrying_client)
-      @folders = Folders.new(retrying_client)
-      @groups = Groups.new(retrying_client)
-      @home = Home.new(retrying_client)
-      @reports = Reports.new(retrying_client)
-      @search = Search.new(retrying_client)
-      @server_info = ServerInfo.new(retrying_client)
-      @sheets = Sheets.new(retrying_client)
-      @sights = Sights.new(retrying_client)
-      @templates = Templates.new(retrying_client)
-      @update_requests = UpdateRequests.new(retrying_client)
-      @users = Users.new(retrying_client)
-      @webhooks = Webhooks.new(retrying_client)
-      @workspaces = Workspaces.new(retrying_client)
+      @contacts = Contacts.new(request_client)
+      @favorites = Favorites.new(request_client)
+      @folders = Folders.new(request_client)
+      @groups = Groups.new(request_client)
+      @home = Home.new(request_client)
+      @reports = Reports.new(request_client)
+      @search = Search.new(request_client)
+      @server_info = ServerInfo.new(request_client)
+      @sheets = Sheets.new(request_client)
+      @sights = Sights.new(request_client)
+      @templates = Templates.new(request_client)
+      @update_requests = UpdateRequests.new(request_client)
+      @users = Users.new(request_client)
+      @webhooks = Webhooks.new(request_client)
+      @workspaces = Workspaces.new(request_client)
     end
   end
 end

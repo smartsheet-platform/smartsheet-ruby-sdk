@@ -8,6 +8,7 @@ describe Smartsheet::API::RetryingNetClientAdapter do
 
   before do
     @response = mock
+    @response.stubs(:'success?').returns false
     @client = mock
 
     Timecop.freeze
@@ -34,7 +35,7 @@ describe Smartsheet::API::RetryingNetClientAdapter do
     @client.expects(:make_request).returns @response
     Smartsheet::API::RetryingNetClientAdapter
       .new(@client)
-      .make_request({}, {})
+      .make_request({})
   end
 
   it 'retries when a retryable failure occurs' do
@@ -46,6 +47,6 @@ describe Smartsheet::API::RetryingNetClientAdapter do
 
     Smartsheet::API::RetryingNetClientAdapter
       .new(@client, retrier)
-      .make_request({}, {})
+      .make_request({})
   end
 end
