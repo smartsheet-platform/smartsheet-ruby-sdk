@@ -31,8 +31,9 @@ module Smartsheet
     private :client
 
 
-    def initialize(token: nil)
-      net_client = API::NetClient.new(get_token(token))
+    def initialize(token: nil, assume_user: nil)
+      token = token_env_var if token.nil?
+      net_client = API::NetClient.new(token)
       retry_logic = API::RetryLogic.new
       @client = API::RetryingNetClient.new(net_client, retry_logic)
 
@@ -71,12 +72,6 @@ module Smartsheet
     # end
 
     private
-
-    def get_token(token)
-      token.nil? ?
-          token_env_var :
-          token
-    end
 
     def token_env_var
       ENV['SMARTSHEET_ACCESS_TOKEN']
