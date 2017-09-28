@@ -53,6 +53,23 @@ module Smartsheet
       @workspaces = Workspaces.new(@client)
     end
 
+    # def assume_user=(value)
+    #   client.assume_user = value
+    # end
+    #
+    # def assume_user
+    #   client.assume_user
+    # end
+    #
+    # def assume_user_with(username)
+    #   original_assume_user = client.assume_user
+    #   client.assume_user = username
+    #
+    #   yield
+    #
+    #   client.assume_user = original_assume_user
+    # end
+
     private
 
     def get_token(token)
