@@ -17,13 +17,13 @@ class TokenTest < Minitest::Test
             symbol: :get,
             method: :post,
             url: ['token'],
-            args: {client_id: '123', code: '234', app_secret: '345'},
+            args: {client_id: '123', code: '234', hash: '345'},
             has_params: true,
             expected_params: {
                 grant_type: 'authorization_code',
                 client_id: '123',
                 code: '234',
-                hash: '2f7719345f3282ca527239d680b738693e7c5cd678423fef756f4443785d2bee'
+                hash: '345'
             },
             headers: nil
         },
@@ -31,13 +31,13 @@ class TokenTest < Minitest::Test
             symbol: :refresh,
             method: :post,
             url: ['token'],
-            args: {client_id: '123', refresh_token: '234', app_secret: '345'},
+            args: {client_id: '123', refresh_token: '234', hash: '345'},
             has_params: true,
             expected_params: {
                 grant_type: 'refresh_token',
                 client_id: '123',
                 refresh_token: '234',
-                hash: '2f7719345f3282ca527239d680b738693e7c5cd678423fef756f4443785d2bee'
+                hash: '345'
             },
             headers: nil
         },

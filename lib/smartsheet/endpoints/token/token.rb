@@ -9,7 +9,7 @@ module Smartsheet
       @client = client
     end
 
-    def get(client_id:, app_secret:, code:, params: {}, header_overrides: {})
+    def get(client_id:, hash:, code:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :post,
           ['token'],
@@ -20,14 +20,14 @@ module Smartsheet
           params: params.merge({
                                    client_id: client_id,
                                    code: code,
-                                   hash: hash(app_secret, code),
+                                   hash: hash,
                                    grant_type: 'authorization_code'
                                })
       )
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def refresh(client_id:, app_secret:, refresh_token:, params: {}, header_overrides: {})
+    def refresh(client_id:, hash:, refresh_token:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :post,
           ['token'],
@@ -38,7 +38,7 @@ module Smartsheet
           params: params.merge({
                                    client_id: client_id,
                                    refresh_token: refresh_token,
-                                   hash: hash(app_secret, refresh_token),
+                                   hash: hash,
                                    grant_type: 'refresh_token'
                                })
       )
@@ -51,12 +51,6 @@ module Smartsheet
           header_overrides: header_overrides
       )
       client.make_request(endpoint_spec, request_spec)
-    end
-
-    private
-
-    def hash(app_secret, value)
-      Digest::SHA2.new(256).hexdigest(app_secret + '|' + value)
     end
   end
 end
