@@ -1,5 +1,5 @@
 require 'smartsheet/api/faraday_net_client'
-require 'smartsheet/api/retrying_net_client_adapter'
+require 'smartsheet/api/retry_net_client_decorator'
 require 'smartsheet/api/request_client'
 require 'smartsheet/api/retry_logic'
 require 'smartsheet/api/middleware/error_translator'
@@ -32,12 +32,12 @@ module Smartsheet
     private :client
 
 
-    def initialize(token: nil, assume_user: nil, max_retry_time:, backoff_method:)
+    def initialize(token: nil, assume_user: nil, max_retry_time: nil, backoff_method: nil)
       token = token_env_var if token.nil?
 
       net_client = API::FaradayNetClient.new
       retry_logic = init_retry_logic(max_retry_time, backoff_method)
-      retrying_client = API::RetryingNetClientAdapter.new(net_client, retry_logic)
+      retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic)
       @client = API::RequestClient.new(token, retrying_client, assume_user)
 
       @contacts = Contacts.new(@client)

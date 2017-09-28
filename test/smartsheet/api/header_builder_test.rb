@@ -8,7 +8,8 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
-        Smartsheet::API::RequestSpec.new)
+        Smartsheet::API::RequestSpec.new,
+        nil)
                   .build
 
     headers.must_be_kind_of Hash
@@ -21,7 +22,8 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :json),
-        Smartsheet::API::RequestSpec.new(body: {}))
+        Smartsheet::API::RequestSpec.new(body: {}),
+        nil)
                   .build
 
     headers.must_be_kind_of Hash
@@ -32,7 +34,8 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
-        Smartsheet::API::RequestSpec.new(header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}))
+        Smartsheet::API::RequestSpec.new(header_overrides: {SomeOverride: 'someValue', Authorization: 'someAuth'}),
+        nil)
                   .build
 
     headers.must_be_kind_of Hash
@@ -46,7 +49,8 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new(content_type: 'someContentType'))
+        Smartsheet::API::RequestSpec.new(content_type: 'someContentType'),
+        nil)
                   .build
 
     headers.must_be_kind_of Hash
@@ -58,7 +62,8 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new)
+        Smartsheet::API::RequestSpec.new,
+        nil)
                   .build
 
     headers.must_be_kind_of Hash
@@ -70,10 +75,36 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new(filename: 'someFile'))
+        Smartsheet::API::RequestSpec.new(filename: 'someFile'),
+        nil)
                   .build
 
     headers.must_be_kind_of Hash
     headers[:'Content-Disposition'].must_equal 'attachment; filename="someFile"'
+  end
+
+  it 'applies assume user correctly when set' do
+    assume_user = 'john.doe@smartsheet.com'.freeze
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
+        Smartsheet::API::RequestSpec.new,
+        assume_user)
+                  .build
+
+    headers.must_be_kind_of Hash
+    headers[:'Assume-User'].must_equal assume_user
+  end
+
+  it 'applies assume user correctly when not set' do
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
+        Smartsheet::API::RequestSpec.new,
+        nil)
+                  .build
+
+    headers.must_be_kind_of Hash
+    (headers.key? :'Assume-User').must_equal false
   end
 end

@@ -1,9 +1,9 @@
 module Smartsheet
   module API
-    class RetryingNetClientAdapter
+    class RetryNetClientDecorator
       RETRY_CHECK = ->(response) { response.should_retry? }
 
-      def initialize(client, retrier = RetryLogic.new)
+      def initialize(client, retrier)
         @client = client
         @retrier = retrier
       end

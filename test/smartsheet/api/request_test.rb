@@ -26,7 +26,7 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec)
+      .new(TOKEN, @endpoint_spec, request_spec, nil)
       .url.must_equal @some_url
   end
 
@@ -34,7 +34,7 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec)
+      .new(TOKEN, @endpoint_spec, request_spec, nil)
       .headers.must_equal(@some_header)
   end
 
@@ -42,7 +42,7 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new(params: @some_params)
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec)
+      .new(TOKEN, @endpoint_spec, request_spec, nil)
       .params.must_equal @some_params
   end
 
@@ -50,7 +50,7 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new(body: @some_body)
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec)
+      .new(TOKEN, @endpoint_spec, request_spec, nil)
       .body.must_equal @some_body
   end
 end
