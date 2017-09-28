@@ -35,6 +35,7 @@ class RowsTest < Minitest::Test
             url: ['sheets', :sheet_id, 'rows'],
             args: {sheet_id: 123, row_ids: [234, 345]},
             has_params: true,
+            expected_params: {ids: '234,345'},
             headers: nil
         },
         {

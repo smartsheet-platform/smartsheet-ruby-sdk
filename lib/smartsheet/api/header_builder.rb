@@ -25,11 +25,13 @@ module Smartsheet
       attr_reader :token
 
       def base_headers
-        {
+        base = {
             Accept: 'application/json',
-            Authorization: "Bearer #{token}",
             'User-Agent': 'smartsheet-ruby-sdk'
         }
+        base[:Authorization] = "Bearer #{token}" if endpoint_spec.requires_auth?
+
+        base
       end
 
       def assume_user

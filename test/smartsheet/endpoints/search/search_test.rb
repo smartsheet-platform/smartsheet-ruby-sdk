@@ -19,6 +19,7 @@ class SearchTest < Minitest::Test
             url: ['search'],
             args: {query: 'query'},
             has_params: false,
+            expected_params: {query: 'query'},
             headers: nil
         },
         {
@@ -27,6 +28,7 @@ class SearchTest < Minitest::Test
             url: ['search', 'sheets', :sheet_id],
             args: {query: 'query', sheet_id: 123},
             has_params: false,
+            expected_params: {query: 'query'},
             headers: nil
         },
     ]

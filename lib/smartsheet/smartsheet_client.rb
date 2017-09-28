@@ -17,6 +17,7 @@ require 'smartsheet/endpoints/server_info/server_info'
 require 'smartsheet/endpoints/sheets/sheets'
 require 'smartsheet/endpoints/sights/sights'
 require 'smartsheet/endpoints/templates/templates'
+require 'smartsheet/endpoints/token/token'
 require 'smartsheet/endpoints/update_requests/update_requests'
 require 'smartsheet/endpoints/users/users'
 require 'smartsheet/endpoints/webhooks/webhooks'
@@ -28,7 +29,7 @@ module Smartsheet
     include GeneralRequest
 
     attr_reader :client, :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info, :sheets
-    attr_reader :sights, :templates, :update_requests, :users, :webhooks, :workspaces
+    attr_reader :sights, :templates, :token, :update_requests, :users, :webhooks, :workspaces
     private :client
 
 
@@ -50,6 +51,7 @@ module Smartsheet
       @server_info = ServerInfo.new(@client)
       @sheets = Sheets.new(@client)
       @sights = Sights.new(@client)
+      @token = Token.new(@client)
       @templates = Templates.new(@client)
       @update_requests = UpdateRequests.new(@client)
       @users = Users.new(@client)

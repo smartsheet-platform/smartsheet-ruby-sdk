@@ -27,6 +27,7 @@ module Smartsheet
         define_valid_headers(endpoint) unless endpoint[:headers].nil?
         define_valid_url(endpoint)
         define_accepts_params(endpoint)
+        define_valid_expected_params(endpoint) unless endpoint[:expected_params].nil?
       end
 
       def define_valid_url(endpoint)
@@ -34,6 +35,16 @@ module Smartsheet
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             # this validates the URL
             Smartsheet::API::UrlBuilder.new(endpoint_spec, request_spec)
+          end
+
+          category.send(endpoint[:symbol], **endpoint[:args])
+        end
+      end
+
+      def define_valid_expected_params(endpoint)
+        define_method "test_#{endpoint[:symbol]}_valid_expected_params" do
+          @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
+            assert_equal(endpoint[:expected_params], request_spec.params)
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])
@@ -53,7 +64,7 @@ module Smartsheet
       def define_valid_body(endpoint)
         define_method "test_#{endpoint[:symbol]}_valid_body" do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
-            assert_equal(endpoint[:args].key?(:body), (endpoint_spec.requires_body?() && !endpoint_spec.sending_file?()))
+            assert_equal(endpoint[:args].key?(:body), endpoint_spec.requires_body? && !endpoint_spec.sending_file?)
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])
@@ -95,10 +106,14 @@ module Smartsheet
         define_method "test_#{endpoint[:symbol]}_accepts_params" do
           params = {p: ''}
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
-            assert_equal(params, request_spec.params)
+            expected_params = endpoint[:expected_params].nil? ?
+                                  params :
+                                  params.merge(endpoint[:expected_params])
+            assert_equal(expected_params, request_spec.params)
+
           end
 
-          category.send(endpoint[:symbol], **endpoint[:args], params: params)
+          category.send(endpoint[:symbol], **endpoint[:args], params: params.clone)
         end
       end
 
@@ -108,7 +123,7 @@ module Smartsheet
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(header_overrides, request_spec.header_overrides)
           end
-          category.send(endpoint[:symbol], **endpoint[:args], header_overrides: header_overrides)
+          category.send(endpoint[:symbol], **endpoint[:args], header_overrides: header_overrides.clone)
         end
       end
     end

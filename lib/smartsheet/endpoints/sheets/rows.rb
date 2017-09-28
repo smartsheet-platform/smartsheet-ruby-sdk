@@ -34,7 +34,7 @@ module Smartsheet
     end
 
     def delete(sheet_id:, row_ids:, params: {}, header_overrides: {})
-      params[:ids] = row_ids
+      params[:ids] = row_ids.join(',')
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['sheets', :sheet_id, 'rows'])
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
