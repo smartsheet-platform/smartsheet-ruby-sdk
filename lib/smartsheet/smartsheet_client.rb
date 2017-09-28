@@ -3,6 +3,7 @@ require 'smartsheet/api/retry_logic'
 require 'smartsheet/api/retrying_net_client'
 require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'
+require 'smartsheet/general_request'
 
 require 'smartsheet/endpoints/contacts/contacts'
 require 'smartsheet/endpoints/favorites/favorites'
@@ -23,29 +24,45 @@ require 'smartsheet/endpoints/workspaces/workspaces'
 
 module Smartsheet
   class SmartsheetClient
-    attr_reader :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info, :sheets, :sights
-    attr_reader :templates, :update_requests, :users, :webhooks, :workspaces
+    include GeneralRequest
 
-    def initialize(token)
-      net_client = API::NetClient.new(token)
+    attr_reader :client, :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info, :sheets
+    attr_reader :sights, :templates, :update_requests, :users, :webhooks, :workspaces
+    private :client
+
+
+    def initialize(token: nil)
+      net_client = API::NetClient.new(get_token(token))
       retry_logic = API::RetryLogic.new
-      retrying_client = API::RetryingNetClient.new(net_client, retry_logic)
+      @client = API::RetryingNetClient.new(net_client, retry_logic)
 
-      @contacts = Contacts.new(retrying_client)
-      @favorites = Favorites.new(retrying_client)
-      @folders = Folders.new(retrying_client)
-      @groups = Groups.new(retrying_client)
-      @home = Home.new(retrying_client)
-      @reports = Reports.new(retrying_client)
-      @search = Search.new(retrying_client)
-      @server_info = ServerInfo.new(retrying_client)
-      @sheets = Sheets.new(retrying_client)
-      @sights = Sights.new(retrying_client)
-      @templates = Templates.new(retrying_client)
-      @update_requests = UpdateRequests.new(retrying_client)
-      @users = Users.new(retrying_client)
-      @webhooks = Webhooks.new(retrying_client)
-      @workspaces = Workspaces.new(retrying_client)
+      @contacts = Contacts.new(@client)
+      @favorites = Favorites.new(@client)
+      @folders = Folders.new(@client)
+      @groups = Groups.new(@client)
+      @home = Home.new(@client)
+      @reports = Reports.new(@client)
+      @search = Search.new(@client)
+      @server_info = ServerInfo.new(@client)
+      @sheets = Sheets.new(@client)
+      @sights = Sights.new(@client)
+      @templates = Templates.new(@client)
+      @update_requests = UpdateRequests.new(@client)
+      @users = Users.new(@client)
+      @webhooks = Webhooks.new(@client)
+      @workspaces = Workspaces.new(@client)
+    end
+
+    private
+
+    def get_token(token)
+      token.nil? ?
+          token_env_var :
+          token
+    end
+
+    def token_env_var
+      ENV['SMARTSHEET_ACCESS_TOKEN']
     end
   end
 end
