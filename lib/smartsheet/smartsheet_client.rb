@@ -1,6 +1,7 @@
-require 'smartsheet/api/net_client'
+require 'smartsheet/api/faraday_net_client'
+require 'smartsheet/api/retrying_net_client_adapter'
+require 'smartsheet/api/request_client'
 require 'smartsheet/api/retry_logic'
-require 'smartsheet/api/retrying_net_client'
 require 'smartsheet/api/middleware/error_translator'
 require 'smartsheet/api/middleware/response_parser'
 require 'smartsheet/general_request'
@@ -33,9 +34,11 @@ module Smartsheet
 
     def initialize(token: nil, assume_user: nil)
       token = token_env_var if token.nil?
-      net_client = API::NetClient.new(token)
+
+      net_client = API::FaradayNetClient.new
       retry_logic = API::RetryLogic.new
-      @client = API::RetryingNetClient.new(net_client, retry_logic)
+      retrying_client = API::RetryingNetClientAdapter.new(net_client, retry_logic)
+      @client = API::RequestClient.new(token, retrying_client)
 
       @contacts = Contacts.new(@client)
       @favorites = Favorites.new(@client)
@@ -53,23 +56,6 @@ module Smartsheet
       @webhooks = Webhooks.new(@client)
       @workspaces = Workspaces.new(@client)
     end
-
-    # def assume_user=(value)
-    #   client.assume_user = value
-    # end
-    #
-    # def assume_user
-    #   client.assume_user
-    # end
-    #
-    # def assume_user_with(username)
-    #   original_assume_user = client.assume_user
-    #   client.assume_user = username
-    #
-    #   yield
-    #
-    #   client.assume_user = original_assume_user
-    # end
 
     private
 

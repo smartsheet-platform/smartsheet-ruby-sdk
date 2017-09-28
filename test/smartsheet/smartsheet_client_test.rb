@@ -5,14 +5,22 @@ require 'smartsheet/smartsheet_client'
 
 
 describe Smartsheet::SmartsheetClient do
+  def given_request_client_expects_token
+    Smartsheet::API::RequestClient
+        .expects(:new)
+        .with {|token, _client| token == TOKEN}
+  end
+
   it 'uses token from user' do
-    Smartsheet::API::NetClient.expects(:new).with(TOKEN)
+    given_request_client_expects_token
+
     Smartsheet::SmartsheetClient.new(token: TOKEN)
   end
 
   it 'uses token from env var' do
+    given_request_client_expects_token
+
     ENV['SMARTSHEET_ACCESS_TOKEN'] = TOKEN
-    Smartsheet::API::NetClient.expects(:new).with(TOKEN)
     Smartsheet::SmartsheetClient.new
   end
 end
