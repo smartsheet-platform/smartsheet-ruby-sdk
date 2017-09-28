@@ -7,9 +7,8 @@ module Smartsheet
       @client = client
     end
 
-    # TODO: Should be able to run this unauthenticated
     def get(params: {}, header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['serverinfo'])
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['serverinfo'], no_auth: true)
       request_spec = Smartsheet::API::RequestSpec.new(
           params: params,
           header_overrides: header_overrides,
