@@ -32,13 +32,13 @@ module Smartsheet
     private :client
 
 
-    def initialize(token: nil, assume_user: nil)
+    def initialize(token: nil, assume_user: nil, max_retry_time:, backoff_method:)
       token = token_env_var if token.nil?
 
       net_client = API::FaradayNetClient.new
-      retry_logic = API::RetryLogic.new
+      retry_logic = init_retry_logic(max_retry_time, backoff_method)
       retrying_client = API::RetryingNetClientAdapter.new(net_client, retry_logic)
-      @client = API::RequestClient.new(token, retrying_client)
+      @client = API::RequestClient.new(token, retrying_client, assume_user)
 
       @contacts = Contacts.new(@client)
       @favorites = Favorites.new(@client)
@@ -58,6 +58,15 @@ module Smartsheet
     end
 
     private
+
+    def init_retry_logic(max_retry_time, backoff_method)
+      retry_opts = {}
+      retry_opts[:max_retry_time] = max_retry_time unless max_retry_time.nil?
+      retry_opts[:backoff_method] = backoff_method unless backoff_method.nil?
+
+      API::RetryLogic.new(**retry_opts)
+    end
+
 
     def token_env_var
       ENV['SMARTSHEET_ACCESS_TOKEN']
