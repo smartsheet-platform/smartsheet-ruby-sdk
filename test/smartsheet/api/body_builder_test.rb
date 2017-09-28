@@ -8,7 +8,7 @@ describe Smartsheet::API::BodyBuilder do
   def given_json_body
     @some_body = {b: ''}
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'], body_type: :json)
-    @request_spec = Smartsheet::API::RequestSpec.new(body: @some_body)
+    @request_spec = Smartsheet::API::RequestSpec.new(body: @some_body.clone)
   end
 
   def given_nil_json_body
@@ -19,13 +19,13 @@ describe Smartsheet::API::BodyBuilder do
   def given_non_json_body
     @some_body = {b: ''}
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'], body_type: :not_json)
-    @request_spec = Smartsheet::API::RequestSpec.new(body: @some_body)
+    @request_spec = Smartsheet::API::RequestSpec.new(body: @some_body.clone)
   end
 
   def given_string_json_body
     @some_body = '{"b": ""}'
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'], body_type: :json)
-    @request_spec = Smartsheet::API::RequestSpec.new(body: @some_body)
+    @request_spec = Smartsheet::API::RequestSpec.new(body: @some_body.clone)
   end
 
   def given_file_body

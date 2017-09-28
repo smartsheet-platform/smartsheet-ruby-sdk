@@ -53,6 +53,30 @@ class SheetAttachmentTest < Minitest::Test
             has_params: false,
             headers: nil
         },
+        {
+            symbol: :attach_new_version,
+            method: :post,
+            url: ['sheets', :sheet_id, 'attachments', :attachment_id, 'versions'],
+            args: {sheet_id: 123, attachment_id: 234, filename: 'file', content_type: 'content_type'},
+            has_params: false,
+            headers: nil
+        },
+        {
+            symbol: :delete_all_versions,
+            method: :delete,
+            url: ['sheets', :sheet_id, 'attachments', :attachment_id, 'versions'],
+            args: {sheet_id: 123, attachment_id: 234},
+            has_params: false,
+            headers: nil
+        },
+        {
+            symbol: :list_versions,
+            method: :get,
+            url: ['sheets', :sheet_id, 'attachments', :attachment_id, 'versions'],
+            args: {sheet_id: 123, attachment_id: 234},
+            has_params: true,
+            headers: nil
+        },
     ]
   end
 
