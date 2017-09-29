@@ -1,4 +1,5 @@
 require 'json'
+require 'awrence'
 
 module Smartsheet
   module API
@@ -24,11 +25,11 @@ module Smartsheet
       attr_accessor :endpoint_spec, :request_spec
 
       def json_body
-        return nil if request_spec.body.nil?
-
-        request_spec.body.is_a?(String) ?
-            request_spec.body :
-            request_spec.body.to_json
+        if request_spec.body.nil? || request_spec.body.is_a?(String)
+          request_spec.body
+        else
+          request_spec.body.to_camelback_keys.to_json
+        end
       end
       
       def file_body

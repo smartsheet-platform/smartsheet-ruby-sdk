@@ -33,6 +33,17 @@ describe Smartsheet::API::BodyBuilder do
     @request_spec = Smartsheet::API::RequestSpec.new(filename: 'file')
   end
 
+  def given_snake_case_body
+    @some_body = {snake_case: 123, camelCase: '234'}
+    @some_body['string_snake_case'] = '345'
+    @some_body['stringCamelCase'] = 456
+    @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'], body_type: :json)
+    @request_spec = Smartsheet::API::RequestSpec.new(body: @some_body.clone)
+    @expected_body = {snakeCase: 123, camelCase: '234'}
+    @expected_body['stringSnakeCase'] = '345'
+    @expected_body['stringCamelCase'] = 456
+  end
+
   def when_body_is_built
     Smartsheet::API::BodyBuilder.new(@endpoint_spec, @request_spec)
         .build
@@ -67,6 +78,13 @@ describe Smartsheet::API::BodyBuilder do
     body = when_body_is_built
 
     body.must_be_nil
+  end
+
+  it 'converts snake case to camel case' do
+    given_snake_case_body
+    body = when_body_is_built
+
+    body.must_equal @expected_body.to_json
   end
 
   it 'returns valid file object' do
