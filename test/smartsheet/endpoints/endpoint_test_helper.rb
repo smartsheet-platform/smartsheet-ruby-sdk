@@ -1,5 +1,7 @@
 require_relative '../../test_helper'
-require 'smartsheet/api/faraday_net_client'
+require_relative 'url_validator'
+require_relative 'endpoint_spec_validator'
+require 'smartsheet/api/request_client'
 
 module Smartsheet
   module Test
@@ -40,8 +42,7 @@ module Smartsheet
       def define_valid_url(endpoint)
         define_method "test_#{endpoint[:symbol]}_valid_url" do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
-            # this validates the URL
-            Smartsheet::API::UrlBuilder.new(endpoint_spec, request_spec)
+            Smartsheet::Test::UrlValidator.new(endpoint_spec, request_spec).validate
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])
@@ -93,6 +94,7 @@ module Smartsheet
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:method], endpoint_spec.method)
             assert_equal(endpoint[:url], endpoint_spec.url_segments)
+            Smartsheet::Test::EndpointSpecValidator.new(endpoint_spec).validate
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])
