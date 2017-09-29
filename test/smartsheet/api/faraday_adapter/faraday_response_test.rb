@@ -1,23 +1,23 @@
-require_relative '../../test_helper'
-require 'smartsheet/api/response'
+require_relative '../../../test_helper'
+require 'smartsheet/api/faraday_adapter/faraday_response'
 require 'ostruct'
 
 module Smartsheet
   module API
-    describe Response do
+    describe FaradayResponse do
       it 'provides an error response when handed a result that looks like an error' do
         result = OpenStruct.new(errorCode: 1000, message: 'Error', refId: '123abc')
-        response = Response.from_result(result)
-        response.must_be_kind_of ErrorResponse
+        response = FaradayResponse.from_result(result)
+        response.must_be_kind_of FaradayErrorResponse
       end
 
       it 'provides a success response when handed a result that does not look like an error' do
-        response = Response.from_result('Result')
-        response.must_be_kind_of SuccessResponse
+        response = FaradayResponse.from_result('Result')
+        response.must_be_kind_of FaradaySuccessResponse
       end
     end
 
-    describe ErrorResponse do
+    describe FaradayErrorResponse do
       RETRYABLE_ERROR_CODE = 4002
       NON_RETRYABLE_ERROR_CODE = 4000
       ERROR_MESSAGE = 'Error'.freeze
@@ -34,33 +34,33 @@ module Smartsheet
       )
 
       it 'provides the result error code' do
-        ErrorResponse.new(RETRYABLE_ERROR_RESULT).error_code.must_equal RETRYABLE_ERROR_CODE
+        FaradayErrorResponse.new(RETRYABLE_ERROR_RESULT).error_code.must_equal RETRYABLE_ERROR_CODE
       end
 
       it 'provides the result message' do
-        ErrorResponse.new(RETRYABLE_ERROR_RESULT).message.must_equal ERROR_MESSAGE
+        FaradayErrorResponse.new(RETRYABLE_ERROR_RESULT).message.must_equal ERROR_MESSAGE
       end
 
       it 'provides the result RefID' do
-        ErrorResponse.new(RETRYABLE_ERROR_RESULT).ref_id.must_equal REF_ID
+        FaradayErrorResponse.new(RETRYABLE_ERROR_RESULT).ref_id.must_equal REF_ID
       end
 
       it 'is not a success' do
-        ErrorResponse.new(RETRYABLE_ERROR_RESULT).success?.must_equal false
+        FaradayErrorResponse.new(RETRYABLE_ERROR_RESULT).success?.must_equal false
       end
 
       it 'should be retryable if the result\'s error code qualifies' do
-        ErrorResponse.new(RETRYABLE_ERROR_RESULT).should_retry?.must_equal true
+        FaradayErrorResponse.new(RETRYABLE_ERROR_RESULT).should_retry?.must_equal true
       end
 
       it 'should not be retryable if the result\'s error code does not qualify' do
-        ErrorResponse.new(NON_RETRYABLE_ERROR_RESULT).should_retry?.must_equal false
+        FaradayErrorResponse.new(NON_RETRYABLE_ERROR_RESULT).should_retry?.must_equal false
       end
     end
 
-    describe SuccessResponse do
+    describe FaradaySuccessResponse do
       RESULT = 'Result'.freeze
-      SUCCESS_RESPONSE = SuccessResponse.new(RESULT)
+      SUCCESS_RESPONSE = FaradaySuccessResponse.new(RESULT)
 
       it 'should provide the result' do
         SUCCESS_RESPONSE.result.must_equal RESULT

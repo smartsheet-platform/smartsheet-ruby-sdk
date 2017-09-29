@@ -1,7 +1,7 @@
 require 'faraday'
 require 'smartsheet/api/request'
-require 'smartsheet/api/middleware/error_translator'
-require 'smartsheet/api/middleware/response_parser'
+require 'smartsheet/api/faraday_adapter/middleware/faraday_error_translator'
+require 'smartsheet/api/faraday_adapter/middleware/response_parser'
 
 module Smartsheet
   module API
@@ -10,6 +10,10 @@ module Smartsheet
         create_connection
       end
 
+      # Expected output:
+      # - returned Success Response
+      # - returned Error Response
+      # - thrown Request Error
       def make_request(request)
         response = conn.send(request.method) do |req|
           req.url(request.url)
@@ -25,8 +29,8 @@ module Smartsheet
 
       def create_connection
         @conn = Faraday.new do |conn|
-          conn.use API::Middleware::ErrorTranslator
-          conn.use API::Middleware::ResponseParser
+          conn.use Middleware::FaradayErrorTranslator
+          conn.use Middleware::ResponseParser
 
           conn.adapter Faraday.default_adapter
         end

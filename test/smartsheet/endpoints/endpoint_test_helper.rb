@@ -1,5 +1,5 @@
 require_relative '../../test_helper'
-require 'smartsheet/api/faraday_net_client'
+require 'smartsheet/api/faraday_adapter/faraday_net_client'
 
 module Smartsheet
   module Test

@@ -1,12 +1,16 @@
 module Smartsheet
   module API
-    class Response
+    class FaradayResponse
       def self.from_result(result)
-        result.respond_to?(:errorCode) ? ErrorResponse.new(result) : SuccessResponse.new(result)
+        if result.respond_to?(:errorCode)
+          FaradayErrorResponse.new(result)
+        else
+          FaradaySuccessResponse.new(result)
+        end
       end
     end
 
-    class ErrorResponse
+    class FaradayErrorResponse
       RETRYABLE_ERRORS = 4001..4004
 
       attr_reader :error_code, :message, :ref_id
@@ -26,7 +30,7 @@ module Smartsheet
       end
     end
 
-    class SuccessResponse
+    class FaradaySuccessResponse
       attr_reader :result
 
       def initialize(result)
