@@ -1,3 +1,5 @@
+require 'forwardable'
+
 module Smartsheet
   module API
     class Error < StandardError; end
@@ -10,6 +12,21 @@ module Smartsheet
         super(ex.message)
         @wrapped_exception = ex
       end
+    end
+
+    class ApiError < Error
+      extend Forwardable
+
+      def initialize(error_response)
+        super(error_response.message)
+        @error_response = error_response
+      end
+
+      def_delegators :error_response, :error_code, :message, :ref_id
+
+      private
+
+      attr_reader :error_response
     end
   end
 end

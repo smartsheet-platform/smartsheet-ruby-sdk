@@ -1,3 +1,5 @@
+require 'smartsheet/api/error'
+
 module Smartsheet
   module API
     class RequestClient
@@ -9,7 +11,9 @@ module Smartsheet
 
       def make_request(endpoint_spec, request_spec)
         request = Request.new(token, endpoint_spec, request_spec, assume_user: assume_user)
-        client.make_request(request)
+        response = client.make_request(request)
+        raise ApiError.new(response) unless response.success?
+        response.result
       end
 
       private
