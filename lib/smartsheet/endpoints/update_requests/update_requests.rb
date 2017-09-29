@@ -11,9 +11,10 @@ module Smartsheet
       @sent = SentUpdateRequests.new(client)
     end
 
-    def create(sheet_id:, body:, header_overrides: {})
+    def create(sheet_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['sheets', :sheet_id, 'updaterequests'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           sheet_id: sheet_id
@@ -21,9 +22,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def delete(sheet_id:, update_request_id:, header_overrides: {})
+    def delete(sheet_id:, update_request_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['sheets', :sheet_id, 'updaterequests', :update_request_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           sheet_id: sheet_id,
           update_request_id: update_request_id
@@ -31,9 +33,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get(sheet_id:, update_request_id:, header_overrides: {})
+    def get(sheet_id:, update_request_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['sheets', :sheet_id, 'updaterequests', :update_request_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           sheet_id: sheet_id,
           update_request_id: update_request_id
@@ -51,9 +54,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def update(sheet_id:, update_request_id:, body:, header_overrides: {})
+    def update(sheet_id:, update_request_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:put, ['sheets', :sheet_id, 'updaterequests', :update_request_id], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           sheet_id: sheet_id,

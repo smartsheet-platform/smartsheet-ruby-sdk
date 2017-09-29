@@ -11,19 +11,21 @@ module Smartsheet
       @client = client
     end
 
-    def delete(report_id:, share_id:, header_overrides: {})
+    def delete(report_id:, share_id:, params: {}, header_overrides: {})
       delete_share(
           share_id: share_id,
           url: URL,
+          params: params,
           header_overrides: header_overrides,
           report_id: report_id
       )
     end
 
-    def get(report_id:, share_id:, header_overrides: {})
+    def get(report_id:, share_id:, params: {}, header_overrides: {})
       get_share(
           share_id: share_id,
           url: URL,
+          params: params,
           header_overrides: header_overrides,
           report_id: report_id
       )
@@ -48,10 +50,11 @@ module Smartsheet
       )
     end
 
-    def update(report_id:, share_id:, body:, header_overrides: {})
+    def update(report_id:, share_id:, body:, params: {}, header_overrides: {})
       update_share(
           share_id: share_id,
           url: URL,
+          params: params,
           header_overrides: header_overrides,
           body: body,
           report_id: report_id

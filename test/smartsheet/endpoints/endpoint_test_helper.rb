@@ -9,11 +9,9 @@ module Smartsheet
       def define_setup
         define_method :setup do
           @mock_client = mock
-          @mock_client.stubs(:token).returns('a_token')
-
           Smartsheet::API::RequestClient.stubs(:new).returns(@mock_client)
 
-          @smartsheet_client = Smartsheet::SmartsheetClient.new('a_token')
+          @smartsheet_client = Smartsheet::SmartsheetClient.new(token: TOKEN)
         end
       end
 
@@ -30,13 +28,8 @@ module Smartsheet
         define_valid_file(endpoint)
         define_valid_headers(endpoint) unless endpoint[:headers].nil?
         define_valid_url(endpoint)
+        define_accepts_params(endpoint)
         define_valid_expected_params(endpoint) unless endpoint[:expected_params].nil?
-
-        if endpoint[:has_params]
-          define_accepts_params(endpoint)
-        else
-          define_doesnt_accept_params(endpoint)
-        end
       end
 
       def define_valid_url(endpoint)
@@ -98,16 +91,6 @@ module Smartsheet
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])
-        end
-      end
-
-      def define_doesnt_accept_params(endpoint)
-        define_method "test_#{endpoint[:symbol]}_doesnt_accept_params" do
-          @mock_client.stubs(:make_request)
-
-          assert_raises(ArgumentError) do
-            category.send(endpoint[:symbol], **endpoint[:args], params: {p: ''})
-          end
         end
       end
 
