@@ -14,6 +14,16 @@ module Smartsheet
         @params = request_spec.params
         @body = Smartsheet::API::BodyBuilder.new(endpoint_spec, request_spec).build
       end
+
+      def ==(other)
+        other.class == self.class && other.equality_state == equality_state
+      end
+
+      protected
+
+      def equality_state
+        [method, url, headers, params, body]
+      end
     end
   end
 end
