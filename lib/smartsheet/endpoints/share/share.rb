@@ -1,8 +1,9 @@
 module Smartsheet
   module Share
-    def delete_share(share_id:, url:, header_overrides:, **url_args)
+    def delete_share(share_id:, url:, params:, header_overrides:, **url_args)
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, url + ['shares', :share_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           share_id: share_id,
           **url_args
@@ -10,9 +11,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get_share(share_id:, url:, header_overrides:, **url_args)
+    def get_share(share_id:, url:, params:, header_overrides:, **url_args)
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, url + ['shares', :share_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           share_id: share_id,
           **url_args
@@ -41,9 +43,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def update_share(share_id:, url:, body:, header_overrides:, **url_args)
+    def update_share(share_id:, url:, body:, params:, header_overrides:, **url_args)
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:put, url + ['shares', :share_id], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           share_id: share_id,

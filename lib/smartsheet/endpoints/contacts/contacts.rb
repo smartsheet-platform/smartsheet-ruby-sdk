@@ -7,10 +7,11 @@ module Smartsheet
       @client = client
     end
 
-    def get(contact_id:, header_overrides: {})
+    def get(contact_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['contacts', :contact_id])
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
+          params: params,
           contact_id: contact_id
       )
       client.make_request(endpoint_spec, request_spec)

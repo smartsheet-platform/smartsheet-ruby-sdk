@@ -18,18 +18,20 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def create(body:, header_overrides: {})
+    def create(body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['home', 'folders'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body
       )
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def create_in_folder(folder_id:, body:, header_overrides: {})
+    def create_in_folder(folder_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['folders', :folder_id, 'folders'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           folder_id: folder_id
@@ -37,9 +39,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def create_in_workspace(workspace_id:, body:, header_overrides: {})
+    def create_in_workspace(workspace_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['workspaces', :workspace_id, 'folders'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           workspace_id: workspace_id
@@ -47,9 +50,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def delete(folder_id:, header_overrides: {})
+    def delete(folder_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['folders', :folder_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           folder_id: folder_id
       )
@@ -95,9 +99,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def move(folder_id:, body:, header_overrides: {})
+    def move(folder_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['folders', :folder_id, 'move'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           folder_id: folder_id
@@ -105,9 +110,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def update(folder_id:, body:, header_overrides: {})
+    def update(folder_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:put, ['folders', :folder_id], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           folder_id: folder_id

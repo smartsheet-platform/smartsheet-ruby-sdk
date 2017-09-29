@@ -58,18 +58,20 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get_publish_status(report_id:, header_overrides: {})
+    def get_publish_status(report_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['reports', :report_id, 'publish'])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           report_id: report_id
       )
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def set_publish_status(report_id:, body:, header_overrides: {})
+    def set_publish_status(report_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:put, ['reports', :report_id, 'publish'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           report_id: report_id
@@ -77,9 +79,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def send_via_email(report_id:, body:, header_overrides: {})
+    def send_via_email(report_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['reports', :report_id, 'emails'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           report_id: report_id
