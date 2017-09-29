@@ -1,13 +1,14 @@
 require_relative '../../test_helper'
 require 'smartsheet/api/retry_logic'
-require 'smartsheet/api/retrying_net_client'
+require 'smartsheet/api/retry_net_client_decorator'
 require 'timecop'
 
-describe Smartsheet::API::RetryingNetClient do
+describe Smartsheet::API::RetryNetClientDecorator do
   include Smartsheet::Test
 
   before do
     @response = mock
+    @response.stubs(:'success?').returns false
     @client = mock
 
     Timecop.freeze
@@ -32,9 +33,9 @@ describe Smartsheet::API::RetryingNetClient do
   it 'does not retry when a non-retryable failure occurs' do
     given_non_retryable_response
     @client.expects(:make_request).returns @response
-    Smartsheet::API::RetryingNetClient
-      .new(@client)
-      .make_request({}, {})
+    Smartsheet::API::RetryNetClientDecorator
+      .new(@client, Smartsheet::API::RetryLogic.new)
+      .make_request({})
   end
 
   it 'retries when a retryable failure occurs' do
@@ -44,8 +45,8 @@ describe Smartsheet::API::RetryingNetClient do
     retrier = Smartsheet::API::RetryLogic.new
     stub_sleep(retrier)
 
-    Smartsheet::API::RetryingNetClient
+    Smartsheet::API::RetryNetClientDecorator
       .new(@client, retrier)
-      .make_request({}, {})
+      .make_request({})
   end
 end

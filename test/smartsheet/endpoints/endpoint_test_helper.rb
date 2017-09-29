@@ -1,5 +1,5 @@
 require_relative '../../test_helper'
-require 'smartsheet/api/net_client'
+require 'smartsheet/api/faraday_net_client'
 
 module Smartsheet
   module Test
@@ -9,7 +9,7 @@ module Smartsheet
           @mock_client = mock
           @mock_client.stubs(:token).returns('a_token')
 
-          Smartsheet::API::RetryingNetClient.stubs(:new).returns(@mock_client)
+          Smartsheet::API::RequestClient.stubs(:new).returns(@mock_client)
 
           @smartsheet_client = Smartsheet::SmartsheetClient.new('a_token')
         end

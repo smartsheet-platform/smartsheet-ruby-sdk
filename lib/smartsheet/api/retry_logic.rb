@@ -21,7 +21,7 @@ module Smartsheet
       attr_reader :backoff_method, :max_retry_time
 
       def _run(method_to_run, should_retry, end_time, iteration)
-        result = method_to_run.call
+        result = method_to_run.call(iteration)
 
         backoff = backoff_method.call(iteration)
 

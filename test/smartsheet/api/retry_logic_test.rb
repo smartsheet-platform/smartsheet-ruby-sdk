@@ -42,6 +42,18 @@ describe Smartsheet::API::RetryLogic do
     result.must_equal expected_result
   end
 
+  it 'passes the attempt number' do
+    retry_logic = Smartsheet::API::RetryLogic.new
+
+    stub_sleep(retry_logic)
+
+    attempt_count = 0
+    retry_logic.run(proc { |attempt| attempt < 2 }) do |attempt_num|
+      attempt_num.must_equal(attempt_count)
+      attempt_count += 1
+    end
+  end
+
   it 'does not exceed time limit' do
     retry_logic = Smartsheet::API::RetryLogic.new
 
