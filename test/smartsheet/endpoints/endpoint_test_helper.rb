@@ -92,16 +92,6 @@ module Smartsheet
         end
       end
 
-      def define_doesnt_accept_params(endpoint)
-        define_method "test_#{endpoint[:symbol]}_doesnt_accept_params" do
-          @mock_client.stubs(:make_request)
-
-          assert_raises(ArgumentError) do
-            category.send(endpoint[:symbol], **endpoint[:args], params: {p: ''})
-          end
-        end
-      end
-
       def define_accepts_params(endpoint)
         define_method "test_#{endpoint[:symbol]}_accepts_params" do
           params = {p: ''}
