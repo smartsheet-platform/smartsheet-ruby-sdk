@@ -1,6 +1,6 @@
-require_relative '../../test_helper'
-require 'smartsheet/api/faraday_net_client'
-require 'smartsheet/api/response'
+require_relative '../../../test_helper'
+require 'smartsheet/api/faraday_adapter/faraday_net_client'
+require 'smartsheet/api/faraday_adapter/faraday_response'
 require 'faraday'
 require 'ostruct'
 
@@ -17,7 +17,7 @@ describe Smartsheet::API::FaradayNetClient do
 
   def build_stub_response
     response = mock
-    response.stubs(:body).returns Smartsheet::API::Response.from_result({})
+    response.stubs(:body).returns Smartsheet::API::FaradayResponse.from_result({})
     response
   end
 
@@ -57,7 +57,7 @@ describe Smartsheet::API::FaradayNetClient do
   def with_mock_faraday_connection(faraday_request, faraday_adapter, response)
     conn = mock
     conn.stubs(:get).yields(faraday_request).returns response
-    conn.expects(:use).with(Smartsheet::API::Middleware::ErrorTranslator)
+    conn.expects(:use).with(Smartsheet::API::Middleware::FaradayErrorTranslator)
     conn.expects(:use).with(Smartsheet::API::Middleware::ResponseParser)
     conn.expects(:adapter).with(faraday_adapter)
     Faraday.stubs(:new).yields(conn).returns(conn)

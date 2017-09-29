@@ -1,9 +1,7 @@
-require 'smartsheet/api/faraday_net_client'
+require 'smartsheet/api/faraday_adapter/faraday_net_client'
 require 'smartsheet/api/retry_net_client_decorator'
 require 'smartsheet/api/request_client'
 require 'smartsheet/api/retry_logic'
-require 'smartsheet/api/middleware/error_translator'
-require 'smartsheet/api/middleware/response_parser'
 require 'smartsheet/general_request'
 
 require 'smartsheet/endpoints/contacts/contacts'

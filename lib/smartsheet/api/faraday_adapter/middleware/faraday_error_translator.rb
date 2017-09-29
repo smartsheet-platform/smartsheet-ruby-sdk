@@ -1,10 +1,10 @@
+require 'smartsheet/api/error'
 require 'faraday'
-require_relative '../error'
 
 module Smartsheet
   module API
     module Middleware
-      class ErrorTranslator < Faraday::Middleware
+      class FaradayErrorTranslator < Faraday::Middleware
         def initialize(app)
           super(app)
         end

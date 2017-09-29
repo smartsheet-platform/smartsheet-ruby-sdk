@@ -1,5 +1,5 @@
-require_relative '../../../test_helper'
-require 'smartsheet/api/middleware/response_parser'
+require_relative '../../../../test_helper'
+require 'smartsheet/api/faraday_adapter/middleware/response_parser'
 require 'mocha'
 
 describe Smartsheet::API::Middleware::ResponseParser do
