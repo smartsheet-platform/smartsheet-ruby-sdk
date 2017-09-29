@@ -76,4 +76,29 @@ describe Smartsheet::API::HeaderBuilder do
     headers.must_be_kind_of Hash
     headers[:'Content-Disposition'].must_equal 'attachment; filename="someFile"'
   end
+
+  it 'applies assume user correctly when set' do
+    assume_user = 'john.doe@smartsheet.com'.freeze
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
+        Smartsheet::API::RequestSpec.new,
+        assume_user: assume_user)
+                  .build
+
+    headers.must_be_kind_of Hash
+    headers[:'Assume-User'].must_equal assume_user
+  end
+
+  it 'applies assume user correctly when not set' do
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
+        Smartsheet::API::RequestSpec.new,
+        assume_user: nil)
+                  .build
+
+    headers.must_be_kind_of Hash
+    (headers.key? :'Assume-User').must_equal false
+  end
 end

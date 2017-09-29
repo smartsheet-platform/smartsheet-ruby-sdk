@@ -26,18 +26,20 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def create(body:, header_overrides: {})
+    def create(body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['workspaces'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body
       )
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def delete(workspace_id:, header_overrides: {})
+    def delete(workspace_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['workspaces', :workspace_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           workspace_id: workspace_id
       )
@@ -63,13 +65,14 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def update(workspace_id:, body:, header_overrides: {})
+    def update(workspace_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :put,
           ['workspaces', :workspace_id],
           body_type: :json
       )
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           workspace_id: workspace_id

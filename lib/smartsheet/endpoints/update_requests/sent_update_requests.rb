@@ -7,9 +7,10 @@ module Smartsheet
       @client = client
     end
 
-    def delete(sheet_id:, sent_update_request_id:, header_overrides: {})
+    def delete(sheet_id:, sent_update_request_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['sheets', :sheet_id, 'sentupdaterequests', :sent_update_request_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           sheet_id: sheet_id,
           sent_update_request_id: sent_update_request_id
@@ -17,9 +18,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get(sheet_id:, sent_update_request_id:, header_overrides: {})
+    def get(sheet_id:, sent_update_request_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['sheets', :sheet_id, 'sentupdaterequests', :sent_update_request_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           sheet_id: sheet_id,
           sent_update_request_id: sent_update_request_id

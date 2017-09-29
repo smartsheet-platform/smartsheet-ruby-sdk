@@ -1,5 +1,7 @@
 require_relative '../../test_helper'
-require 'smartsheet/api/faraday_adapter/faraday_net_client'
+require_relative 'url_validator'
+require_relative 'endpoint_spec_validator'
+require 'smartsheet/api/request_client'
 
 module Smartsheet
   module Test
@@ -7,11 +9,9 @@ module Smartsheet
       def define_setup
         define_method :setup do
           @mock_client = mock
-          @mock_client.stubs(:token).returns('a_token')
-
           Smartsheet::API::RequestClient.stubs(:new).returns(@mock_client)
 
-          @smartsheet_client = Smartsheet::SmartsheetClient.new('a_token')
+          @smartsheet_client = Smartsheet::SmartsheetClient.new(token: TOKEN)
         end
       end
 
@@ -28,20 +28,14 @@ module Smartsheet
         define_valid_file(endpoint)
         define_valid_headers(endpoint) unless endpoint[:headers].nil?
         define_valid_url(endpoint)
+        define_accepts_params(endpoint)
         define_valid_expected_params(endpoint) unless endpoint[:expected_params].nil?
-
-        if endpoint[:has_params]
-          define_accepts_params(endpoint)
-        else
-          define_doesnt_accept_params(endpoint)
-        end
       end
 
       def define_valid_url(endpoint)
         define_method "test_#{endpoint[:symbol]}_valid_url" do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
-            # this validates the URL
-            Smartsheet::API::UrlBuilder.new(endpoint_spec, request_spec)
+            Smartsheet::Test::UrlValidator.new(endpoint_spec, request_spec).validate
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])
@@ -93,19 +87,10 @@ module Smartsheet
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:method], endpoint_spec.method)
             assert_equal(endpoint[:url], endpoint_spec.url_segments)
+            Smartsheet::Test::EndpointSpecValidator.new(endpoint_spec).validate
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])
-        end
-      end
-
-      def define_doesnt_accept_params(endpoint)
-        define_method "test_#{endpoint[:symbol]}_doesnt_accept_params" do
-          @mock_client.stubs(:make_request)
-
-          assert_raises(ArgumentError) do
-            category.send(endpoint[:symbol], **endpoint[:args], params: {p: ''})
-          end
         end
       end
 

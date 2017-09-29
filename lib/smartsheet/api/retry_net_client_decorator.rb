@@ -3,6 +3,9 @@ module Smartsheet
     class RetryNetClientDecorator
       RETRY_CHECK = ->(response) { response.should_retry? }
 
+      attr_reader :client, :retrier
+      private :client, :retrier
+
       def initialize(client, retrier)
         @client = client
         @retrier = retrier
@@ -13,10 +16,6 @@ module Smartsheet
           client.make_request(request)
         end
       end
-
-      private
-
-      attr_reader :client, :retrier
     end
   end
 end

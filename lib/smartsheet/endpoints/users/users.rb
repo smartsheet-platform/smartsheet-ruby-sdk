@@ -21,17 +21,19 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get_current(header_overrides: {})
+    def get_current(params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['users', 'me'])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides
       )
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def get(user_id:, header_overrides: {})
+    def get(user_id:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['users', :user_id])
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           user_id: user_id
       )
@@ -57,9 +59,10 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def update(user_id:, body:, header_overrides: {})
+    def update(user_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:put, ['users', :user_id], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
           header_overrides: header_overrides,
           body: body,
           user_id: user_id

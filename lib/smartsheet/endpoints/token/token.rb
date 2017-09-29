@@ -45,10 +45,11 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def revoke(header_overrides: {})
+    def revoke(params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, ['token'])
       request_spec = Smartsheet::API::RequestSpec.new(
-          header_overrides: header_overrides
+          header_overrides: header_overrides,
+          params: params
       )
       client.make_request(endpoint_spec, request_spec)
     end

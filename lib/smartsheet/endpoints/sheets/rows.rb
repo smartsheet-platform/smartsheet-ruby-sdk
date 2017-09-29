@@ -66,10 +66,11 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def send_via_email(sheet_id:, body:, header_overrides: {})
+    def send_via_email(sheet_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['sheets', :sheet_id, 'rows', 'emails'], body_type: :json)
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
+          params: params,
           body: body,
           sheet_id: sheet_id
       )

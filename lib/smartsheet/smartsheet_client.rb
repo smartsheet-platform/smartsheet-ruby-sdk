@@ -2,6 +2,7 @@ require 'smartsheet/api/faraday_adapter/faraday_net_client'
 require 'smartsheet/api/retry_net_client_decorator'
 require 'smartsheet/api/request_client'
 require 'smartsheet/api/retry_logic'
+require 'smartsheet/general_request'
 
 require 'smartsheet/endpoints/contacts/contacts'
 require 'smartsheet/endpoints/favorites/favorites'
@@ -23,31 +24,51 @@ require 'smartsheet/endpoints/workspaces/workspaces'
 
 module Smartsheet
   class SmartsheetClient
-    attr_reader :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info, :sheets, :sights
-    attr_reader :templates, :token, :update_requests, :users, :webhooks, :workspaces
+    include GeneralRequest
 
-    def initialize(token)
+    attr_reader :client, :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info, :sheets
+    attr_reader :sights, :templates, :token, :update_requests, :users, :webhooks, :workspaces
+    private :client
+
+
+    def initialize(token: nil, assume_user: nil, max_retry_time: nil, backoff_method: nil)
+      token = token_env_var if token.nil?
+
       net_client = API::FaradayNetClient.new
-      retry_logic = API::RetryLogic.new
+      retry_logic = init_retry_logic(max_retry_time, backoff_method)
       retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic)
-      request_client = API::RequestClient.new(token, retrying_client)
+      @client = API::RequestClient.new(token, retrying_client, assume_user: assume_user)
 
-      @contacts = Contacts.new(request_client)
-      @favorites = Favorites.new(request_client)
-      @folders = Folders.new(request_client)
-      @groups = Groups.new(request_client)
-      @home = Home.new(request_client)
-      @reports = Reports.new(request_client)
-      @search = Search.new(request_client)
-      @server_info = ServerInfo.new(request_client)
-      @sheets = Sheets.new(request_client)
-      @sights = Sights.new(request_client)
-      @templates = Templates.new(request_client)
-      @token = Token.new(request_client)
-      @update_requests = UpdateRequests.new(request_client)
-      @users = Users.new(request_client)
-      @webhooks = Webhooks.new(request_client)
-      @workspaces = Workspaces.new(request_client)
+      @contacts = Contacts.new(@client)
+      @favorites = Favorites.new(@client)
+      @folders = Folders.new(@client)
+      @groups = Groups.new(@client)
+      @home = Home.new(@client)
+      @reports = Reports.new(@client)
+      @search = Search.new(@client)
+      @server_info = ServerInfo.new(@client)
+      @sheets = Sheets.new(@client)
+      @sights = Sights.new(@client)
+      @token = Token.new(@client)
+      @templates = Templates.new(@client)
+      @update_requests = UpdateRequests.new(@client)
+      @users = Users.new(@client)
+      @webhooks = Webhooks.new(@client)
+      @workspaces = Workspaces.new(@client)
+    end
+
+    private
+
+    def init_retry_logic(max_retry_time, backoff_method)
+      retry_opts = {}
+      retry_opts[:max_retry_time] = max_retry_time unless max_retry_time.nil?
+      retry_opts[:backoff_method] = backoff_method unless backoff_method.nil?
+
+      API::RetryLogic.new(**retry_opts)
+    end
+
+    def token_env_var
+      ENV['SMARTSHEET_ACCESS_TOKEN']
     end
   end
 end

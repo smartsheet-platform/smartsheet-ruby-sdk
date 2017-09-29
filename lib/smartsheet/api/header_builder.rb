@@ -2,10 +2,11 @@ module Smartsheet
   module API
     # Constructs headers for accessing the Smartsheet API
     class HeaderBuilder
-      def initialize(token, endpoint_spec, request_spec)
+      def initialize(token, endpoint_spec, request_spec, assume_user: nil)
         @token = token
         @endpoint_spec = endpoint_spec
         @request_spec = request_spec
+        @assume_user = assume_user
       end
 
       def build
@@ -15,6 +16,7 @@ module Smartsheet
             .merge(content_disposition)
             .merge(content_length)
             .merge(request_headers)
+            .merge(assume_user)
       end
 
       private
@@ -30,6 +32,14 @@ module Smartsheet
         base[:Authorization] = "Bearer #{token}" if endpoint_spec.requires_auth?
 
         base
+      end
+
+      def assume_user
+        if @assume_user.nil?
+          {}
+        else
+          {'Assume-User': @assume_user}
+        end
       end
 
       def endpoint_headers
