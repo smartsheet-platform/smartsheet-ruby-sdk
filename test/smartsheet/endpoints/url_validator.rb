@@ -22,18 +22,12 @@ module Smartsheet
 
       def validate_args_present(segment_vars, arg_keys)
         missing_args = segment_vars - arg_keys
-        return if missing_args.empty?
-
-        missing_args_string = missing_args.join(', ')
-        raise "Missing request parameters [#{missing_args_string}]"
+        raise "Missing request parameters [#{missing_args}]" unless missing_args.empty?
       end
 
       def validate_args_match(segment_vars, arg_keys)
         extra_args = arg_keys - segment_vars
-        return if extra_args.empty?
-
-        extra_args_string = extra_args.join(', ')
-        raise "Unexpected request parameters [#{extra_args_string}]"
+        raise "Unexpected request parameters [#{extra_args}]" unless extra_args.empty?
       end
     end
   end
