@@ -39,7 +39,7 @@ module Smartsheet
       net_client = API::FaradayNetClient.new
       retry_logic = init_retry_logic(max_retry_time, backoff_method)
       retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic)
-      @client = API::RequestClient.new(token, retrying_client, assume_user)
+      @client = API::RequestClient.new(token, retrying_client, assume_user: assume_user)
 
       @contacts = Contacts.new(@client)
       @favorites = Favorites.new(@client)

@@ -30,7 +30,7 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec, nil)
+      .new(TOKEN, @endpoint_spec, request_spec)
       .method.must_equal :get
   end
 
@@ -39,7 +39,7 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec, nil)
+      .new(TOKEN, @endpoint_spec, request_spec)
       .url.must_equal @some_url
   end
 
@@ -48,7 +48,7 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec, nil)
+      .new(TOKEN, @endpoint_spec, request_spec)
       .headers.must_equal(@some_header)
   end
 
@@ -57,7 +57,7 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new(params: @some_params)
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec, nil)
+      .new(TOKEN, @endpoint_spec, request_spec)
       .params.must_equal @some_params
   end
 
@@ -66,27 +66,27 @@ describe Smartsheet::API::Request do
     request_spec = Smartsheet::API::RequestSpec.new(body: @some_body)
 
     Smartsheet::API::Request
-      .new(TOKEN, @endpoint_spec, request_spec, nil)
+      .new(TOKEN, @endpoint_spec, request_spec)
       .body.must_equal @some_body
   end
 
   it 'should not be equal to other classes' do
     request_spec = Smartsheet::API::RequestSpec.new
-    Smartsheet::API::Request.new(TOKEN, @endpoint_spec, request_spec, nil).wont_equal 1
+    Smartsheet::API::Request.new(TOKEN, @endpoint_spec, request_spec).wont_equal 1
   end
 
   it 'should be equal to an identical instance' do
     request_spec = Smartsheet::API::RequestSpec.new
-    request_a = Smartsheet::API::Request.new(TOKEN, @endpoint_spec, request_spec, nil)
-    request_b = Smartsheet::API::Request.new(TOKEN, @endpoint_spec, request_spec, nil)
+    request_a = Smartsheet::API::Request.new(TOKEN, @endpoint_spec, request_spec)
+    request_b = Smartsheet::API::Request.new(TOKEN, @endpoint_spec, request_spec)
     request_a.must_equal request_b
   end
 
   it 'should not be equal to an instance with a differing token' do
     endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['x'])
     request_spec = Smartsheet::API::RequestSpec.new
-    request_a = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec, nil)
-    request_b = Smartsheet::API::Request.new(TOKEN + 'a', endpoint_spec, request_spec, nil)
+    request_a = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec)
+    request_b = Smartsheet::API::Request.new(TOKEN + 'a', endpoint_spec, request_spec)
     request_a.wont_equal request_b
   end
 
@@ -94,8 +94,8 @@ describe Smartsheet::API::Request do
     endpoint_spec_a = Smartsheet::API::EndpointSpec.new(:get, ['x'])
     endpoint_spec_b = Smartsheet::API::EndpointSpec.new(:post, ['x'])
     request_spec = Smartsheet::API::RequestSpec.new
-    request_a = Smartsheet::API::Request.new(TOKEN, endpoint_spec_a, request_spec, nil)
-    request_b = Smartsheet::API::Request.new(TOKEN, endpoint_spec_b, request_spec, nil)
+    request_a = Smartsheet::API::Request.new(TOKEN, endpoint_spec_a, request_spec)
+    request_b = Smartsheet::API::Request.new(TOKEN, endpoint_spec_b, request_spec)
     request_a.wont_equal request_b
   end
 
@@ -103,8 +103,8 @@ describe Smartsheet::API::Request do
     endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['x'])
     request_spec_a = Smartsheet::API::RequestSpec.new
     request_spec_b = Smartsheet::API::RequestSpec.new(params: { a: 1 })
-    request_a = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec_a, nil)
-    request_b = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec_b, nil)
+    request_a = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec_a)
+    request_b = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec_b)
     request_a.wont_equal request_b
   end
 end

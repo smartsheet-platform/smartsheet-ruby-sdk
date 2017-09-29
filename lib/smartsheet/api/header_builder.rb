@@ -2,7 +2,7 @@ module Smartsheet
   module API
     # Constructs headers for accessing the Smartsheet API
     class HeaderBuilder
-      def initialize(token, endpoint_spec, request_spec, assume_user)
+      def initialize(token, endpoint_spec, request_spec, assume_user: nil)
         @token = token
         @endpoint_spec = endpoint_spec
         @request_spec = request_spec

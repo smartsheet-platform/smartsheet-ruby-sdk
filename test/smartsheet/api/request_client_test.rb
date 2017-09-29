@@ -6,7 +6,7 @@ describe Smartsheet::API::RequestClient do
 
   endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['x'])
   request_spec = Smartsheet::API::RequestSpec.new(body: 'body')
-  expected_request = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec, nil)
+  expected_request = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec)
 
   it 'delegates constructed requests to its client' do
     client = mock
@@ -16,7 +16,7 @@ describe Smartsheet::API::RequestClient do
           request.must_equal expected_request
     end
 
-    Smartsheet::API::RequestClient.new(TOKEN, client, nil).make_request(endpoint_spec, request_spec)
+    Smartsheet::API::RequestClient.new(TOKEN, client).make_request(endpoint_spec, request_spec)
   end
 
   it 'returns the result of the client being called' do
@@ -26,7 +26,7 @@ describe Smartsheet::API::RequestClient do
     client.stubs(:make_request).returns(return_value)
 
     Smartsheet::API::RequestClient
-        .new(TOKEN, client, nil)
+        .new(TOKEN, client)
         .make_request(endpoint_spec, request_spec)
         .must_equal return_value
   end

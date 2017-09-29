@@ -7,10 +7,10 @@ module Smartsheet
     class Request
       attr_reader :method, :url, :headers, :params, :body
 
-      def initialize(token, endpoint_spec, request_spec, assume_user)
+      def initialize(token, endpoint_spec, request_spec, assume_user: nil)
         @method = endpoint_spec.method
         @url = Smartsheet::API::UrlBuilder.new(endpoint_spec, request_spec).build
-        @headers = Smartsheet::API::HeaderBuilder.new(token, endpoint_spec, request_spec, assume_user).build
+        @headers = Smartsheet::API::HeaderBuilder.new(token, endpoint_spec, request_spec, assume_user: assume_user).build
         @params = request_spec.params
         @body = Smartsheet::API::BodyBuilder.new(endpoint_spec, request_spec).build
       end
