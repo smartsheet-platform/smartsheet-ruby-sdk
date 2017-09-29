@@ -22,6 +22,14 @@ describe Smartsheet::API::Request do
     Smartsheet::API::BodyBuilder.stubs(:new).returns(mock_body_builder)
   end
 
+  it 'provides method' do
+    request_spec = Smartsheet::API::RequestSpec.new
+
+    Smartsheet::API::Request
+      .new(TOKEN, @endpoint_spec, request_spec)
+      .method.must_equal :get
+  end
+
   it 'provides url' do
     request_spec = Smartsheet::API::RequestSpec.new
 
