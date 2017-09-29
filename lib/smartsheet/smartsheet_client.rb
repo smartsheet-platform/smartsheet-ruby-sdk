@@ -69,7 +69,6 @@ module Smartsheet
       API::RetryLogic.new(**retry_opts)
     end
 
-
     def token_env_var
       ENV['SMARTSHEET_ACCESS_TOKEN']
     end
