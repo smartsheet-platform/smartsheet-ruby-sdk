@@ -28,6 +28,11 @@ describe Smartsheet::API::ResponseNetClientDecorator do
     @response.stubs(:result).returns({snake_case: '123'})
   end
 
+  def given_non_json_result
+    given_success_response
+    @response.stubs(:result).returns('result')
+  end
+
   def given_failure_response
     @response.stubs(:message).returns('')
     given_response false
@@ -61,6 +66,16 @@ describe Smartsheet::API::ResponseNetClientDecorator do
                  .make_request({})
 
     result.snake_case.must_equal '123'
+  end
+
+  it 'does not modify non-JSON results' do
+    given_non_json_result
+
+    result = Smartsheet::API::ResponseNetClientDecorator
+                 .new(@client, false)
+                 .make_request({})
+
+    result.must_equal 'result'
   end
 
   it 'returns JSON when requested' do

@@ -30,9 +30,11 @@ module Smartsheet
       def parse_success(response)
         if json_output
           response.result.to_json
-        else
+        elsif response.result.respond_to? :to_snake_keys
           snake_key_hash = response.result.to_snake_keys
           RecursiveOpenStruct.new(snake_key_hash, recurse_over_arrays: true)
+        else
+          response.result
         end
       end
 
