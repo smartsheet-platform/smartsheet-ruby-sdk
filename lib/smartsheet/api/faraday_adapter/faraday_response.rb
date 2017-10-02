@@ -2,7 +2,7 @@ module Smartsheet
   module API
     class FaradayResponse
       def self.from_result(result)
-        if result.respond_to?(:errorCode)
+        if result.kind_of?(Hash) && result.key?('errorCode')
           FaradayErrorResponse.new(result)
         else
           FaradaySuccessResponse.new(result)
@@ -16,9 +16,9 @@ module Smartsheet
       attr_reader :error_code, :message, :ref_id
 
       def initialize(result)
-        @error_code = result.errorCode
-        @message = result.message
-        @ref_id = result.refId
+        @error_code = result['errorCode']
+        @message = result['message']
+        @ref_id = result['refId']
       end
 
       def should_retry?

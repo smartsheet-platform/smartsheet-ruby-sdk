@@ -6,7 +6,11 @@ module Smartsheet
   module API
     describe FaradayResponse do
       it 'provides an error response when handed a result that looks like an error' do
-        result = OpenStruct.new(errorCode: 1000, message: 'Error', refId: '123abc')
+        result = {}
+        result['errorCode'] = 1000
+        result['message'] = 'Error'
+        result['refId'] = '123abc'
+
         response = FaradayResponse.from_result(result)
         response.must_be_kind_of FaradayErrorResponse
       end
@@ -22,16 +26,16 @@ module Smartsheet
       NON_RETRYABLE_ERROR_CODE = 4000
       ERROR_MESSAGE = 'Error'.freeze
       REF_ID = '123abc'.freeze
-      RETRYABLE_ERROR_RESULT = OpenStruct.new(
-        errorCode: RETRYABLE_ERROR_CODE,
-        message: ERROR_MESSAGE,
-        refId: REF_ID
-      )
-      NON_RETRYABLE_ERROR_RESULT = OpenStruct.new(
-        errorCode: NON_RETRYABLE_ERROR_CODE,
-        message: ERROR_MESSAGE,
-        refId: REF_ID
-      )
+
+      RETRYABLE_ERROR_RESULT = {}
+      RETRYABLE_ERROR_RESULT['errorCode'] = RETRYABLE_ERROR_CODE
+      RETRYABLE_ERROR_RESULT['message'] = ERROR_MESSAGE
+      RETRYABLE_ERROR_RESULT['refId'] = REF_ID
+
+      NON_RETRYABLE_ERROR_RESULT = {}
+      NON_RETRYABLE_ERROR_RESULT['errorCode'] = NON_RETRYABLE_ERROR_CODE
+      NON_RETRYABLE_ERROR_RESULT['message'] = ERROR_MESSAGE
+      NON_RETRYABLE_ERROR_RESULT['refId'] = REF_ID
 
       it 'provides the result error code' do
         FaradayErrorResponse.new(RETRYABLE_ERROR_RESULT).error_code.must_equal RETRYABLE_ERROR_CODE

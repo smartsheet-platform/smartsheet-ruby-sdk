@@ -11,9 +11,8 @@ module Smartsheet
 
       def make_request(endpoint_spec, request_spec)
         request = Request.new(token, endpoint_spec, request_spec, assume_user: assume_user)
-        response = client.make_request(request)
-        raise ApiError.new(response) unless response.success?
-        response.result
+
+        client.make_request(request)
       end
 
       private

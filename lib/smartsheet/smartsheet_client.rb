@@ -1,5 +1,6 @@
 require 'smartsheet/api/faraday_adapter/faraday_net_client'
 require 'smartsheet/api/retry_net_client_decorator'
+require 'smartsheet/api/response_net_client_decorator'
 require 'smartsheet/api/request_client'
 require 'smartsheet/api/retry_logic'
 require 'smartsheet/general_request'
@@ -31,13 +32,10 @@ module Smartsheet
     private :client
 
 
-    def initialize(token: nil, assume_user: nil, max_retry_time: nil, backoff_method: nil)
+    def initialize(token: nil, assume_user: nil, json_output: false, max_retry_time: nil, backoff_method: nil)
       token = token_env_var if token.nil?
 
-      net_client = API::FaradayNetClient.new
-      retry_logic = init_retry_logic(max_retry_time, backoff_method)
-      retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic)
-      @client = API::RequestClient.new(token, retrying_client, assume_user: assume_user)
+      @client = init_client(token, assume_user, json_output, max_retry_time, backoff_method)
 
       @contacts = Contacts.new(@client)
       @favorites = Favorites.new(@client)
@@ -58,6 +56,14 @@ module Smartsheet
     end
 
     private
+
+    def init_client(token, assume_user, json_output, max_retry_time, backoff_method)
+      net_client = API::FaradayNetClient.new
+      retry_logic = init_retry_logic(max_retry_time, backoff_method)
+      retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic)
+      response_client = API::ResponseNetClientDecorator.new(retrying_client, json_output)
+      @client = API::RequestClient.new(token, response_client, assume_user: assume_user)
+    end
 
     def init_retry_logic(max_retry_time, backoff_method)
       retry_opts = {}

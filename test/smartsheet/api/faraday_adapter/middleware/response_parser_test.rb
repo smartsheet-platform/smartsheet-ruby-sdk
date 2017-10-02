@@ -17,7 +17,7 @@ describe Smartsheet::API::Middleware::ResponseParser do
     response_parser.call(env)
 
     env[:body].success?.must_equal true
-    env[:body].result.key.must_equal 'value'
+    env[:body].result['key'].must_equal 'value'
   end
 
   it 'wraps successful non-JSON responses' do
