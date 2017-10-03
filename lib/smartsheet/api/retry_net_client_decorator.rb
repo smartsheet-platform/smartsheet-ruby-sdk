@@ -8,7 +8,7 @@ module Smartsheet
       attr_reader :client, :retrier, :logger
       private :client, :retrier, :logger
 
-      def initialize(client, retrier, logger = MuteRequestLogger.new)
+      def initialize(client, retrier, logger: MuteRequestLogger.new)
         @client = client
         @retrier = retrier
         @logger = logger

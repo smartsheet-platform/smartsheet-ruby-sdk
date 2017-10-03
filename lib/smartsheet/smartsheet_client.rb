@@ -1,5 +1,6 @@
 require 'smartsheet/api/faraday_adapter/faraday_net_client'
 require 'smartsheet/api/retry_net_client_decorator'
+require 'smartsheet/api/response_net_client_decorator'
 require 'smartsheet/api/request_client'
 require 'smartsheet/api/retry_logic'
 require 'smartsheet/api/request_logger'
@@ -34,25 +35,13 @@ module Smartsheet
     def initialize(
         token: nil,
         assume_user: nil,
+        json_output: false,
         max_retry_time: nil,
         backoff_method: nil,
         logger: nil
     )
 
-      token = token_env_var if token.nil?
-
-      request_logger =
-          logger ? API::RequestLogger.new(logger) : API::MuteRequestLogger.new
-
-      net_client = API::FaradayNetClient.new
-      retry_logic = init_retry_logic(max_retry_time, backoff_method)
-      retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic, request_logger)
-      @client = API::RequestClient.new(
-          token,
-          retrying_client,
-          assume_user: assume_user,
-          logger: request_logger
-      )
+      @client = init_client(token, assume_user, json_output, max_retry_time, backoff_method, logger)
 
       @contacts = Contacts.new(@client)
       @favorites = Favorites.new(@client)
@@ -75,6 +64,18 @@ module Smartsheet
     private
 
     attr_reader :client
+
+    def init_client(token, assume_user, json_output, max_retry_time, backoff_method, logger)
+      request_logger = logger ? API::RequestLogger.new(logger) : API::MuteRequestLogger.new
+      token = token_env_var if token.nil?
+
+      net_client = API::FaradayNetClient.new
+      retry_logic = init_retry_logic(max_retry_time, backoff_method)
+      retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic, logger: request_logger)
+      response_client = API::ResponseNetClientDecorator.new(retrying_client, json_output: json_output)
+
+      API::RequestClient.new(token, response_client, assume_user: assume_user, logger: request_logger)
+    end
 
     def init_retry_logic(max_retry_time, backoff_method)
       retry_opts = {}

@@ -18,14 +18,12 @@ class SheetTest < Minitest::Test
             method: :get,
             url: ['sheets'],
             args: {},
-            has_params: true
         },
         {
             symbol: :get,
             method: :get,
             url: ['sheets', :sheet_id],
             args: {sheet_id: 123},
-            has_params: true
         },
         {
             symbol: :get_version,
@@ -45,7 +43,6 @@ class SheetTest < Minitest::Test
             method: :get,
             url: ['sheets', :sheet_id],
             args: {sheet_id: 123},
-            has_params: true,
             headers: {Accept: 'application/pdf'}
         },
         {
@@ -78,28 +75,30 @@ class SheetTest < Minitest::Test
             method: :post,
             url: ['workspaces', :workspace_id, 'sheets'],
             args: {workspace_id: 123, body: {}},
-            has_params: true
         },
         {
             symbol: :create_from_template,
             method: :post,
             url: ['sheets'],
             args: {body: {}},
-            has_params: true
         },
         {
             symbol: :create_in_folder_from_template,
             method: :post,
             url: ['folders', :folder_id, 'sheets'],
             args: {folder_id: 123, body: {}},
-            has_params: true
         },
         {
             symbol: :copy,
             method: :post,
             url: ['sheets', :sheet_id, 'copy'],
             args: {sheet_id: 123, body: {}},
-            has_params: true
+        },
+        {
+            symbol: :move,
+            method: :post,
+            url: ['sheets', :sheet_id, 'move'],
+            args: {sheet_id: 123, body: {}},
         },
         {
             symbol: :update,
@@ -118,35 +117,30 @@ class SheetTest < Minitest::Test
             method: :get,
             url: ['users', 'sheets'],
             args: {},
-            has_params: true
         },
         {
             symbol: :get_publish_status,
             method: :get,
             url: ['sheets', :sheet_id, 'publish'],
             args: {sheet_id: 123},
-            has_params: false
         },
         {
             symbol: :set_publish_status,
             method: :put,
             url: ['sheets', :sheet_id, 'publish'],
             args: {sheet_id: 123, body: {}},
-            has_params: false
         },
         {
             symbol: :send_via_email,
             method: :post,
             url: ['sheets', :sheet_id, 'emails'],
             args: {sheet_id: 123, body: {}},
-            has_params: false
         },
         {
             symbol: :list_image_urls,
             method: :post,
             url: ['imageurls'],
             args: {body: {}},
-            has_params: false
         },
     ]
   end

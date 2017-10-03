@@ -1,3 +1,6 @@
+require 'json'
+require 'awrence'
+
 module Smartsheet
   module API
     class RequestSpec
@@ -10,6 +13,18 @@ module Smartsheet
         @body = body
         @filename = filename
         @content_type = content_type
+      end
+
+      def json_body
+        if body.nil? || body.is_a?(String)
+          body
+        else
+          body.to_camelback_keys.to_json
+        end
+      end
+
+      def file_body
+        Faraday::UploadIO.new(File.open(filename), content_type, filename)
       end
     end
   end
