@@ -1,3 +1,6 @@
+require 'json'
+require 'awrence'
+
 module Smartsheet
   module API
     class RequestSpec

@@ -1,6 +1,3 @@
-require 'json'
-require 'awrence'
-
 module Smartsheet
   module API
     # Constructs bodys for accessing the Smartsheet API
