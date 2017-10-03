@@ -8,13 +8,13 @@ module Smartsheet
       it 'provides an error response when handed a result that looks like an error' do
         result_body = OpenStruct.new(errorCode: 1000, message: 'Error', refId: '123abc')
         result = { body: result_body, status: 404, reason_phrase: 'Not Found', headers: {} }
-        response = FaradayResponse.from_result(result)
+        response = FaradayResponse.from_response_env(result)
         response.must_be_kind_of FaradayErrorResponse
       end
 
       it 'provides a success response when handed a result that does not look like an error' do
         result = { body: 'Result', status: 200, reason_phrase: 'OK', headers: {} }
-        response = FaradayResponse.from_result(result)
+        response = FaradayResponse.from_response_env(result)
         response.must_be_kind_of FaradaySuccessResponse
       end
     end

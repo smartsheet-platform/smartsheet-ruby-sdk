@@ -17,7 +17,7 @@ describe Smartsheet::API::FaradayNetClient do
 
   def build_stub_response
     response = mock
-    response.stubs(:body).returns Smartsheet::API::FaradayResponse.from_result({})
+    response.stubs(:body).returns Smartsheet::API::FaradayResponse.from_response_env({})
     response
   end
 
