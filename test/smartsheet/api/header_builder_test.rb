@@ -46,7 +46,7 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new(content_type: 'someContentType'))
+        Smartsheet::API::RequestSpec.new(content_type: 'someContentType', filename: 'file'))
                   .build
 
     headers.must_be_kind_of Hash
@@ -58,7 +58,7 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new)
+        Smartsheet::API::RequestSpec.new(filename: 'file'))
                   .build
 
     headers.must_be_kind_of Hash
@@ -70,24 +70,23 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new(filename: 'someFile'))
+        Smartsheet::API::RequestSpec.new(filename: 'someFile!@#$%^&*()'))
                   .build
 
     headers.must_be_kind_of Hash
-    headers[:'Content-Disposition'].must_equal 'attachment; filename="someFile"'
+    headers[:'Content-Disposition'].must_equal 'attachment; filename="someFile%21%40%23%24%25%5E%26%2A%28%29"'
   end
 
   it 'applies assume user correctly when set' do
-    assume_user = 'john.doe@smartsheet.com'.freeze
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}),
         Smartsheet::API::RequestSpec.new,
-        assume_user: assume_user)
+        assume_user: 'john.doe@smartsheet.com')
                   .build
 
     headers.must_be_kind_of Hash
-    headers[:'Assume-User'].must_equal assume_user
+    headers[:'Assume-User'].must_equal 'john.doe%40smartsheet.com'
   end
 
   it 'applies assume user correctly when not set' do

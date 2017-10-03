@@ -1,5 +1,6 @@
 require 'json'
 require 'awrence'
+require 'cgi'
 
 module Smartsheet
   module API
@@ -24,7 +25,7 @@ module Smartsheet
       end
 
       def file_body
-        Faraday::UploadIO.new(File.open(filename), content_type, filename)
+        Faraday::UploadIO.new(File.open(filename), content_type, CGI::escape(filename))
       end
     end
   end
