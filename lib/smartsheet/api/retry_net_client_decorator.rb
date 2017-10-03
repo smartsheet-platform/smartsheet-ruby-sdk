@@ -3,7 +3,7 @@ require 'smartsheet/api/request_logger'
 module Smartsheet
   module API
     class RetryNetClientDecorator
-      RETRY_CHECK = ->(response) { response.should_retry? }
+      SHOULD_RETRY = ->(response) { response.should_retry? }
 
       attr_reader :client, :retrier, :logger
       private :client, :retrier, :logger
@@ -17,12 +17,11 @@ module Smartsheet
       def make_request(request)
         total_attempts = 0
 
-        retried_response = retrier.run(RETRY_CHECK) do |iteration|
+        retried_response = retrier.run(SHOULD_RETRY) do |iteration|
           response = client.make_request(request)
 
           total_attempts = iteration + 1
-          logger.log_retry_attempt(request, response, total_attempts) if response.should_retry?
-
+          logger.log_retry_attempt(request, response, total_attempts) if SHOULD_RETRY.call(response)
           response
         end
 

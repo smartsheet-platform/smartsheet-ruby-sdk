@@ -96,15 +96,17 @@ module Smartsheet
       end
 
       def log_headers(req_or_resp)
-        logger.debug { "Headers: #{req_or_resp.headers}" }
+        logger.debug { "Headers: #{HEADER_CENSOR.censor_hash(req_or_resp.headers)}" }
       end
 
       def log_request_payload(request)
         body = request.body
         return unless body
 
-        if body.is_a?(String) || body.is_a?(Hash)
+        if body.is_a? String
           logger.debug { "Body: #{body}" }
+        elsif body.is_a? Hash
+          logger.debug { "Body: #{PAYLOAD_CENSOR.censor_hash(body)}" }
         else
           logger.debug 'Body: <Binary body>'
         end
@@ -114,8 +116,10 @@ module Smartsheet
         body = response.result
         return unless body
 
-        if body.is_a?(String) || body.is_a?(Hash) || body.is_a?(OpenStruct)
+        if body.is_a?(String) || body.is_a?(OpenStruct)
           logger.debug { "Body: #{body}" }
+        elsif body.is_a? Hash
+          logger.debug { "Body: #{PAYLOAD_CENSOR.censor_hash(body)}" }
         else
           logger.debug 'Body: <Binary body>'
         end
