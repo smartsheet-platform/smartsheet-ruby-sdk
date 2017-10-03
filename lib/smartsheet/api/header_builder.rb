@@ -1,3 +1,5 @@
+require 'cgi'
+
 module Smartsheet
   module API
     # Constructs headers for accessing the Smartsheet API
@@ -38,7 +40,7 @@ module Smartsheet
         if @assume_user.nil?
           {}
         else
-          {'Assume-User': @assume_user}
+          {'Assume-User': CGI::escape(@assume_user)}
         end
       end
 
@@ -58,7 +60,7 @@ module Smartsheet
 
       def content_disposition
         if endpoint_spec.sending_file?
-          {'Content-Disposition': "attachment; filename=\"#{request_spec.filename}\""}
+          {'Content-Disposition': "attachment; filename=\"#{CGI::escape(request_spec.filename)}\""}
         else
           {}
         end
