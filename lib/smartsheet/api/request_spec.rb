@@ -1,15 +1,63 @@
 module Smartsheet
   module API
     class RequestSpec
-      attr_reader :url_args, :params, :header_overrides, :body, :filename, :content_type
+      attr_reader :url_args, :params, :header_overrides, :body, :filename, :content_type, :file_options
+      private :file_options
 
-      def initialize(params: {}, header_overrides: {}, body: nil, filename: nil, content_type: nil, **url_args)
+      def initialize(params: {}, header_overrides: {}, body: nil, file_options: {}, **url_args)
         @url_args = url_args
         @params = params
         @header_overrides = header_overrides
         @body = body
-        @filename = filename
-        @content_type = content_type
+        @file_options = file_options
+
+        validate_file_options
+      end
+
+      def filename
+        file_options.key?(:filename) ? file_options[:filename] : File.basename(file_options[:path])
+      end
+
+      def file
+        @file = uses_file_stream? ? file_options[:file] : File.open(path) if @file.nil?
+
+        @file
+      end
+
+      def content_type
+        file_options.key?(:content_type) ? file_options[:content_type] : ''
+      end
+
+      def file_length
+        uses_file_stream? ? file_options[:file_length] : File.size(path)
+      end
+
+      def validate_file_options
+        unless file_options.empty? || valid_path? || valid_file?
+          raise ArgumentError.new('Must specify either path or file, filename, and length')
+        end
+      end
+
+      private
+
+      def path
+        file_options[:path]
+      end
+
+      def uses_file_stream?
+         file_options.key?(:file) &&
+            file_options.key?(:file_length)
+      end
+
+      def valid_path?
+        file_options.key?(:path)
+      end
+
+      def valid_file?
+        file_options.key?(:file) &&
+            file_options.key?(:file_length) &&
+            file_options.key?(:filename)
+
       end
     end
   end

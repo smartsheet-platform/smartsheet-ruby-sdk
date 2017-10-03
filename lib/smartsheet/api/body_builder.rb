@@ -32,7 +32,7 @@ module Smartsheet
       end
       
       def file_body
-        Faraday::UploadIO.new(File.open(request_spec.filename), request_spec.content_type, request_spec.filename)
+        Faraday::UploadIO.new(request_spec.file, request_spec.content_type, request_spec.filename)
       end
     end
   end

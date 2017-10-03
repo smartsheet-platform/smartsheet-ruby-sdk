@@ -22,7 +22,7 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def add_image(sheet_id:, row_id:, column_id:, filename:, content_type: '', params: {}, header_overrides: {})
+    def add_image(sheet_id:, row_id:, column_id:, file_options:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :post,
           ['sheets', :sheet_id, 'rows', :row_id, 'columns', :column_id, 'cellimages'],
@@ -31,8 +31,7 @@ module Smartsheet
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           params: params,
-          filename: filename,
-          content_type: content_type,
+          file_options: file_options,
           sheet_id: sheet_id,
           row_id: row_id,
           column_id: column_id
