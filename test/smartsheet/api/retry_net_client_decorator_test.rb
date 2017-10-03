@@ -9,6 +9,11 @@ describe Smartsheet::API::RetryNetClientDecorator do
   before do
     @response = mock
     @response.stubs(:'success?').returns false
+    @response.stubs(:message).returns 'message'
+    @response.stubs(:ref_id).returns 'RefID'
+    @response.stubs(:status_code).returns 404
+    @response.stubs(:reason_phrase).returns 'Not Found'
+    @response.stubs(:headers).returns({})
     @client = mock
 
     Timecop.freeze
@@ -20,6 +25,7 @@ describe Smartsheet::API::RetryNetClientDecorator do
 
   def given_response(retryable)
     @response.stubs(:'should_retry?').returns retryable
+    @response.stubs(:error_code).returns(retryable ? 4001 : 3999)
   end
 
   def given_retryable_response
@@ -33,9 +39,16 @@ describe Smartsheet::API::RetryNetClientDecorator do
   it 'does not retry when a non-retryable failure occurs' do
     given_non_retryable_response
     @client.expects(:make_request).returns @response
+
     Smartsheet::API::RetryNetClientDecorator
       .new(@client, Smartsheet::API::RetryLogic.new)
-      .make_request({})
+      .make_request(
+        Smartsheet::API::Request.new(
+          'token',
+          Smartsheet::API::EndpointSpec.new(:get, ['sheets']),
+          Smartsheet::API::RequestSpec.new
+        )
+      )
   end
 
   it 'retries when a retryable failure occurs' do
@@ -47,6 +60,12 @@ describe Smartsheet::API::RetryNetClientDecorator do
 
     Smartsheet::API::RetryNetClientDecorator
       .new(@client, retrier)
-      .make_request({})
+      .make_request(
+        Smartsheet::API::Request.new(
+          'token',
+          Smartsheet::API::EndpointSpec.new(:get, ['sheets']),
+          Smartsheet::API::RequestSpec.new
+        )
+      )
   end
 end
