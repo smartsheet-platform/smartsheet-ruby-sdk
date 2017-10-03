@@ -21,7 +21,7 @@ module Smartsheet
           response = client.make_request(request)
 
           total_attempts = iteration + 1
-          logger.log_retry_attempt(request, response, total_attempts)
+          logger.log_retry_attempt(request, response, total_attempts) if response.should_retry?
 
           response
         end

@@ -43,9 +43,7 @@ module Smartsheet
       end
 
       def log_retry_attempt(request, response, attempt_num)
-        return unless response.should_retry?
-
-        logger.warn { "Request attempt ##{attempt_num} failed" }
+        logger.warn { "Request attempt #{attempt_num} failed" }
         log_request_basics(Logger::WARN, request)
         log_api_error(Logger::WARN, response)
       end
