@@ -8,7 +8,7 @@ module Smartsheet
       attr_reader :json_output, :client
       private :json_output, :client
 
-      def initialize(client, json_output)
+      def initialize(client, json_output: false)
         @json_output = json_output
         @client = client
       end

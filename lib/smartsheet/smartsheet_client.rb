@@ -61,7 +61,7 @@ module Smartsheet
       net_client = API::FaradayNetClient.new
       retry_logic = init_retry_logic(max_retry_time, backoff_method)
       retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic)
-      response_client = API::ResponseNetClientDecorator.new(retrying_client, json_output)
+      response_client = API::ResponseNetClientDecorator.new(retrying_client, json_output: json_output)
       @client = API::RequestClient.new(token, response_client, assume_user: assume_user)
     end
 
