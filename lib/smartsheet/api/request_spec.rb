@@ -1,5 +1,6 @@
 require 'json'
 require 'awrence'
+require 'cgi'
 
 module Smartsheet
   module API
@@ -27,6 +28,18 @@ module Smartsheet
 
       def file_length
         uses_file_stream? ? file_options[:file_length] : File.size(path)
+      end
+
+      def json_body
+        if body.nil? || body.is_a?(String)
+          body
+        else
+          body.to_camelback_keys.to_json
+        end
+      end
+
+      def file_body
+        Faraday::UploadIO.new(file, content_type, CGI::escape(filename))
       end
 
       def validate_file_options
@@ -63,17 +76,7 @@ module Smartsheet
 
       end
 
-      def json_body
-        if body.nil? || body.is_a?(String)
-          body
-        else
-          body.to_camelback_keys.to_json
-        end
-      end
 
-      def file_body
-        Faraday::UploadIO.new(file, content_type, filename)
-      end
     end
   end
 end

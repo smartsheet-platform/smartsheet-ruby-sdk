@@ -1,6 +1,6 @@
 module Smartsheet
   module API
-    # Constructs bodys for accessing the Smartsheet API
+    # Constructs bodies for accessing the Smartsheet API
     class BodyBuilder
       def initialize(endpoint_spec, request_spec)
         @endpoint_spec = endpoint_spec
