@@ -1,20 +1,36 @@
+require 'smartsheet/api/request_logger'
+
 module Smartsheet
   module API
     class RetryNetClientDecorator
       RETRY_CHECK = ->(response) { response.should_retry? }
 
-      attr_reader :client, :retrier
-      private :client, :retrier
+      attr_reader :client, :retrier, :logger
+      private :client, :retrier, :logger
 
-      def initialize(client, retrier)
+      def initialize(client, retrier, logger = MuteRequestLogger.new)
         @client = client
         @retrier = retrier
+        @logger = logger
       end
 
       def make_request(request)
-        retrier.run(RETRY_CHECK) do
-          client.make_request(request)
+        total_attempts = 0
+
+        retried_response = retrier.run(RETRY_CHECK) do |iteration|
+          response = client.make_request(request)
+
+          total_attempts = iteration + 1
+          logger.log_retry_attempt(request, response, total_attempts)
+
+          response
         end
+
+        unless retried_response.success?
+          logger.log_retry_failure(total_attempts)
+        end
+
+        retried_response
       end
     end
   end
