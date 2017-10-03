@@ -21,7 +21,7 @@ def column_map(sheet)
 end
 
 def get_cell_by_column(row, column_id)
-  row.cells.find {|cell| cell.columnId == column_id}
+  row.cells.find {|cell| cell.column_id == column_id}
 end
 
 def get_cell_by_column_name(row, column_name, column_map)
@@ -32,10 +32,10 @@ def build_update_complete_row(row, column_map)
   status_cell = get_cell_by_column_name(row, 'Status', column_map)
   remaining_cell = get_cell_by_column_name(row, 'Remaining', column_map)
 
-  if status_cell.displayValue == 'Complete'
-    unless remaining_cell.displayValue == '0'
-      puts "Updating row #{row.rowNumber}"
-      row_update(row.id, remaining_cell.columnId, 0)
+  if status_cell.display_value == 'Complete'
+    unless remaining_cell.display_value == '0'
+      puts "Updating row #{row.row_number}"
+      row_update(row.id, remaining_cell.column_id, 0)
     end
   end
 end
@@ -51,22 +51,16 @@ def build_update_complete_rows_body(sheet)
   update_rows
 end
 
-def update_complete_rows(sheet, client)
+def update_complete_rows(sheet_id, client)
+  sheet = client.sheets.get(sheet_id: sheet_id)
+
   update_rows_body = build_update_complete_rows_body(sheet)
   if update_rows_body.empty?
     puts 'No Update Required'
     return
   end
 
-  response = client.sheets.rows.update(sheet_id: sheet.id, body: update_rows_body)
-
-  if response.success?
-    puts 'Successfully Updated'
-  else
-    print 'Failed to update: '
-    puts response.message
-    exit 1
-  end
+  client.sheets.rows.update(sheet_id: sheet.id, body: update_rows_body)
 end
 
 def load_config(config_name)
@@ -78,16 +72,18 @@ end
 
 config = load_config('config.json')
 
-client = Smartsheet::SmartsheetClient.new(config['token'])
+client = Smartsheet::SmartsheetClient.new(token: config['token'])
 
-response = client.sheets.get(sheet_id: config['sheet_id'])
-
-unless response.success?
-  print "Failed to get sheet #{config['sheet_id']}: "
-  puts response.message
-  exit 1
+begin
+  update_complete_rows(config['sheet_id'], client)
+rescue Smartsheet::API::ApiError => e
+  puts "API returned error:"
+  puts "\terror code: #{e.error_code}"
+  puts "\tref id: #{e.ref_id}"
+  puts "\tmessage: #{e.message}"
 end
 
-sheet = response.result
 
-update_complete_rows(sheet, client)
+
+
+

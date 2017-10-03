@@ -14,11 +14,10 @@ module Smartsheet
         def call(env)
           @app.call(env).on_complete do |response_env|
             if response_env[:response_headers]['content-type'] =~ /\bjson\b/
-              hash_body = JSON.parse(response_env[:body])
-              response_env[:body] = RecursiveOpenStruct.new(hash_body, recurse_over_arrays: true)
+              response_env[:body] = JSON.parse(response_env[:body])
             end
 
-            response_env[:body] = FaradayResponse.from_result response_env[:body]
+            response_env[:body] = FaradayResponse.from_response_env response_env
           end
         end
       end

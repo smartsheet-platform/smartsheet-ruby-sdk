@@ -28,9 +28,7 @@ describe Smartsheet::API::RequestClient do
   it 'returns the result of the client being called' do
     expected_value = 1
 
-    return_value = mock
-    return_value.stubs(:'success?').returns(true)
-    return_value.stubs(:result).returns(expected_value)
+    return_value = expected_value
 
     client = mock
     client.stubs(:make_request).returns(return_value)
@@ -39,22 +37,5 @@ describe Smartsheet::API::RequestClient do
         .new(TOKEN, client)
         .make_request(endpoint_spec, request_spec)
         .must_equal expected_value
-  end
-
-  it 'throws an ApiError when the client returns an error response' do
-    return_value = mock
-    return_value.stubs(:'success?').returns(false)
-    return_value.stubs(:message).returns('message')
-    return_value.stubs(:error_code).returns(4000)
-    return_value.stubs(:ref_id).returns(101)
-
-    client = mock
-    client.stubs(:make_request).returns(return_value)
-
-    lambda do
-      Smartsheet::API::RequestClient
-          .new(TOKEN, client)
-          .make_request(endpoint_spec, request_spec)
-    end.must_raise Smartsheet::API::ApiError
   end
 end

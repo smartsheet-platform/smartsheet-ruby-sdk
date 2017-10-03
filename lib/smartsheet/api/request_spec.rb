@@ -1,3 +1,6 @@
+require 'json'
+require 'awrence'
+
 module Smartsheet
   module API
     class RequestSpec
@@ -18,12 +21,6 @@ module Smartsheet
         file_options.key?(:filename) ? file_options[:filename] : File.basename(file_options[:path])
       end
 
-      def file
-        @file = uses_file_stream? ? file_options[:file] : File.open(path) if @file.nil?
-
-        @file
-      end
-
       def content_type
         file_options.key?(:content_type) ? file_options[:content_type] : ''
       end
@@ -39,6 +36,12 @@ module Smartsheet
       end
 
       private
+
+      def file
+        @file = uses_file_stream? ? file_options[:file] : File.open(path) if @file.nil?
+
+        @file
+      end
 
       def path
         file_options[:path]
@@ -58,6 +61,18 @@ module Smartsheet
             file_options.key?(:file_length) &&
             file_options.key?(:filename)
 
+      end
+
+      def json_body
+        if body.nil? || body.is_a?(String)
+          body
+        else
+          body.to_camelback_keys.to_json
+        end
+      end
+
+      def file_body
+        Faraday::UploadIO.new(file, content_type, filename)
       end
     end
   end
