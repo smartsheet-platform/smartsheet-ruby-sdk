@@ -5,24 +5,26 @@ require 'smartsheet/api/error'
 module Smartsheet
   module API
     class ResponseNetClientDecorator
-      attr_reader :json_output, :client
-      private :json_output, :client
-
-      def initialize(client, json_output)
+      def initialize(client, json_output: false, logger: MuteRequestLogger.new)
         @json_output = json_output
         @client = client
+        @logger = logger
       end
 
       def make_request(request)
-        parse(client.make_request(request))
+        parse(request, client.make_request(request))
       end
 
       private
 
-      def parse(response)
+      attr_reader :json_output, :client, :logger
+
+      def parse(request, response)
          if response.success?
+           logger.log_successful_response(response)
            parse_success(response)
          else
+           logger.log_error_response(request, response)
            parse_failure(response)
          end
       end

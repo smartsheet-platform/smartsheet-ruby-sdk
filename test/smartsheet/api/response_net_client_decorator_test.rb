@@ -43,7 +43,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
 
     -> {
       Smartsheet::API::ResponseNetClientDecorator
-        .new(@client, false)
+        .new(@client)
         .make_request({})
     }.must_raise Smartsheet::API::ApiError
   end
@@ -52,7 +52,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
     given_camelcase_result
 
     result = Smartsheet::API::ResponseNetClientDecorator
-                 .new(@client, false)
+                 .new(@client)
                  .make_request({})
 
     result.camel_case.must_equal '123'
@@ -62,7 +62,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
     given_snakecase_result
 
     result = Smartsheet::API::ResponseNetClientDecorator
-                 .new(@client, false)
+                 .new(@client)
                  .make_request({})
 
     result.snake_case.must_equal '123'
@@ -72,7 +72,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
     given_non_json_result
 
     result = Smartsheet::API::ResponseNetClientDecorator
-                 .new(@client, false)
+                 .new(@client)
                  .make_request({})
 
     result.must_equal 'result'
@@ -82,7 +82,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
     given_camelcase_result
 
     result = Smartsheet::API::ResponseNetClientDecorator
-                 .new(@client, true)
+                 .new(@client, json_output: true)
                  .make_request({})
 
     result.must_equal '{"camelCase":"123"}'

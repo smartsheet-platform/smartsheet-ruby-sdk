@@ -17,7 +17,7 @@ module Smartsheet
               response_env[:body] = JSON.parse(response_env[:body])
             end
 
-            response_env[:body] = FaradayResponse.from_result response_env[:body]
+            response_env[:body] = FaradayResponse.from_response_env response_env
           end
         end
       end
