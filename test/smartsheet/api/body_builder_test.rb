@@ -28,9 +28,16 @@ describe Smartsheet::API::BodyBuilder do
     @request_spec = Smartsheet::API::RequestSpec.new(body: @some_body.clone)
   end
 
-  def given_file_body
+  def given_path_file_body
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'], body_type: :file)
-    @request_spec = Smartsheet::API::RequestSpec.new(filename: 'file')
+    @request_spec = Smartsheet::API::RequestSpec.new(file_options: {path: 'file'})
+  end
+
+  def given_obj_file_body
+    file_obj = mock
+    file_obj.stubs(:read)
+    @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'], body_type: :file)
+    @request_spec = Smartsheet::API::RequestSpec.new(file_options: {file: file_obj, file_length: 10, filename: 'file'})
   end
 
   def given_snake_case_body
@@ -87,11 +94,18 @@ describe Smartsheet::API::BodyBuilder do
     body.must_equal @expected_body.to_json
   end
 
-  it 'returns valid file object' do
+  it 'returns valid file object via path' do
     File.stubs(:read)
     File.stubs(:open)
 
-    given_file_body
+    given_path_file_body
+    body = when_body_is_built
+
+    body.must_be_kind_of Faraday::UploadIO
+  end
+
+  it 'returns valid file object via obj' do
+    given_obj_file_body
     body = when_body_is_built
 
     body.must_be_kind_of Faraday::UploadIO

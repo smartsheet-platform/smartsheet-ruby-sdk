@@ -25,7 +25,7 @@ class CommentsAttachmentsTest < Minitest::Test
             symbol: :attach_file,
             method: :post,
             url: ['sheets', :sheet_id, 'comments', :comment_id, 'attachments'],
-            args: {sheet_id: 123, comment_id: 234, filename: 'file', content_type: 'blah'},
+            args: {sheet_id: 123, comment_id: 234, file_options: {path: 'file'}},
             has_params: false,
             headers: nil
         },

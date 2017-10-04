@@ -50,7 +50,7 @@ class SmartsheetClientTest < Minitest::Test
             symbol: :request_with_file,
             method: :post,
             url: ['some/url'],
-            args: {method: :post, url_path: 'some/url', filename: 'some file', content_type: 'some type'},
+            args: {method: :post, url_path: 'some/url', file_options: {path: 'file'}},
             has_params: true,
             headers: nil
         },

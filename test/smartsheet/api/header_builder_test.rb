@@ -46,35 +46,69 @@ describe Smartsheet::API::HeaderBuilder do
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new(content_type: 'someContentType', filename: 'file'))
+        Smartsheet::API::RequestSpec.new(file_options:{path: 'file', content_type: 'someContentType'}))
                   .build
 
     headers.must_be_kind_of Hash
     headers[:'Content-Type'].must_equal 'someContentType'
   end
 
-  it 'applies content length correctly for uploads' do
+  it 'applies content length correctly for upload via path' do
     File.stubs(:size).returns(10)
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new(filename: 'file'))
+        Smartsheet::API::RequestSpec.new(file_options: {path: 'file'}))
                   .build
 
     headers.must_be_kind_of Hash
     headers[:'Content-Length'].must_equal '10'
   end
 
-  it 'applies content disposition correctly for uploads' do
+  it 'applies content length correctly for upload via file obj' do
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
+        Smartsheet::API::RequestSpec.new(file_options: {file: {}, file_length: 10, filename: 'file'}))
+                  .build
+
+    headers.must_be_kind_of Hash
+    headers[:'Content-Length'].must_equal '10'
+  end
+
+  it 'applies content disposition correctly for uploads via path' do
     File.stubs(:size).returns(10)
     headers = Smartsheet::API::HeaderBuilder.new(
         TOKEN,
         Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
-        Smartsheet::API::RequestSpec.new(filename: 'someFile!@#$%^&*()'))
+        Smartsheet::API::RequestSpec.new(file_options:{path: 'path/to/someFile!@#$%^&*()'}))
                   .build
 
     headers.must_be_kind_of Hash
     headers[:'Content-Disposition'].must_equal 'attachment; filename="someFile%21%40%23%24%25%5E%26%2A%28%29"'
+  end
+
+  it 'applies content disposition correctly for uploads via path w/ name' do
+    File.stubs(:size).returns(10)
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
+        Smartsheet::API::RequestSpec.new(file_options:{path: 'path/to/someFile!@#$%^&*()', filename: 'fn'}))
+                  .build
+
+    headers.must_be_kind_of Hash
+    headers[:'Content-Disposition'].must_equal 'attachment; filename="fn"'
+  end
+
+  it 'applies content disposition correctly for uploads via obj' do
+    headers = Smartsheet::API::HeaderBuilder.new(
+        TOKEN,
+        Smartsheet::API::EndpointSpec.new(:get, [], headers: {}, body_type: :file),
+        Smartsheet::API::RequestSpec.new(file_options:{file: {}, filename: 'fn', file_length: 10}))
+                  .build
+
+    headers.must_be_kind_of Hash
+    headers[:'Content-Disposition'].must_equal 'attachment; filename="fn"'
   end
 
   it 'applies assume user correctly when set' do

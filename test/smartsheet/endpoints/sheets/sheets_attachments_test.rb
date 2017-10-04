@@ -49,7 +49,7 @@ class SheetAttachmentTest < Minitest::Test
             symbol: :attach_file,
             method: :post,
             url: ['sheets', :sheet_id, 'attachments'],
-            args: {sheet_id: 123, filename: 'file', content_type: 'content_type'},
+            args: {sheet_id: 123, file_options: {path: 'file'}},
             has_params: false,
             headers: nil
         },
@@ -57,7 +57,7 @@ class SheetAttachmentTest < Minitest::Test
             symbol: :attach_new_version,
             method: :post,
             url: ['sheets', :sheet_id, 'attachments', :attachment_id, 'versions'],
-            args: {sheet_id: 123, attachment_id: 234, filename: 'file', content_type: 'content_type'},
+            args: {sheet_id: 123, attachment_id: 234, file_options: {path: 'file'}},
             has_params: false,
             headers: nil
         },
