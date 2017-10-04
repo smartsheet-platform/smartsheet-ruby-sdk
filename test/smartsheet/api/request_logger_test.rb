@@ -38,8 +38,6 @@ module Smartsheet
           error(message)
         when Logger::INFO
           info(message)
-        when Logger::DEBUG
-          debug(message)
         end
       end
     end
