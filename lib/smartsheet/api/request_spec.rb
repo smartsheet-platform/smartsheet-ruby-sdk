@@ -50,8 +50,8 @@ module Smartsheet
         end
 
         if valid_path? && valid_file?
-          raise ArgumentError.new('Cannot specify file by both path and object. \
-              Use either path or file, filename, and length')
+          raise ArgumentError.new('Cannot specify file by both path and object. ' +
+              'Use either path or file, filename, and length')
         end
       end
 
