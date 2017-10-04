@@ -27,7 +27,7 @@ module Smartsheet
       end
 
       def file_length
-        uses_file_stream? ? file_options[:file_length] : File.size(path)
+        valid_path? ? File.size(path) : file_options[:file_length]
       end
 
       def json_body
@@ -42,27 +42,27 @@ module Smartsheet
         Faraday::UploadIO.new(file, content_type, CGI::escape(filename))
       end
 
+      private
+
       def validate_file_options
         unless file_options.empty? || valid_path? || valid_file?
           raise ArgumentError.new('Must specify either path or file, filename, and length')
         end
+
+        if valid_path? && valid_file?
+          raise ArgumentError.new('Cannot specify file by both path and object. \
+              Use either path or file, filename, and length')
+        end
       end
 
-      private
-
       def file
-        @file = uses_file_stream? ? file_options[:file] : File.open(path) if @file.nil?
+        @file = valid_file? ? file_options[:file] : File.open(path) if @file.nil?
 
         @file
       end
 
       def path
         file_options[:path]
-      end
-
-      def uses_file_stream?
-         file_options.key?(:file) &&
-            file_options.key?(:file_length)
       end
 
       def valid_path?
