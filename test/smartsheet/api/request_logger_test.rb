@@ -151,6 +151,15 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_request(@mock_request)
       @mock_logger.debug_msgs.must_include "Request Body: #{'x' * OVER_TRUNCATION_LIMIT}"
     end
+
+    it 'truncates long bodies when generated from a hash' do
+      given_mock_request(body: {x: 'y' * 1024})
+      @request_logger.log_request(@mock_request)
+      @mock_logger
+          .debug_msgs
+          .any? { |x| x.length == TRUNCATION_LIMIT + ('Request Body: ...'.length) }
+          .must_equal true
+    end
   end
 
   describe 'log_retry_attempt' do
