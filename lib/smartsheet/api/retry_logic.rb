@@ -3,7 +3,7 @@ module Smartsheet
     class RetryLogic
       DEFAULT_MAX_RETRY_TIME = 15
 
-      DEFAULT_BACKOFF_METHOD = proc { |iteration| 2**iteration + rand }
+      DEFAULT_BACKOFF_METHOD = proc { |iteration, _result| 2**iteration + rand }
 
       def initialize(max_retry_time: DEFAULT_MAX_RETRY_TIME, backoff_method: DEFAULT_BACKOFF_METHOD)
         @max_retry_time = max_retry_time
@@ -23,14 +23,14 @@ module Smartsheet
       def _run(method_to_run, should_retry, end_time, iteration)
         result = method_to_run.call(iteration)
 
-        backoff = backoff_method.call(iteration)
+        backoff = backoff_method.call(iteration, result)
 
-        return result unless should_retry.call(result) && Time.now.to_i + backoff < end_time
+        if backoff == :stop || Time.now.to_i + backoff >= end_time || !should_retry.call(result)
+          return result
+        end
 
         sleep backoff
-
-        iteration += 1
-        _run(method_to_run, should_retry, end_time, iteration)
+        _run(method_to_run, should_retry, end_time, iteration + 1)
       end
     end
   end
