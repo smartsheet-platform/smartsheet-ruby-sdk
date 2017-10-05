@@ -99,7 +99,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_request(@mock_request)
 
-      @mock_logger.debug_msgs.must_include 'Body: {:access_token=>"****orme", :refresh_token=>"*etoo"}'
+      @mock_logger.debug_msgs.must_include 'Request Body: {:access_token=>"****orme", :refresh_token=>"*etoo"}'
     end
 
     it 'logs string body' do
@@ -107,7 +107,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_request(@mock_request)
 
-      @mock_logger.debug_msgs.must_include 'Body: string body'
+      @mock_logger.debug_msgs.must_include 'Request Body: string body'
     end
 
     it 'logs binary body for other types' do
@@ -115,7 +115,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_request(@mock_request)
 
-      @mock_logger.debug_msgs.must_include 'Body: <Binary body>'
+      @mock_logger.debug_msgs.must_include 'Request Body: <Binary body>'
     end
 
     it 'censors headers' do
@@ -123,7 +123,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_request(@mock_request)
 
-      @mock_logger.debug_msgs.must_include 'Headers: {:authorization=>"****orme"}'
+      @mock_logger.debug_msgs.must_include 'Request Headers: {:authorization=>"****orme"}'
     end
   end
 
@@ -147,7 +147,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_retry_attempt(@mock_request, @mock_response, 1)
 
-      @mock_logger.debug_msgs.must_include 'Headers: {:authorization=>"****orme"}'
+      @mock_logger.debug_msgs.must_include 'Response Headers: {:authorization=>"****orme"}'
     end
   end
 
@@ -163,7 +163,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_successful_response(@mock_response)
 
-      @mock_logger.debug_msgs.must_include 'Body: {:access_token=>"****orme", :refresh_token=>"*etoo"}'
+      @mock_logger.debug_msgs.must_include 'Response Body: {:access_token=>"****orme", :refresh_token=>"*etoo"}'
     end
 
     it 'logs string body' do
@@ -171,7 +171,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_successful_response(@mock_response)
 
-      @mock_logger.debug_msgs.must_include 'Body: string body'
+      @mock_logger.debug_msgs.must_include 'Response Body: string body'
     end
 
     it 'logs binary body for other types' do
@@ -179,7 +179,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_successful_response(@mock_response)
 
-      @mock_logger.debug_msgs.must_include 'Body: <Binary body>'
+      @mock_logger.debug_msgs.must_include 'Response Body: <Binary body>'
     end
 
     it 'censors headers' do
@@ -187,7 +187,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_successful_response(@mock_response)
 
-      @mock_logger.debug_msgs.must_include 'Headers: {:authorization=>"****orme"}'
+      @mock_logger.debug_msgs.must_include 'Response Headers: {:authorization=>"****orme"}'
     end
   end
 
@@ -211,7 +211,7 @@ describe Smartsheet::API::RequestLogger do
 
       @request_logger.log_retry_attempt(@mock_request, @mock_response, 1)
 
-      @mock_logger.debug_msgs.must_include 'Headers: {:authorization=>"****orme"}'
+      @mock_logger.debug_msgs.must_include 'Response Headers: {:authorization=>"****orme"}'
     end
   end
 end

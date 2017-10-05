@@ -38,8 +38,8 @@ module Smartsheet
 
       def log_request(request)
         log_request_basics(Logger::INFO, request)
-        log_headers(request)
-        log_body(request.body)
+        log_headers('Request', request)
+        log_body('Request', request.body)
       end
 
       def log_retry_attempt(request, response, attempt_num)
@@ -55,8 +55,8 @@ module Smartsheet
 
       def log_successful_response(response)
         log_status(Logger::INFO, response)
-        log_headers(response)
-        log_body(response.result)
+        log_headers('Response', response)
+        log_body('Response', response.result)
       end
 
       def log_error_response(request, error)
@@ -88,26 +88,26 @@ module Smartsheet
         logger.log(level) do
           "#{response.error_code}: #{response.message} - Ref ID: #{response.ref_id}"
         end
-        log_headers(response)
+        log_headers('Response', response)
       end
 
       def log_status(level, response)
         logger.log(level) { "Response: #{response.status_code} #{response.reason_phrase}" }
       end
 
-      def log_headers(req_or_resp)
-        logger.debug { "Headers: #{HEADER_CENSOR.censor_hash(req_or_resp.headers)}" }
+      def log_headers(context, req_or_resp)
+        logger.debug { "#{context} Headers: #{HEADER_CENSOR.censor_hash(req_or_resp.headers)}" }
       end
 
-      def log_body(body)
+      def log_body(context, body)
         return unless body
 
         if body.is_a? String
-          logger.debug { "Body: #{body}" }
+          logger.debug { "#{context} Body: #{body}" }
         elsif body.is_a? Hash
-          logger.debug { "Body: #{PAYLOAD_CENSOR.censor_hash(body)}" }
+          logger.debug { "#{context} Body: #{PAYLOAD_CENSOR.censor_hash(body)}" }
         else
-          logger.debug 'Body: <Binary body>'
+          logger.debug "#{context} Body: <Binary body>"
         end
       end
     end
