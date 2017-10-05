@@ -7,9 +7,9 @@ module Smartsheet
     describe FaradayResponse do
       it 'provides an error response when handed a result that looks like an error' do
         result_body = {
-            'errorCode' => 1000,
-            'message' => 'Error',
-            'refId' => '123abc'
+            :errorCode => 1000,
+            :message => 'Error',
+            :refId => '123abc'
         }
         result = { body: result_body, status: 404, reason_phrase: 'Not Found', headers: {} }
         response = FaradayResponse.from_response_env(result)
@@ -39,14 +39,14 @@ module Smartsheet
           'connection' => 'close'
       }.freeze
       RETRYABLE_ERROR_RESULT = {
-        'errorCode' => RETRYABLE_ERROR_CODE,
-        'message' => ERROR_MESSAGE,
-        'refId' => REF_ID
+        :errorCode => RETRYABLE_ERROR_CODE,
+        :message => ERROR_MESSAGE,
+        :refId => REF_ID
       }
       NON_RETRYABLE_ERROR_RESULT = {
-        'errorCode' => NON_RETRYABLE_ERROR_CODE,
-        'message' => ERROR_MESSAGE,
-        'refId' => REF_ID
+        :errorCode => NON_RETRYABLE_ERROR_CODE,
+        :message => ERROR_MESSAGE,
+        :refId => REF_ID
       }
       FARADAY_RESPONSE = {
           status: STATUS,
