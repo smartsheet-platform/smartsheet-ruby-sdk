@@ -2,7 +2,7 @@ module Smartsheet
   module API
     class FaradayResponse
       def self.from_response_env(faraday_response)
-        if faraday_response[:body].kind_of?(Hash) && faraday_response[:body].key?('errorCode')
+        if faraday_response[:body].kind_of?(Hash) && faraday_response[:body].key?(:errorCode)
           FaradayErrorResponse.new(faraday_response[:body], faraday_response)
         else
           FaradaySuccessResponse.new(faraday_response[:body], faraday_response)
@@ -25,9 +25,9 @@ module Smartsheet
 
       def initialize(result, faraday_response)
         super(faraday_response)
-        @error_code = result['errorCode']
-        @message = result['message']
-        @ref_id = result['refId']
+        @error_code = result[:errorCode]
+        @message = result[:message]
+        @ref_id = result[:refId]
       end
 
       def should_retry?

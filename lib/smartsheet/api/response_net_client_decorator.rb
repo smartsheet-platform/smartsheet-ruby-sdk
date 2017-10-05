@@ -33,8 +33,7 @@ module Smartsheet
         if json_output
           response.result.to_json
         elsif response.result.respond_to? :to_snake_keys
-          snake_key_hash = response.result.to_snake_keys
-          RecursiveOpenStruct.new(snake_key_hash, recurse_over_arrays: true)
+          response.result.to_snake_keys
         else
           response.result
         end

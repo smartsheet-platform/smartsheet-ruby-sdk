@@ -1,6 +1,5 @@
 require 'faraday'
 require 'json'
-require 'recursive-open-struct'
 require 'smartsheet/api/faraday_adapter/faraday_response'
 
 module Smartsheet
@@ -14,7 +13,7 @@ module Smartsheet
         def call(env)
           @app.call(env).on_complete do |response_env|
             if response_env[:response_headers]['content-type'] =~ /\bjson\b/
-              response_env[:body] = JSON.parse(response_env[:body])
+              response_env[:body] = JSON.parse(response_env[:body], symbolize_names: true)
             end
 
             response_env[:body] = FaradayResponse.from_response_env response_env

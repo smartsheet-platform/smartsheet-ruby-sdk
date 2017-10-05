@@ -55,7 +55,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
                  .new(@client)
                  .make_request({})
 
-    result.camel_case.must_equal '123'
+    result[:camel_case].must_equal '123'
   end
 
   it 'does not change snake case' do
@@ -65,7 +65,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
                  .new(@client)
                  .make_request({})
 
-    result.snake_case.must_equal '123'
+    result[:snake_case].must_equal '123'
   end
 
   it 'does not modify non-JSON results' do
