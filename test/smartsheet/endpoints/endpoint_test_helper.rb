@@ -13,6 +13,9 @@ module Smartsheet
           Smartsheet::API::RequestClient.stubs(:new).returns(@mock_client)
 
           @smartsheet_client = Smartsheet::SmartsheetClient.new(token: TOKEN)
+          File.stubs(:size).returns(10)
+          File.stubs(:open).returns({})
+          Faraday::UploadIO.stubs(:new).returns('upload')
         end
       end
 
@@ -52,9 +55,7 @@ module Smartsheet
           mock_conn.stubs(:delete).returns(mock_response)
           Faraday.stubs(:new).returns(mock_conn)
 
-          File.stubs(:size).returns(10)
-          File.stubs(:open).returns({})
-          Faraday::UploadIO.stubs(:new).returns('upload')
+
 
           @smartsheet_client = Smartsheet::SmartsheetClient.new(token: 'token')
 

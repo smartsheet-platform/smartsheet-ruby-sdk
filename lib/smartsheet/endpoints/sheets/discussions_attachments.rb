@@ -1,3 +1,5 @@
+require 'smartsheet/api/file_spec'
+
 module Smartsheet
   class DiscussionsAttachments
     attr_reader :client
