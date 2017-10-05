@@ -114,11 +114,17 @@ module Smartsheet
               '<Binary body>'
             end
 
-        unless log_full_body || body_str.length <= TRUNCATED_BODY_LENGTH
-          body_str = body_str[0...TRUNCATED_BODY_LENGTH] + '...'
-        end
+        body_str = truncate_body(body_str) unless log_full_body
 
         logger.debug "#{context} Body: #{body_str}"
+      end
+
+      def truncate_body(body_str)
+        if body_str.length > TRUNCATED_BODY_LENGTH
+          body_str[0...TRUNCATED_BODY_LENGTH] + '...'
+        else
+          body_str
+        end
       end
     end
 
