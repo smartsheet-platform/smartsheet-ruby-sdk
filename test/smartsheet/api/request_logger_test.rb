@@ -48,7 +48,7 @@ end
 describe Smartsheet::API::RequestLogger do
   before do
     @mock_logger = Smartsheet::Test::MockLogger.new
-    @request_logger = Smartsheet::API::RequestLogger.new(@mock_logger)
+    @request_logger = Smartsheet::API::RequestLogger.new(@mock_logger, log_full_body: false)
   end
 
   def given_mock_request(body: {}, params: {}, headers: {})
@@ -81,7 +81,14 @@ describe Smartsheet::API::RequestLogger do
     @mock_response.stubs(:result).returns(result)
   end
 
+  def given_full_body_flag
+    @request_logger = Smartsheet::API::RequestLogger.new(@mock_logger, log_full_body: true)
+  end
+
   describe 'log_request' do
+    TRUNCATION_LIMIT = 1024
+    OVER_TRUNCATION_LIMIT = 1025
+
     it 'censors params' do
       given_mock_request(
           params: {code: 'censorme', client_id: 'censorme', hash: 'censorme', refresh_token: 'censorme'}
@@ -124,6 +131,25 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_request(@mock_request)
 
       @mock_logger.debug_msgs.must_include 'Request Headers: {:authorization=>"****orme"}'
+    end
+
+    it 'truncates long bodies when the `log full body` flag is false' do
+      given_mock_request(body: 'x' * OVER_TRUNCATION_LIMIT)
+      @request_logger.log_request(@mock_request)
+      @mock_logger.debug_msgs.must_include "Request Body: #{'x' * TRUNCATION_LIMIT}..."
+    end
+
+    it 'does not truncate bodies under the truncation limit' do
+      given_mock_request(body: 'x' * TRUNCATION_LIMIT)
+      @request_logger.log_request(@mock_request)
+      @mock_logger.debug_msgs.must_include "Request Body: #{'x' * TRUNCATION_LIMIT}"
+    end
+
+    it 'does not truncate bodies when the `log full body` flag is true' do
+      given_full_body_flag
+      given_mock_request(body: 'x' * OVER_TRUNCATION_LIMIT)
+      @request_logger.log_request(@mock_request)
+      @mock_logger.debug_msgs.must_include "Request Body: #{'x' * OVER_TRUNCATION_LIMIT}"
     end
   end
 

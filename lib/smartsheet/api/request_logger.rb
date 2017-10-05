@@ -32,8 +32,11 @@ module Smartsheet
       HEADER_CENSOR = Censor.new 'authorization'
       PAYLOAD_CENSOR = Censor.new 'access_token', 'refresh_token'
 
-      def initialize(logger)
+      TRUNCATED_BODY_LENGTH = 1024
+
+      def initialize(logger, log_full_body:)
         @logger = logger
+        @log_full_body = log_full_body
       end
 
       def log_request(request)
@@ -66,7 +69,7 @@ module Smartsheet
 
       private
 
-      attr_reader :logger
+      attr_reader :logger, :log_full_body
 
       def log_request_basics(level, request)
         logger.log(level) { "Request: #{request.method} #{build_logging_url(request)}" }
@@ -102,13 +105,20 @@ module Smartsheet
       def log_body(context, body)
         return unless body
 
-        if body.is_a? String
-          logger.debug { "#{context} Body: #{body}" }
-        elsif body.is_a? Hash
-          logger.debug { "#{context} Body: #{PAYLOAD_CENSOR.censor_hash(body)}" }
-        else
-          logger.debug "#{context} Body: <Binary body>"
+        body_str =
+            if body.is_a? String
+              body
+            elsif body.is_a? Hash
+              PAYLOAD_CENSOR.censor_hash(body).to_s
+            else
+              '<Binary body>'
+            end
+
+        unless log_full_body || body_str.length <= TRUNCATED_BODY_LENGTH
+          body_str = body_str[0...TRUNCATED_BODY_LENGTH] + '...'
         end
+
+        logger.debug "#{context} Body: #{body_str}"
       end
     end
 
