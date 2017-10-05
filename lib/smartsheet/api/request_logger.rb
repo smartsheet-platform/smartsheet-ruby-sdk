@@ -11,7 +11,7 @@ module Smartsheet
 
       def censor_hash(h)
         h.collect do |(k, v)|
-          new_v = blacklist.include?(k) ? censor(v) : v
+          new_v = blacklist.include?(k.to_s) ? censor(v) : v
           [k, new_v]
         end.to_h
       end
@@ -39,7 +39,7 @@ module Smartsheet
       def log_request(request)
         log_request_basics(Logger::INFO, request)
         log_headers(request)
-        log_request_payload(request)
+        log_body(request.body)
       end
 
       def log_retry_attempt(request, response, attempt_num)
@@ -56,7 +56,7 @@ module Smartsheet
       def log_successful_response(response)
         log_status(Logger::INFO, response)
         log_headers(response)
-        log_response_payload(response)
+        log_body(response.result)
       end
 
       def log_error_response(request, error)
@@ -78,7 +78,7 @@ module Smartsheet
           if query_params.empty?
             ''
           else
-            '?' + query_params.collect { |(k, v)| "#{k}=#{v}" }.join(',') # TODO: URI Encoding
+            '?' + query_params.collect { |(k, v)| "#{k}=#{v}" }.join('&') # TODO: URI Encoding
           end
         request.url + query_param_str
       end
@@ -99,24 +99,10 @@ module Smartsheet
         logger.debug { "Headers: #{HEADER_CENSOR.censor_hash(req_or_resp.headers)}" }
       end
 
-      def log_request_payload(request)
-        body = request.body
+      def log_body(body)
         return unless body
 
         if body.is_a? String
-          logger.debug { "Body: #{body}" }
-        elsif body.is_a? Hash
-          logger.debug { "Body: #{PAYLOAD_CENSOR.censor_hash(body)}" }
-        else
-          logger.debug 'Body: <Binary body>'
-        end
-      end
-
-      def log_response_payload(response)
-        body = response.result
-        return unless body
-
-        if body.is_a?(String) || body.is_a?(OpenStruct)
           logger.debug { "Body: #{body}" }
         elsif body.is_a? Hash
           logger.debug { "Body: #{PAYLOAD_CENSOR.censor_hash(body)}" }
