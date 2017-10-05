@@ -26,7 +26,7 @@ class CellsTest < Minitest::Test
             symbol: :add_image,
             method: :post,
             url: ['sheets', :sheet_id, 'rows', :row_id, 'columns', :column_id, 'cellimages'],
-            args: {sheet_id: 123, row_id: 234, column_id: 345, filename: 'file', content_type: 'content_type'},
+            args: {sheet_id: 123, row_id: 234, column_id: 345, file_options: {path: 'file'}},
             has_params: true,
             headers: nil
         },

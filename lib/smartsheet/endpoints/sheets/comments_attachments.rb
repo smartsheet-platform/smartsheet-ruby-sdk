@@ -23,7 +23,7 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def attach_file(sheet_id:, comment_id:, filename:, content_type: '', params: {}, header_overrides: {})
+    def attach_file(sheet_id:, comment_id:, file_options:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :post,
           ['sheets', :sheet_id, 'comments', :comment_id, 'attachments'],
@@ -32,8 +32,7 @@ module Smartsheet
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           params: params,
-          filename: filename,
-          content_type: content_type,
+          file_options: file_options,
           sheet_id: sheet_id,
           comment_id: comment_id
       )

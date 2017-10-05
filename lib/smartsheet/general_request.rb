@@ -11,13 +11,12 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
-    def request_with_file(method:, url_path:, filename:, content_type: '', params: {}, header_overrides: {})
+    def request_with_file(method:, url_path:, file_options:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(method, [url_path], body_type: :file)
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           params: params,
-          filename: filename,
-          content_type: content_type
+          file_options: file_options
       )
       client.make_request(endpoint_spec, request_spec)
     end
