@@ -32,14 +32,17 @@ module Smartsheet
       HEADER_CENSOR = Censor.new 'authorization'
       PAYLOAD_CENSOR = Censor.new 'access_token', 'refresh_token'
 
-      def initialize(logger)
+      TRUNCATED_BODY_LENGTH = 1024
+
+      def initialize(logger, log_full_body:)
         @logger = logger
+        @log_full_body = log_full_body
       end
 
       def log_request(request)
         log_request_basics(Logger::INFO, request)
-        log_headers(request)
-        log_body(request.body)
+        log_headers('Request', request)
+        log_body('Request', request.body)
       end
 
       def log_retry_attempt(request, response, attempt_num)
@@ -55,8 +58,8 @@ module Smartsheet
 
       def log_successful_response(response)
         log_status(Logger::INFO, response)
-        log_headers(response)
-        log_body(response.result)
+        log_headers('Response', response)
+        log_body('Response', response.result)
       end
 
       def log_error_response(request, error)
@@ -66,7 +69,7 @@ module Smartsheet
 
       private
 
-      attr_reader :logger
+      attr_reader :logger, :log_full_body
 
       def log_request_basics(level, request)
         logger.log(level) { "Request: #{request.method} #{build_logging_url(request)}" }
@@ -88,26 +91,39 @@ module Smartsheet
         logger.log(level) do
           "#{response.error_code}: #{response.message} - Ref ID: #{response.ref_id}"
         end
-        log_headers(response)
+        log_headers('Response', response)
       end
 
       def log_status(level, response)
         logger.log(level) { "Response: #{response.status_code} #{response.reason_phrase}" }
       end
 
-      def log_headers(req_or_resp)
-        logger.debug { "Headers: #{HEADER_CENSOR.censor_hash(req_or_resp.headers)}" }
+      def log_headers(context, req_or_resp)
+        logger.debug { "#{context} Headers: #{HEADER_CENSOR.censor_hash(req_or_resp.headers)}" }
       end
 
-      def log_body(body)
+      def log_body(context, body)
         return unless body
 
-        if body.is_a? String
-          logger.debug { "Body: #{body}" }
-        elsif body.is_a? Hash
-          logger.debug { "Body: #{PAYLOAD_CENSOR.censor_hash(body)}" }
+        body_str =
+            if body.is_a? String
+              body
+            elsif body.is_a? Hash
+              PAYLOAD_CENSOR.censor_hash(body).to_s
+            else
+              '<Binary body>'
+            end
+
+        body_str = truncate_body(body_str) unless log_full_body
+
+        logger.debug "#{context} Body: #{body_str}"
+      end
+
+      def truncate_body(body_str)
+        if body_str.length > TRUNCATED_BODY_LENGTH
+          body_str[0...TRUNCATED_BODY_LENGTH] + '...'
         else
-          logger.debug 'Body: <Binary body>'
+          body_str
         end
       end
     end

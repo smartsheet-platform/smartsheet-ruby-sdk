@@ -38,43 +38,63 @@ module Smartsheet
         json_output: false,
         max_retry_time: nil,
         backoff_method: nil,
-        logger: nil
+        logger: nil,
+        log_full_body: false
     )
 
-      @client = init_client(token, assume_user, json_output, max_retry_time, backoff_method, logger)
+      request_logger =
+          logger ?
+              API::RequestLogger.new(logger, log_full_body) :
+              API::MuteRequestLogger.new
 
-      @contacts = Contacts.new(@client)
-      @favorites = Favorites.new(@client)
-      @folders = Folders.new(@client)
-      @groups = Groups.new(@client)
-      @home = Home.new(@client)
-      @reports = Reports.new(@client)
-      @search = Search.new(@client)
-      @server_info = ServerInfo.new(@client)
-      @sheets = Sheets.new(@client)
-      @sights = Sights.new(@client)
-      @token = Token.new(@client)
-      @templates = Templates.new(@client)
-      @update_requests = UpdateRequests.new(@client)
-      @users = Users.new(@client)
-      @webhooks = Webhooks.new(@client)
-      @workspaces = Workspaces.new(@client)
+      token = token_env_var if token.nil?
+
+      net_client = API::FaradayNetClient.new
+
+      retry_logic = init_retry_logic(max_retry_time, backoff_method)
+
+      retrying_client = API::RetryNetClientDecorator.new(
+          net_client,
+          retry_logic,
+          logger: request_logger
+      )
+
+      response_client = API::ResponseNetClientDecorator.new(
+          retrying_client,
+          json_output: json_output
+      )
+
+      @client = API::RequestClient.new(
+          token,
+          response_client,
+          assume_user: assume_user,
+          logger: request_logger
+      )
+
+      build_categories
     end
 
     private
 
     attr_reader :client
 
-    def init_client(token, assume_user, json_output, max_retry_time, backoff_method, logger)
-      request_logger = logger ? API::RequestLogger.new(logger) : API::MuteRequestLogger.new
-      token = token_env_var if token.nil?
-
-      net_client = API::FaradayNetClient.new
-      retry_logic = init_retry_logic(max_retry_time, backoff_method)
-      retrying_client = API::RetryNetClientDecorator.new(net_client, retry_logic, logger: request_logger)
-      response_client = API::ResponseNetClientDecorator.new(retrying_client, json_output: json_output)
-
-      API::RequestClient.new(token, response_client, assume_user: assume_user, logger: request_logger)
+    def build_categories
+      @contacts = Contacts.new(client)
+      @favorites = Favorites.new(client)
+      @folders = Folders.new(client)
+      @groups = Groups.new(client)
+      @home = Home.new(client)
+      @reports = Reports.new(client)
+      @search = Search.new(client)
+      @server_info = ServerInfo.new(client)
+      @sheets = Sheets.new(client)
+      @sights = Sights.new(client)
+      @token = Token.new(client)
+      @templates = Templates.new(client)
+      @update_requests = UpdateRequests.new(client)
+      @users = Users.new(client)
+      @webhooks = Webhooks.new(client)
+      @workspaces = Workspaces.new(client)
     end
 
     def init_retry_logic(max_retry_time, backoff_method)
