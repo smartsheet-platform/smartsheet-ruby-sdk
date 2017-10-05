@@ -13,6 +13,9 @@ module Smartsheet
           Smartsheet::API::RequestClient.stubs(:new).returns(@mock_client)
 
           @smartsheet_client = Smartsheet::SmartsheetClient.new(token: TOKEN)
+          File.stubs(:size).returns(10)
+          File.stubs(:open).returns({})
+          Faraday::UploadIO.stubs(:new).returns('upload')
         end
       end
 
@@ -52,9 +55,7 @@ module Smartsheet
           mock_conn.stubs(:delete).returns(mock_response)
           Faraday.stubs(:new).returns(mock_conn)
 
-          File.stubs(:size).returns(10)
-          File.stubs(:open).returns({})
-          Faraday::UploadIO.stubs(:new).returns('upload')
+
 
           @smartsheet_client = Smartsheet::SmartsheetClient.new(token: 'token')
 
@@ -105,7 +106,8 @@ module Smartsheet
       def define_valid_file(endpoint)
         define_method "test_#{self.name}_#{endpoint[:symbol]}_valid_file" do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
-            assert_equal(endpoint[:args].key?(:file_options), endpoint_spec.sending_file?)
+            should_be_file = endpoint[:args].key?(:file) || endpoint[:args].key?(:path)
+            assert_equal(should_be_file, endpoint_spec.sending_file?)
           end
 
           category.send(endpoint[:symbol], **endpoint[:args])

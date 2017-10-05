@@ -3,6 +3,7 @@ require 'faraday'
 require 'smartsheet/api/body_builder'
 require 'smartsheet/api/endpoint_spec'
 require 'smartsheet/api/request_spec'
+require 'smartsheet/api/file_spec'
 
 describe Smartsheet::API::BodyBuilder do
   def given_json_body
@@ -30,14 +31,17 @@ describe Smartsheet::API::BodyBuilder do
 
   def given_path_file_body
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'], body_type: :file)
-    @request_spec = Smartsheet::API::RequestSpec.new(file_options: {path: 'file'})
+    @request_spec = Smartsheet::API::RequestSpec.new(
+        file_spec: Smartsheet::API::PathFileSpec.new('some/path', nil, '')
+    )
   end
 
   def given_obj_file_body
     file_obj = mock
     file_obj.stubs(:read)
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['a'], body_type: :file)
-    @request_spec = Smartsheet::API::RequestSpec.new(file_options: {file: file_obj, file_length: 10, filename: 'file'})
+    @request_spec = Smartsheet::API::RequestSpec.new(
+        file_spec: Smartsheet::API::ObjectFileSpec.new(file_obj, 'file', 123, ''))
   end
 
   def given_snake_case_body
@@ -97,6 +101,7 @@ describe Smartsheet::API::BodyBuilder do
   it 'returns valid file object via path' do
     File.stubs(:read)
     File.stubs(:open)
+    File.stubs(:size).returns(10)
 
     given_path_file_body
     body = when_body_is_built

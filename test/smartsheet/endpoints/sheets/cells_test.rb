@@ -21,12 +21,19 @@ class CellsTest < Minitest::Test
             has_params: true,
             headers: nil
         },
-
         {
             symbol: :add_image,
             method: :post,
             url: ['sheets', :sheet_id, 'rows', :row_id, 'columns', :column_id, 'cellimages'],
-            args: {sheet_id: 123, row_id: 234, column_id: 345, file_options: {path: 'file'}},
+            args: {sheet_id: 123, row_id: 234, column_id: 345, file: {}, filename: 'file', file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :add_image_from_path,
+            method: :post,
+            url: ['sheets', :sheet_id, 'rows', :row_id, 'columns', :column_id, 'cellimages'],
+            args: {sheet_id: 123, row_id: 234, column_id: 345, path: 'file'},
             has_params: true,
             headers: nil
         },

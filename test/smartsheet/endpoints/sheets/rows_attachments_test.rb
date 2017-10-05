@@ -33,7 +33,15 @@ class RowsAttachmentsTest < Minitest::Test
             symbol: :attach_file,
             method: :post,
             url: ['sheets', :sheet_id, 'rows', :row_id, 'attachments'],
-            args: {sheet_id: 123, row_id: 234, file_options: {path: 'file'}},
+            args: {sheet_id: 123, row_id: 234, file: {}, filename: 'file', file_length: 123},
+            has_params: false,
+            headers: nil
+        },
+        {
+            symbol: :attach_file_from_path,
+            method: :post,
+            url: ['sheets', :sheet_id, 'rows', :row_id, 'attachments'],
+            args: {sheet_id: 123, row_id: 234, path: 'file'},
             has_params: false,
             headers: nil
         },
