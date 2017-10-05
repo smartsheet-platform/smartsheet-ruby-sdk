@@ -1,5 +1,5 @@
 require 'cgi'
-# require 'faraday'
+require 'faraday'
 
 module Smartsheet
   module API

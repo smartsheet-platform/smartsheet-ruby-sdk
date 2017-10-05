@@ -1,3 +1,5 @@
+require 'smartsheet/api/file_spec'
+
 module Smartsheet
   class RowsAttachments
     attr_reader :client
