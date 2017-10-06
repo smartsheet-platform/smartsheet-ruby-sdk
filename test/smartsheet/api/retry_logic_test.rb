@@ -128,4 +128,22 @@ describe Smartsheet::API::RetryLogic do
 
     attempt_count.must_equal 2
   end
+
+  it 'returns if backoff returns :stop' do
+    backoff = proc do
+      :stop
+    end
+
+    retry_logic = Smartsheet::API::RetryLogic.new(backoff_method: backoff)
+
+    stub_sleep(retry_logic)
+
+    attempt_count = 0
+    retry_logic.run(ALWAYS_RETRY) do
+      attempt_count += 1
+      attempt_count
+    end
+
+    attempt_count.must_equal 1
+  end
 end

@@ -1,4 +1,5 @@
 require 'cgi'
+require 'smartsheet/version'
 
 module Smartsheet
   module API
@@ -29,7 +30,7 @@ module Smartsheet
       def base_headers
         base = {
             Accept: 'application/json',
-            'User-Agent': 'smartsheet-ruby-sdk'
+            'User-Agent': "smartsheet-ruby-sdk/#{Smartsheet::VERSION}"
         }
         base[:Authorization] = "Bearer #{token}" if endpoint_spec.requires_auth?
 

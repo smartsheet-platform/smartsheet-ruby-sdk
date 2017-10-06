@@ -3,6 +3,7 @@ require 'smartsheet/api/header_builder'
 require 'smartsheet/api/endpoint_spec'
 require 'smartsheet/api/request_spec'
 require 'smartsheet/api/file_spec'
+require 'smartsheet/version'
 
 describe Smartsheet::API::HeaderBuilder do
   def given_path_file_request_spec(path: 'path/to/file', filename: nil, file_length: 10, content_type: '')
@@ -49,7 +50,7 @@ describe Smartsheet::API::HeaderBuilder do
     @headers.must_be_kind_of Hash
     @headers[:Accept].must_equal 'application/json'
     @headers[:Authorization].must_equal 'Bearer ' + TOKEN
-    @headers[:'User-Agent'].must_equal 'smartsheet-ruby-sdk'
+    @headers[:'User-Agent'].must_equal "smartsheet-ruby-sdk/#{Smartsheet::VERSION}"
   end
 
   it 'applies body_type json' do
