@@ -64,14 +64,27 @@ end
 
  TODO: Add ruby read/write sheet repo. See the [node-read-write-sheet](https://github.com/smartsheet-samples/node-read-write-sheet) project for a code example that shows how to call methods to read and write to a sheet using this SDK.
 
-## Configuration
+## Basic Configuration
 
-When creating the client object, pass any of the following options to tune its behaviour.
+When creating the client object, pass an object with any of the following properties to tune its behavior.
+
+* `max_retry_time` - The maximum time in seconds to retry intermittent errors. (Defaults to 15 seconds.)
+
+## Advanced Configuration Options
+### Logging Configuration
+
+TODO: Document this...
 
 ### Retry Configuration
 
-* `max_retry_time` - The maximum time in seconds for requests to retry on eligible failure. By default, this is set to 15 seconds.
-* `backoff_method` - A function accepting the index of the retry being attempted (0 for the first retry, 1 for the second, etc.) and returning the number of seconds to wait until making the subsequent retry call. By default, this is set to exponential backoff with additional jitter.
+For additional customization, you can specify a `backoff_method` function.  This function is called with two arguments:
+
+* The first accepts the index of the retry being attempted (0 for the first retry, 1 for the second, etc.)
+* The second accepts the Error Object that caused the retry.
+
+The function must return the number of seconds to wait before making the subsequent retry call, or the symbol `:stop` if no more retries should be made.
+
+The default implementation performs exponential backoff with jitter.
 
 ### JSON Output
 
@@ -80,10 +93,6 @@ When creating the client object, pass any of the following options to tune its b
 ### Assume User
 
 * `assume_user` - Allows an admin to act on behalf of, or impersonate, the user to make API calls. The email address should NOT be URI encoded.
-
-### Logging
-
-TODO: Document this...
 
 ## Development
 
