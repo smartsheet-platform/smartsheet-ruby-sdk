@@ -13,15 +13,15 @@ end
 
 def column_map(sheet)
   column_map = {}
-  sheet.columns.each do |column|
-    column_map[column.title] = column.id
+  sheet[:columns].each do |column|
+    column_map[column[:title]] = column[:id]
   end
 
   column_map
 end
 
 def get_cell_by_column(row, column_id)
-  row.cells.find {|cell| cell.column_id == column_id}
+  row[:cells].find {|cell| cell[:column_id] == column_id}
 end
 
 def get_cell_by_column_name(row, column_name, column_map)
@@ -32,10 +32,10 @@ def build_update_complete_row(row, column_map)
   status_cell = get_cell_by_column_name(row, 'Status', column_map)
   remaining_cell = get_cell_by_column_name(row, 'Remaining', column_map)
 
-  if status_cell.display_value == 'Complete'
-    unless remaining_cell.display_value == '0'
-      puts "Updating row #{row.row_number}"
-      row_update(row.id, remaining_cell.column_id, 0)
+  if status_cell[:display_value] == 'Complete'
+    unless remaining_cell[:display_value] == '0'
+      puts "Updating row #{row[:row_number]}"
+      row_update(row[:id], remaining_cell[:column_id], 0)
     end
   end
 end
@@ -43,7 +43,7 @@ end
 def build_update_complete_rows_body(sheet)
   column_map = column_map(sheet)
   update_rows = []
-  sheet.rows.each do |row|
+  sheet[:rows].each do |row|
     update_row = build_update_complete_row(row, column_map)
     update_rows.push(update_row) unless update_row.nil?
   end
@@ -60,7 +60,7 @@ def update_complete_rows(sheet_id, client)
     return
   end
 
-  client.sheets.rows.update(sheet_id: sheet.id, body: update_rows_body)
+  client.sheets.rows.update(sheet_id: sheet[:id], body: update_rows_body)
 end
 
 def load_config(config_name)
