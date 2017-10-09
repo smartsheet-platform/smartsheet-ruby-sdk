@@ -29,6 +29,7 @@ module Smartsheet
       NON_RETRYABLE_ERROR_CODE = 4000
       ERROR_MESSAGE = 'Error'.freeze
       REF_ID = '123abc'.freeze
+      DETAIL = [{a: 123}, {b: 234}].freeze
 
       STATUS = 404
       REASON_PHRASE = 'Not Found'.freeze
@@ -41,12 +42,14 @@ module Smartsheet
       RETRYABLE_ERROR_RESULT = {
         :errorCode => RETRYABLE_ERROR_CODE,
         :message => ERROR_MESSAGE,
-        :refId => REF_ID
+        :refId => REF_ID,
+        :detail => DETAIL
       }
       NON_RETRYABLE_ERROR_RESULT = {
         :errorCode => NON_RETRYABLE_ERROR_CODE,
         :message => ERROR_MESSAGE,
-        :refId => REF_ID
+        :refId => REF_ID,
+        :detail => DETAIL
       }
       FARADAY_RESPONSE = {
           status: STATUS,
@@ -70,6 +73,12 @@ module Smartsheet
         FaradayErrorResponse
             .new(RETRYABLE_ERROR_RESULT, FARADAY_RESPONSE)
             .ref_id.must_equal REF_ID
+      end
+
+      it 'provides the result detail' do
+        FaradayErrorResponse
+            .new(RETRYABLE_ERROR_RESULT, FARADAY_RESPONSE)
+            .detail.must_equal DETAIL
       end
 
       it 'provides the response status' do

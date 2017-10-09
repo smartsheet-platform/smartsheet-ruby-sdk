@@ -21,13 +21,14 @@ module Smartsheet
     class FaradayErrorResponse < FaradayResponse
       RETRYABLE_ERRORS = 4001..4004
 
-      attr_reader :error_code, :message, :ref_id
+      attr_reader :error_code, :message, :ref_id, :detail
 
       def initialize(result, faraday_response)
         super(faraday_response)
         @error_code = result[:errorCode]
         @message = result[:message]
         @ref_id = result[:refId]
+        @detail = result[:detail]
       end
 
       def should_retry?
