@@ -1,4 +1,4 @@
-require 'smartsheet/smartsheet_client'
+require 'smartsheet/client'
 
 
 def row_update(row_id, column_id, value)
@@ -72,7 +72,7 @@ end
 
 config = load_config('config.json')
 
-client = Smartsheet::SmartsheetClient.new(token: config['token'])
+client = Smartsheet::Client.new(token: config['token'])
 
 begin
   update_complete_rows(config['sheet_id'], client)

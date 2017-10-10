@@ -42,7 +42,7 @@ The following is a brief sample that shows you how to:
 require 'smartsheet'
 
 # Initialize the client
-smartsheet_client = Smartsheet::SmartsheetClient.new(token: 'll352u9jujauoqz4gstvsae05')
+smartsheet_client = Smartsheet::Client.new(token: 'll352u9jujauoqz4gstvsae05')
 
 # The `smartsheet_client` variable now contains access to all of the APIs
 
@@ -77,7 +77,7 @@ Smartsheet expects a standard Ruby logger.  For example, to enable console loggi
 
 ```ruby
 logger = Logger.new(STDOUT, Logger::WARN)
-smartsheet = Smartsheet::SmartsheetClient.new(logger: logger)
+smartsheet = Smartsheet::Client.new(logger: logger)
 ```
 
 Supported log levels are as follows:
@@ -89,10 +89,10 @@ Supported log levels are as follows:
 |`Logger::INFO` |Each call's URL and response code|
 |`Logger::DEBUG`|Full headers and payloads        |
 
-By default, payloads are truncated to 1024 characters.  To display full payloads, pass the `log_full_body` named flag to the `SmartsheetClient` with the value true:
+By default, payloads are truncated to 1024 characters.  To display full payloads, pass the `log_full_body` named flag to the `Smartsheet::Client` with the value true:
 
 ```ruby
-smartsheet = Smartsheet::SmartsheetClient.new(logger: logger, log_full_body: true)
+smartsheet = Smartsheet::Client.new(logger: logger, log_full_body: true)
 ```
 
 ### Retry Configuration

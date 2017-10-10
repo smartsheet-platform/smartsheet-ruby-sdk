@@ -1,10 +1,10 @@
 require_relative '../test_helper'
 require_relative 'endpoints/endpoint_test_helper'
 
-require 'smartsheet/smartsheet_client'
+require 'smartsheet/client'
 
 
-describe Smartsheet::SmartsheetClient do
+describe Smartsheet::Client do
   def given_request_client_expects_token
     Smartsheet::API::RequestClient
         .expects(:new)
@@ -14,19 +14,19 @@ describe Smartsheet::SmartsheetClient do
   it 'uses token from user' do
     given_request_client_expects_token
 
-    Smartsheet::SmartsheetClient.new(token: TOKEN)
+    Smartsheet::Client.new(token: TOKEN)
   end
 
   it 'uses token from env var' do
     given_request_client_expects_token
 
     ENV['SMARTSHEET_ACCESS_TOKEN'] = TOKEN
-    Smartsheet::SmartsheetClient.new
+    Smartsheet::Client.new
   end
 end
 
 
-class SmartsheetClientTest < Minitest::Test
+class ClientTest < Minitest::Test
   extend Smartsheet::Test::EndpointHelper
 
   attr_accessor :mock_client
