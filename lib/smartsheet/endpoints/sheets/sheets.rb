@@ -1,5 +1,6 @@
 require 'smartsheet/api/endpoint_spec'
 require 'smartsheet/api/request_spec'
+require 'smartsheet/constants'
 
 require 'smartsheet/endpoints/sheets/cells'
 require 'smartsheet/endpoints/sheets/columns'
@@ -12,6 +13,8 @@ require 'smartsheet/endpoints/sheets/sheets_share'
 module Smartsheet
   # Sheet resource endpoints
   class Sheets
+    include Smartsheet::Constants
+
     attr_reader :client, :attachments, :cells, :columns, :comments, :discussions, :rows, :share
     private :client
 
@@ -60,7 +63,7 @@ module Smartsheet
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :get,
           ['sheets', :sheet_id],
-          headers: {Accept: 'application/vnd.ms-excel'}
+          headers: {Accept: EXCEL_TYPE}
       )
       request_spec = Smartsheet::API::RequestSpec.new(
           params: params,
@@ -74,7 +77,7 @@ module Smartsheet
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :get,
           ['sheets', :sheet_id],
-          headers: {Accept: 'application/pdf'}
+          headers: {Accept: PDF_TYPE}
       )
       request_spec = Smartsheet::API::RequestSpec.new(
           params: params,
@@ -88,7 +91,7 @@ module Smartsheet
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :get,
           ['sheets', :sheet_id],
-          headers: {Accept: 'text/csv'}
+          headers: {Accept: CSV_TYPE}
       )
       request_spec = Smartsheet::API::RequestSpec.new(
           params: params,

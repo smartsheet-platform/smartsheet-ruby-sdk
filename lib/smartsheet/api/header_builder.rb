@@ -1,10 +1,12 @@
 require 'cgi'
 require 'smartsheet/version'
+require 'smartsheet/constants'
 
 module Smartsheet
   module API
     # Constructs headers for accessing the Smartsheet API
     class HeaderBuilder
+      include Smartsheet::Constants
       def initialize(token, endpoint_spec, request_spec, assume_user: nil)
         @token = token
         @endpoint_spec = endpoint_spec
@@ -29,8 +31,8 @@ module Smartsheet
 
       def base_headers
         base = {
-            Accept: 'application/json',
-            'User-Agent': "smartsheet-ruby-sdk/#{Smartsheet::VERSION}"
+            Accept: JSON_TYPE,
+            'User-Agent': "#{USER_AGENT}/#{Smartsheet::VERSION}"
         }
         base[:Authorization] = "Bearer #{token}" if endpoint_spec.requires_auth?
 
@@ -51,7 +53,7 @@ module Smartsheet
 
       def content_type
         if endpoint_spec.sending_json? && request_spec.body
-          {'Content-Type': 'application/json'}
+          {'Content-Type': JSON_TYPE}
         elsif endpoint_spec.sending_file?
           {'Content-Type': request_spec.content_type}
         else

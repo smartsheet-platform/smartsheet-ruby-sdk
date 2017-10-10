@@ -3,6 +3,7 @@ require_relative '../endpoint_test_helper'
 
 class ReportsTest < Minitest::Test
   extend Smartsheet::Test::EndpointHelper
+  include Smartsheet::Constants
 
   attr_accessor :mock_client
   attr_accessor :smartsheet_client
@@ -27,7 +28,7 @@ class ReportsTest < Minitest::Test
             url: ['reports', :report_id],
             args: {report_id: 123},
             has_params: true,
-            headers: {Accept: 'application/vnd.ms-excel'}
+            headers: {Accept: EXCEL_TYPE}
         },
         {
             symbol: :get_as_csv,
@@ -35,7 +36,7 @@ class ReportsTest < Minitest::Test
             url: ['reports', :report_id],
             args: {report_id: 123},
             has_params: true,
-            headers: {Accept: 'text/csv'}
+            headers: {Accept: CSV_TYPE}
         },
         {
             symbol: :list,
