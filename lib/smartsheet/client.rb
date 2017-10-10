@@ -49,7 +49,7 @@ module Smartsheet
               API::RequestLogger.new(logger, log_full_body) :
               API::MuteRequestLogger.new
 
-      token = token_env_var if token.nil?
+      token = token_env_var if token.empty? || token.nil?
 
       net_client = API::FaradayNetClient.new
 

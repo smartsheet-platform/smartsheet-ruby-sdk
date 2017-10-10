@@ -23,6 +23,17 @@ describe Smartsheet::Client do
     ENV['SMARTSHEET_ACCESS_TOKEN'] = TOKEN
     Smartsheet::Client.new
   end
+
+  it 'uses token from env var when passed empty string' do
+    given_request_client_expects_token
+
+    ENV['SMARTSHEET_ACCESS_TOKEN'] = TOKEN
+    Smartsheet::Client.new(token: '')
+  end
+
+  it 'inspect returns valid string' do
+    Smartsheet::Client.new.inspect.must_be_kind_of String
+  end
 end
 
 
