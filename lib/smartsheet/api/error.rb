@@ -22,7 +22,7 @@ module Smartsheet
         @error_response = error_response
       end
 
-      def_delegators :error_response, :error_code, :message, :ref_id
+      def_delegators :error_response, :error_code, :message, :ref_id, :detail
 
       private
 
