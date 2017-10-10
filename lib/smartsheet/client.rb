@@ -25,7 +25,7 @@ require 'smartsheet/endpoints/workspaces/workspaces'
 
 
 module Smartsheet
-  class SmartsheetClient
+  class Client
     include GeneralRequest
     include Smartsheet::Constants
 
