@@ -73,7 +73,27 @@ When creating the client object, pass an object with any of the following proper
 ## Advanced Configuration Options
 ### Logging Configuration
 
-TODO: Document this...
+Smartsheet expects a standard Ruby logger.  For example, to enable console logging of warnings and above, make a call such as the following:
+
+```ruby
+logger = Logger.new(STDOUT, Logger::WARN)
+smartsheet = Smartsheet::SmartsheetClient.new(logger: logger)
+```
+
+Supported log levels are as follows:
+
+|Level          |What is logged                   |
+|---------------|---------------------------------|
+|`Logger::ERROR`|Failures only                    |
+|`Logger::WARN` |Failures and retries             |
+|`Logger::INFO` |Each call's URL and response code|
+|`Logger::DEBUG`|Full headers and payloads        |
+
+By default, payloads are truncated to 1024 characters.  To display full payloads, pass the `log_full_body` named flag to the `SmartsheetClient` with the value true:
+
+```ruby
+smartsheet = Smartsheet::SmartsheetClient.new(logger: logger, log_full_body: true)
+```
 
 ### Retry Configuration
 
