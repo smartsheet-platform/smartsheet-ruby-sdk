@@ -1,5 +1,5 @@
-require 'smartsheet/error'
 require 'faraday'
+require 'smartsheet/error'
 
 module Smartsheet
   module API

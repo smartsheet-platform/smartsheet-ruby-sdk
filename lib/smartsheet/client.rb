@@ -5,6 +5,7 @@ require 'smartsheet/api/request_client'
 require 'smartsheet/api/retry_logic'
 require 'smartsheet/api/request_logger'
 require 'smartsheet/general_request'
+require 'smartsheet/error'
 
 require 'smartsheet/endpoints/contacts/contacts'
 require 'smartsheet/endpoints/favorites/favorites'
