@@ -77,6 +77,15 @@ module Smartsheet
       build_categories
     end
 
+    def inspect
+      methods = (self.public_methods - Object.methods)
+                    .sort
+                    .map {|m| ':' + m.to_s}
+                    .join(', ')
+
+      "#<Smartsheet::Client:#{self.object_id} #{methods}>"
+    end
+
     private
 
     attr_reader :client
