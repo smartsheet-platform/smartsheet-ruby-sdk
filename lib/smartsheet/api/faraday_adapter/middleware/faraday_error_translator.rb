@@ -1,4 +1,4 @@
-require 'smartsheet/api/error'
+require 'smartsheet/error'
 require 'faraday'
 
 module Smartsheet
@@ -12,7 +12,7 @@ module Smartsheet
         def call(env)
           @app.call(env)
         rescue Faraday::Error => e
-          raise Smartsheet::API::RequestError, e
+          raise Smartsheet::RequestError, e
         end
       end
     end

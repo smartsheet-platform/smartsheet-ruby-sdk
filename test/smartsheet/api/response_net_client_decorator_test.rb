@@ -1,7 +1,7 @@
 require_relative '../../test_helper'
 
 require 'smartsheet/api/response_net_client_decorator'
-require 'smartsheet/api/error'
+require 'smartsheet/error'
 
 describe Smartsheet::API::ResponseNetClientDecorator do
   before do
@@ -45,7 +45,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
       Smartsheet::API::ResponseNetClientDecorator
         .new(@client)
         .make_request({})
-    }.must_raise Smartsheet::API::ApiError
+    }.must_raise Smartsheet::ApiError
   end
 
   it 'converts camel case to snake case' do

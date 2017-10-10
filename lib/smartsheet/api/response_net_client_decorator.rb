@@ -1,6 +1,6 @@
 require 'plissken'
 
-require 'smartsheet/api/error'
+require 'smartsheet/error'
 
 module Smartsheet
   module API
@@ -40,7 +40,7 @@ module Smartsheet
       end
 
       def parse_failure(response)
-        raise ApiError.new(response)
+        raise Smartsheet::ApiError.new(response)
       end
     end
   end
