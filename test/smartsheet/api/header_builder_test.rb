@@ -3,7 +3,7 @@ require 'smartsheet/api/header_builder'
 require 'smartsheet/api/endpoint_spec'
 require 'smartsheet/api/request_spec'
 require 'smartsheet/api/file_spec'
-require 'smartsheet/version'
+require 'smartsheet/constants'
 
 describe Smartsheet::API::HeaderBuilder do
   def given_path_file_request_spec(path: 'path/to/file', filename: nil, file_length: 10, content_type: '')
@@ -48,9 +48,9 @@ describe Smartsheet::API::HeaderBuilder do
     when_headers_are_built
 
     @headers.must_be_kind_of Hash
-    @headers[:Accept].must_equal 'application/json'
+    @headers[:Accept].must_equal Smartsheet::Constants::JSON_TYPE
     @headers[:Authorization].must_equal 'Bearer ' + TOKEN
-    @headers[:'User-Agent'].must_equal "smartsheet-ruby-sdk/#{Smartsheet::VERSION}"
+    @headers[:'User-Agent'].must_equal "#{Smartsheet::Constants::USER_AGENT}/#{Smartsheet::Constants::VERSION}"
   end
 
   it 'applies body_type json' do
@@ -60,7 +60,7 @@ describe Smartsheet::API::HeaderBuilder do
     when_headers_are_built
 
     @headers.must_be_kind_of Hash
-    @headers[:'Content-Type'].must_equal 'application/json'
+    @headers[:'Content-Type'].must_equal Smartsheet::Constants::JSON_TYPE
   end
 
   it 'applies overrides' do
@@ -72,7 +72,7 @@ describe Smartsheet::API::HeaderBuilder do
     @headers.must_be_kind_of Hash
     @headers[:SomeOverride].must_equal 'someValue'
     @headers[:Authorization].must_equal 'someAuth'
-    @headers[:Accept].must_equal 'application/json'
+    @headers[:Accept].must_equal Smartsheet::Constants::JSON_TYPE
   end
 
   it 'applies user defined content_type for uploads via path' do

@@ -1,8 +1,11 @@
+require 'smartsheet/constants'
+
 require_relative '../../../test_helper'
 require_relative '../endpoint_test_helper'
 
 class SheetTest < Minitest::Test
   extend Smartsheet::Test::EndpointHelper
+  include Smartsheet::Constants
 
   attr_accessor :mock_client
   attr_accessor :smartsheet_client
@@ -36,21 +39,21 @@ class SheetTest < Minitest::Test
             method: :get,
             url: ['sheets', :sheet_id],
             args: {sheet_id: 123},
-            headers: {Accept: 'application/vnd.ms-excel'}
+            headers: {Accept: EXCEL_TYPE}
         },
         {
             symbol: :get_as_pdf,
             method: :get,
             url: ['sheets', :sheet_id],
             args: {sheet_id: 123},
-            headers: {Accept: 'application/pdf'}
+            headers: {Accept: PDF_TYPE}
         },
         {
             symbol: :get_as_csv,
             method: :get,
             url: ['sheets', :sheet_id],
             args: {sheet_id: 123},
-            headers: {Accept: 'text/csv'}
+            headers: {Accept: CSV_TYPE}
         },
         {
             symbol: :create,

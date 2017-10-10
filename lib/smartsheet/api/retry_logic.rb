@@ -1,9 +1,9 @@
+require 'smartsheet/constants'
+
 module Smartsheet
   module API
     class RetryLogic
-      DEFAULT_MAX_RETRY_TIME = 15
-
-      DEFAULT_BACKOFF_METHOD = proc { |iteration, _result| 2**iteration + rand }
+      include Smartsheet::Constants
 
       def initialize(max_retry_time: DEFAULT_MAX_RETRY_TIME, backoff_method: DEFAULT_BACKOFF_METHOD)
         @max_retry_time = max_retry_time

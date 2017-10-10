@@ -5,9 +5,13 @@ require 'smartsheet/api/error'
 describe Smartsheet::API::RequestClient do
   include Smartsheet::Test
 
-  endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['x'])
-  request_spec = Smartsheet::API::RequestSpec.new(body: 'body')
-  expected_request = Smartsheet::API::Request.new(TOKEN, endpoint_spec, request_spec)
+  before do
+    @base_url = 'base'
+
+    @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['x'])
+    @request_spec = Smartsheet::API::RequestSpec.new(body: 'body')
+    @expected_request = Smartsheet::API::Request.new(TOKEN, @endpoint_spec, @request_spec, @base_url)
+  end
 
   it 'delegates constructed requests to its client' do
     return_value = mock
@@ -18,11 +22,11 @@ describe Smartsheet::API::RequestClient do
     client
         .expects(:make_request)
         .with do |request|
-          request.must_equal expected_request
+          request.must_equal @expected_request
         end
         .returns(return_value)
 
-    Smartsheet::API::RequestClient.new(TOKEN, client).make_request(endpoint_spec, request_spec)
+    Smartsheet::API::RequestClient.new(TOKEN, client, @base_url).make_request(@endpoint_spec, @request_spec)
   end
 
   it 'returns the result of the client being called' do
@@ -34,8 +38,8 @@ describe Smartsheet::API::RequestClient do
     client.stubs(:make_request).returns(return_value)
 
     Smartsheet::API::RequestClient
-        .new(TOKEN, client)
-        .make_request(endpoint_spec, request_spec)
+        .new(TOKEN, client, @base_url)
+        .make_request(@endpoint_spec, @request_spec)
         .must_equal expected_value
   end
 end

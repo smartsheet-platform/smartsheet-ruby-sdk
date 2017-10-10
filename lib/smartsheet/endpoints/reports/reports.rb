@@ -1,7 +1,10 @@
+require 'smartsheet/constants'
+
 require_relative 'reports_share'
 
 module Smartsheet
   class Reports
+    include Smartsheet::Constants
 
     attr_reader :client, :share
     private :client
@@ -26,7 +29,7 @@ module Smartsheet
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :get,
           ['reports', :report_id],
-          headers: {Accept: 'application/vnd.ms-excel'}
+          headers: {Accept: EXCEL_TYPE}
       )
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
@@ -40,7 +43,7 @@ module Smartsheet
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :get,
           ['reports', :report_id],
-          headers: {Accept: 'text/csv'})
+          headers: {Accept: CSV_TYPE})
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           params: params,
