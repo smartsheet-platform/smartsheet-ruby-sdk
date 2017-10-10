@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'smartsheet'
   spec.version       = Smartsheet::VERSION
   spec.author        = 'Smartsheet'
+  spec.email        = 'api@smartsheet.com'
 
   spec.summary       = 'An SDK to simplify connecting to the Smartsheet API from Ruby applications.'
   spec.description   = <<-EOF
@@ -31,8 +32,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'faraday', '~> 0.13.1'
-  spec.add_dependency 'plissken', '~> 1.2.0'
-  spec.add_dependency 'awrence', '~> 1.0.0'
+  spec.add_dependency 'plissken', '~> 1.2'
+  spec.add_dependency 'awrence', '~> 1.0'
 
   spec.add_development_dependency 'bundler', '~> 1.15'
   spec.add_development_dependency 'coveralls', '~> 0.8.21'
@@ -41,6 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'mocha', '~> 1.3'
   spec.add_development_dependency 'timecop', '~> 0.9.1'
   spec.add_development_dependency 'rubocop', '~> 0.49.1'
-  spec.add_development_dependency 'reek', '~> 4.7.2'
-  spec.add_development_dependency 'rubycritic', '~> 3.2.3'
+  spec.add_development_dependency 'reek', '~> 4.7'
+  spec.add_development_dependency 'rubycritic', '~> 3.2'
 end
