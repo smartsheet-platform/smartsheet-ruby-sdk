@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'smartsheet/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'smartsheet-ruby-sdk'
+  spec.name          = 'smartsheet'
   spec.version       = Smartsheet::VERSION
   spec.author        = 'Smartsheet'
 
@@ -22,8 +22,6 @@ Gem::Specification.new do |spec|
   unless spec.respond_to?(:metadata)
     raise 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
   end
-
-  spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(/^(test|spec|features)/)
