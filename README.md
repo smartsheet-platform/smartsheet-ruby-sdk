@@ -13,7 +13,7 @@ The SDK supports Ruby versions 2.2 or later.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'smartsheet-ruby-sdk', '>= 1.0.0.beta'
+gem 'smartsheet', '>= 1.0.0.beta'
 ```
 
 And then execute:
@@ -22,7 +22,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install smartsheet-ruby-sdk --pre
+    $ gem install smartsheet --pre
 
 ## Documentation
 
