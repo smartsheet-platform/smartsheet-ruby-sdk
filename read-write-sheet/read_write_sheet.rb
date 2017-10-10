@@ -76,7 +76,7 @@ client = Smartsheet::Client.new(token: config['token'])
 
 begin
   update_complete_rows(config['sheet_id'], client)
-rescue Smartsheet::API::ApiError => e
+rescue Smartsheet::ApiError => e
   puts "API returned error:"
   puts "\terror code: #{e.error_code}"
   puts "\tref id: #{e.ref_id}"

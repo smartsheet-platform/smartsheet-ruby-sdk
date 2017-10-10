@@ -9,7 +9,7 @@ describe Smartsheet::API::Middleware::FaradayErrorTranslator do
     app.stubs(:call).raises(Faraday::Error, failure_message)
     error_translator = Smartsheet::API::Middleware::FaradayErrorTranslator.new(app)
 
-    -> { error_translator.call('Environment') }.must_raise Smartsheet::API::Error
+    -> { error_translator.call('Environment') }.must_raise Smartsheet::Error
   end
 
   it 'passes through with no effect when no error is raised' do

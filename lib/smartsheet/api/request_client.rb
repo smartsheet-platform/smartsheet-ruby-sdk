@@ -1,4 +1,4 @@
-require 'smartsheet/api/error'
+require 'smartsheet/error'
 
 module Smartsheet
   module API

@@ -1,6 +1,6 @@
 require_relative '../../test_helper'
 require 'smartsheet/api/request_client'
-require 'smartsheet/api/error'
+require 'smartsheet/error'
 
 describe Smartsheet::API::RequestClient do
   include Smartsheet::Test

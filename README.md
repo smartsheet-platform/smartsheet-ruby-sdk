@@ -55,7 +55,7 @@ begin
 
   # Load the entire sheet
   puts smartsheet_client.sheets.get(sheet_id: sheet_id)
-rescue Smartsheet::API::ApiError => e
+rescue Smartsheet::ApiError => e
   puts "Error Code: #{e.error_code}"
   puts "Message: #{e.message}"
   puts "Ref Id: #{e.ref_id}"
