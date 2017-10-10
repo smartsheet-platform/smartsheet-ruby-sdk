@@ -62,7 +62,7 @@ rescue Smartsheet::API::ApiError => e
 end
 ```
 
- TODO: Add ruby read/write sheet repo. See the [node-read-write-sheet](https://github.com/smartsheet-samples/node-read-write-sheet) project for a code example that shows how to call methods to read and write to a sheet using this SDK.
+See the [read-write-sheet](read-write-sheet/read_write_sheet.rb) example to see a more robust use case in action.
 
 ## Basic Configuration
 
