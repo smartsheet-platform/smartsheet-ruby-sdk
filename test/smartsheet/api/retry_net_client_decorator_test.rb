@@ -16,6 +16,8 @@ describe Smartsheet::API::RetryNetClientDecorator do
     @response.stubs(:headers).returns({})
     @client = mock
 
+    @base_url = 'base'
+
     Timecop.freeze
   end
 
@@ -46,7 +48,8 @@ describe Smartsheet::API::RetryNetClientDecorator do
         Smartsheet::API::Request.new(
           'token',
           Smartsheet::API::EndpointSpec.new(:get, ['sheets']),
-          Smartsheet::API::RequestSpec.new
+          Smartsheet::API::RequestSpec.new,
+          @base_url
         )
       )
   end
@@ -64,7 +67,8 @@ describe Smartsheet::API::RetryNetClientDecorator do
         Smartsheet::API::Request.new(
           'token',
           Smartsheet::API::EndpointSpec.new(:get, ['sheets']),
-          Smartsheet::API::RequestSpec.new
+          Smartsheet::API::RequestSpec.new,
+          @base_url
         )
       )
   end

@@ -27,6 +27,7 @@ require 'smartsheet/endpoints/workspaces/workspaces'
 module Smartsheet
   class SmartsheetClient
     include GeneralRequest
+    include Smartsheet::Constants
 
     attr_reader :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info,
                 :sheets, :sights, :templates, :token, :update_requests, :users, :webhooks,
@@ -39,7 +40,8 @@ module Smartsheet
         max_retry_time: nil,
         backoff_method: nil,
         logger: nil,
-        log_full_body: false
+        log_full_body: false,
+        base_url: API_URL
     )
 
       request_logger =
@@ -67,6 +69,7 @@ module Smartsheet
       @client = API::RequestClient.new(
           token,
           response_client,
+          base_url,
           assume_user: assume_user,
           logger: request_logger
       )

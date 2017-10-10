@@ -4,25 +4,22 @@ module Smartsheet
   module API
     # Methods for building Smartsheet API URLs
     class UrlBuilder
-      include Smartsheet::Constants
-
-      def initialize(endpoint_spec, request_spec)
+      def initialize(endpoint_spec, request_spec, base_url)
         @segments = endpoint_spec.url_segments
         @args = request_spec.url_args
+        @base_url = base_url
       end
 
       def build
         segments
           .collect { |seg| seg.is_a?(Symbol) ? args[seg] : seg }
-          .unshift(API_URL)
+          .unshift(base_url)
           .join('/')
       end
 
       private
 
-      attr_accessor :segments, :args
-
-
+      attr_accessor :segments, :args, :base_url
     end
   end
 end

@@ -6,25 +6,34 @@ require 'smartsheet/constants'
 
 describe Smartsheet::API::UrlBuilder do
   describe '#build_urls' do
-    it 'returns slash separated url' do
+    before do
+      @base_url = 'base'
+    end
+
+    def when_url_is_built(url, **url_args)
       url_builder = Smartsheet::API::UrlBuilder.new(
-          Smartsheet::API::EndpointSpec.new(:get, %w[a b c]),
-          Smartsheet::API::RequestSpec.new)
-      url_builder.build.must_equal Smartsheet::Constants::API_URL + '/a/b/c'
+          Smartsheet::API::EndpointSpec.new(:get, url),
+          Smartsheet::API::RequestSpec.new(**url_args),
+          @base_url)
+      @url = url_builder.build
+    end
+
+    it 'returns slash separated url' do
+      when_url_is_built(%w[a b c])
+
+      @url.must_equal @base_url + '/a/b/c'
     end
 
     it 'has correct base' do
-      url_builder = Smartsheet::API::UrlBuilder.new(
-          Smartsheet::API::EndpointSpec.new(:get, []),
-          Smartsheet::API::RequestSpec.new)
-      url_builder.build.must_equal Smartsheet::Constants::API_URL
+      when_url_is_built([])
+
+      @url.must_equal @base_url
     end
 
     it 'handles symbols' do
-      url_builder = Smartsheet::API::UrlBuilder.new(
-          Smartsheet::API::EndpointSpec.new(:get, ['a', :a_id, 'b', :b_id]),
-          Smartsheet::API::RequestSpec.new(a_id: 123, b_id: 234))
-      url_builder.build.must_equal Smartsheet::Constants::API_URL + '/a/123/b/234'
+      when_url_is_built(['a', :a_id, 'b', :b_id], a_id: 123, b_id: 234)
+
+      @url.must_equal @base_url + '/a/123/b/234'
     end
   end
 end
