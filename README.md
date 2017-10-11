@@ -62,7 +62,7 @@ rescue Smartsheet::ApiError => e
 end
 ```
 
-See the [read-write-sheet](read-write-sheet/read_write_sheet.rb) example to see a more robust use case in action.
+See the [read-write-sheet](https://github.com/smartsheet-samples/ruby-read-write-sheet) example to see a more robust use case in action.
 
 ## Basic Configuration
 
