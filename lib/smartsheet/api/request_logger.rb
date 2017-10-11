@@ -102,7 +102,7 @@ module Smartsheet
       attr_reader :logger, :log_full_body
 
       def log_request_basics(level, request)
-        logger.log(level) { "Request: #{request.method} #{build_logging_url(request)}" }
+        logger.log(level) { "Request: #{request.method.upcase} #{build_logging_url(request)}" }
       end
 
       def build_logging_url(request)

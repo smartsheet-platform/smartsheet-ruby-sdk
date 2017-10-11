@@ -97,7 +97,7 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_request(@mock_request)
 
       request_log =
-          'Request: get some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
+          'Request: GET some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
       @mock_logger.info_msgs.must_include request_log
     end
 
@@ -180,7 +180,7 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_retry_attempt(@mock_request, @mock_response, 1)
 
       request_log =
-          'Request: get some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
+          'Request: GET some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
       @mock_logger.warn_msgs.must_include request_log
     end
 
@@ -244,7 +244,7 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_error_response(@mock_request, @mock_response)
 
       request_log =
-          'Request: get some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
+          'Request: GET some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
       @mock_logger.error_msgs.must_include request_log
     end
 
