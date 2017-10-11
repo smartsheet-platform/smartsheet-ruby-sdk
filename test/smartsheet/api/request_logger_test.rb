@@ -283,9 +283,15 @@ describe Smartsheet::API::Censor do
   end
 
   it 'only censors hash keys with case-sensitive match' do
-    censored_hash = @censor.censor_hash({'Key1' => 'dontcensorme', 'key2' => 'censorme'})
+    censored_hash = @censor.censor_hash(
+        {
+            'Key1' => 'dontcensorme',
+            'key2' => 'censorme',
+            'Key3' => 'censorme'
+        }
+    )
 
-    censored_hash.must_equal({'Key1' => 'dontcensorme', 'key2' => '****orme'})
+    censored_hash.must_equal({'Key1' => 'dontcensorme', 'key2' => '****orme', 'Key3' => '****orme'})
   end
 
   it 'censors hash keys with case-insensitive when specified' do

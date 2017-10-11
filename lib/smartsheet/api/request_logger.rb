@@ -4,26 +4,31 @@ module Smartsheet
   module API
     class Censor
       EXPOSED_CHARS = 4
+      KEY_TO_STRING = ->(k){ k.to_s }
+      KEY_TO_DOWNCASE_STRING = ->(k){ k.to_s.downcase }
 
       def initialize(*blacklist)
         @blacklist = Set.new(blacklist)
       end
 
       def censor_hash(h, case_insensitive: false)
+        if case_insensitive
+          _censor_hash(h, KEY_TO_DOWNCASE_STRING, downcased_blacklist)
+        else
+          _censor_hash(h, KEY_TO_STRING, blacklist)
+        end
+
         key_transform =
             case_insensitive ?
-                ->(k){ k.to_s.downcase } :
-                ->(k){ k.to_s }
-        downcased_blacklist = blacklist.collect { |x| x.downcase }
+                KEY_TO_DOWNCASE_STRING :
+                KEY_TO_STRING
 
-        h.collect do |(k, v)|
-          new_v =
-              downcased_blacklist.include?(key_transform.call(k)) ?
-                  censor(v) :
-                  v
+        cased_blacklist =
+            case_insensitive ?
+                blacklist.collect { |x| x.downcase } :
+                blacklist
 
-          [k, new_v]
-        end.to_h
+        _censor_hash(h, key_transform, cased_blacklist)
       end
 
       def censor(str)
@@ -33,6 +38,21 @@ module Smartsheet
       end
 
       private
+
+      def _censor_hash(h, key_transform, cased_blacklist)
+        h.collect do |(k, v)|
+          new_v =
+              cased_blacklist.include?(key_transform.call(k)) ?
+                  censor(v) :
+                  v
+
+          [k, new_v]
+        end.to_h
+      end
+
+      def downcased_blacklist
+        blacklist.collect { |x| x.downcase }
+      end
 
       attr_reader :blacklist
     end
