@@ -76,7 +76,8 @@ When creating the client object, pass an object with any of the following proper
 Smartsheet expects a standard Ruby logger.  For example, to enable console logging of warnings and above, make a call such as the following:
 
 ```ruby
-logger = Logger.new(STDOUT, Logger::WARN)
+logger = Logger.new(STDOUT)
+logger.level = Logger::WARN
 smartsheet = Smartsheet::Client.new(logger: logger)
 ```
 
