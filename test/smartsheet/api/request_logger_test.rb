@@ -133,6 +133,14 @@ describe Smartsheet::API::RequestLogger do
       @mock_logger.debug_msgs.must_include 'Request Headers: {:authorization=>"****orme"}'
     end
 
+    it 'censors capitalized headers' do
+      given_mock_request(headers: {Authorization: 'censorme'})
+
+      @request_logger.log_request(@mock_request)
+
+      @mock_logger.debug_msgs.must_include 'Request Headers: {:Authorization=>"****orme"}'
+    end
+
     it 'truncates long bodies when the `log full body` flag is false' do
       given_mock_request(body: 'x' * OVER_TRUNCATION_LIMIT)
       @request_logger.log_request(@mock_request)
@@ -253,7 +261,7 @@ end
 
 describe Smartsheet::API::Censor do
   before do
-    @censor = Smartsheet::API::Censor.new 'key1', 'key2'
+    @censor = Smartsheet::API::Censor.new 'key1', 'key2', 'Key3'
   end
 
   it 'censors keys from blacklist' do
@@ -272,6 +280,20 @@ describe Smartsheet::API::Censor do
     censored_hash = @censor.censor_hash({:uncensored_key => 'dontcensorme'})
 
     censored_hash.must_equal({:uncensored_key => 'dontcensorme'})
+  end
+
+  it 'only censors hash keys with case-sensitive match' do
+    censored_hash = @censor.censor_hash({'Key1' => 'dontcensorme', 'key2' => 'censorme'})
+
+    censored_hash.must_equal({'Key1' => 'dontcensorme', 'key2' => '****orme'})
+  end
+
+  it 'censors hash keys with case-insensitive when specified' do
+    censored_hash = @censor.censor_hash(
+        {'Key1' => 'censorme', 'key2' => 'censorme', 'key3' => 'censorme'},
+           case_insensitive: true)
+
+    censored_hash.must_equal({'Key1' => '****orme', 'key2' => '****orme', 'key3' => '****orme'})
   end
 end
 

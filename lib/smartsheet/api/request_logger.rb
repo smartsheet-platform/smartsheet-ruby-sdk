@@ -9,9 +9,19 @@ module Smartsheet
         @blacklist = Set.new(blacklist)
       end
 
-      def censor_hash(h)
+      def censor_hash(h, case_insensitive: false)
+        key_transform =
+            case_insensitive ?
+                ->(k){ k.to_s.downcase } :
+                ->(k){ k.to_s }
+        downcased_blacklist = blacklist.collect { |x| x.downcase }
+
         h.collect do |(k, v)|
-          new_v = blacklist.include?(k.to_s) ? censor(v) : v
+          new_v =
+              downcased_blacklist.include?(key_transform.call(k)) ?
+                  censor(v) :
+                  v
+
           [k, new_v]
         end.to_h
       end
@@ -99,7 +109,8 @@ module Smartsheet
       end
 
       def log_headers(context, req_or_resp)
-        logger.debug { "#{context} Headers: #{HEADER_CENSOR.censor_hash(req_or_resp.headers)}" }
+        censored_hash = HEADER_CENSOR.censor_hash(req_or_resp.headers, case_insensitive: true)
+        logger.debug { "#{context} Headers: #{censored_hash}" }
       end
 
       def log_body(context, body)
