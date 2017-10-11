@@ -133,7 +133,7 @@ If you have any questions or issues with this SDK please post on [Stack Overflow
 
 Each specific release is available for download via [GitHub](https://github.com/smartsheet-platform/smartsheet-ruby-sdk/tags).
 
-**v1.0.0.beta.0 (October 2017)**
+**v1.0.0.beta (October 2017)**
 Beta release of the Smartsheet SDK for Ruby
 
 *Note*: Minor changes that result in a patch version increment in RubyGems (such as updates to the README) will not be tagged as a Release in GitHub.
