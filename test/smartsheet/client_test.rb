@@ -30,7 +30,7 @@ describe Smartsheet::Client do
           assume_user: 'john.doe@smartsheet.com',
           json_output: true,
           max_retry_time: 10,
-          backoff_method: ->(x){ x },
+          backoff_method: ->{},
           logger: Logger.new(STDOUT),
           log_full_body: true,
           base_url: 'smartsheet-dev-net')
