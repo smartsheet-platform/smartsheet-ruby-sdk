@@ -63,7 +63,8 @@ module Smartsheet
 
       response_client = API::ResponseNetClientDecorator.new(
           retrying_client,
-          json_output: json_output
+          json_output: json_output,
+          logger: request_logger
       )
 
       @client = API::RequestClient.new(

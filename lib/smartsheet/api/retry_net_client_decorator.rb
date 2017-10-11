@@ -25,7 +25,7 @@ module Smartsheet
           response
         end
 
-        unless retried_response.success?
+        unless retried_response.success? || total_attempts < 2
           logger.log_retry_failure(total_attempts)
         end
 

@@ -97,7 +97,7 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_request(@mock_request)
 
       request_log =
-          'Request: get some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
+          'Request: GET some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
       @mock_logger.info_msgs.must_include request_log
     end
 
@@ -131,6 +131,14 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_request(@mock_request)
 
       @mock_logger.debug_msgs.must_include 'Request Headers: {:authorization=>"****orme"}'
+    end
+
+    it 'censors capitalized headers' do
+      given_mock_request(headers: {Authorization: 'censorme'})
+
+      @request_logger.log_request(@mock_request)
+
+      @mock_logger.debug_msgs.must_include 'Request Headers: {:Authorization=>"****orme"}'
     end
 
     it 'truncates long bodies when the `log full body` flag is false' do
@@ -172,7 +180,7 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_retry_attempt(@mock_request, @mock_response, 1)
 
       request_log =
-          'Request: get some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
+          'Request: GET some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
       @mock_logger.warn_msgs.must_include request_log
     end
 
@@ -236,7 +244,7 @@ describe Smartsheet::API::RequestLogger do
       @request_logger.log_error_response(@mock_request, @mock_response)
 
       request_log =
-          'Request: get some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
+          'Request: GET some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
       @mock_logger.error_msgs.must_include request_log
     end
 
@@ -253,7 +261,7 @@ end
 
 describe Smartsheet::API::Censor do
   before do
-    @censor = Smartsheet::API::Censor.new 'key1', 'key2'
+    @censor = Smartsheet::API::Censor.new 'key1', 'key2', 'Key3'
   end
 
   it 'censors keys from blacklist' do
@@ -272,6 +280,26 @@ describe Smartsheet::API::Censor do
     censored_hash = @censor.censor_hash({:uncensored_key => 'dontcensorme'})
 
     censored_hash.must_equal({:uncensored_key => 'dontcensorme'})
+  end
+
+  it 'only censors hash keys with case-sensitive match' do
+    censored_hash = @censor.censor_hash(
+        {
+            'Key1' => 'dontcensorme',
+            'key2' => 'censorme',
+            'Key3' => 'censorme'
+        }
+    )
+
+    censored_hash.must_equal({'Key1' => 'dontcensorme', 'key2' => '****orme', 'Key3' => '****orme'})
+  end
+
+  it 'censors hash keys with case-insensitive when specified' do
+    censored_hash = @censor.censor_hash(
+        {'Key1' => 'censorme', 'key2' => 'censorme', 'key3' => 'censorme'},
+           case_insensitive: true)
+
+    censored_hash.must_equal({'Key1' => '****orme', 'key2' => '****orme', 'key3' => '****orme'})
   end
 end
 

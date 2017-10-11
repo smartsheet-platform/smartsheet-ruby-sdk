@@ -87,4 +87,29 @@ describe Smartsheet::API::ResponseNetClientDecorator do
 
     result.must_equal '{"camelCase":"123"}'
   end
+
+  it 'logs successful responses' do
+    given_camelcase_result
+
+    logger = mock
+    logger.expects(:log_successful_response).with(@response)
+
+    Smartsheet::API::ResponseNetClientDecorator
+        .new(@client, logger: logger)
+        .make_request({})
+  end
+
+  it 'logs error responses' do
+    given_failure_response
+
+    request = {}
+    logger = mock
+    logger.expects(:log_error_response).with(request, @response)
+
+    proc do
+      Smartsheet::API::ResponseNetClientDecorator
+          .new(@client, logger: logger)
+          .make_request(request)
+    end.must_raise Smartsheet::ApiError
+  end
 end
