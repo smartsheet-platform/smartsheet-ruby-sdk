@@ -49,7 +49,7 @@ module Smartsheet
               API::RequestLogger.new(logger, log_full_body) :
               API::MuteRequestLogger.new
 
-      token = token_env_var if token.nil?
+      token = token_env_var if token.nil? || token.empty?
 
       net_client = API::FaradayNetClient.new
 
@@ -75,6 +75,15 @@ module Smartsheet
       )
 
       build_categories
+    end
+
+    def inspect
+      methods = (self.public_methods - Object.methods)
+                    .sort
+                    .map {|m| ':' + m.to_s}
+                    .join(', ')
+
+      "#<Smartsheet::Client:#{self.object_id} #{methods}>"
     end
 
     private
