@@ -24,15 +24,16 @@ describe Smartsheet::Client do
     Smartsheet::Client.new
   end
 
-  it 'uses token from env var when passed empty string' do
-    given_request_client_expects_token
-
-    ENV['SMARTSHEET_ACCESS_TOKEN'] = TOKEN
-    Smartsheet::Client.new(token: '')
-  end
-
-  it 'inspect returns valid string' do
-    Smartsheet::Client.new.inspect.must_be_kind_of String
+  it 'initializes when all parameters are provided' do
+      Smartsheet::Client.new(
+          token: 'TOKEN',
+          assume_user: 'john.doe@smartsheet.com',
+          json_output: true,
+          max_retry_time: 10,
+          backoff_method: ->{},
+          logger: Logger.new(STDOUT),
+          log_full_body: true,
+          base_url: 'smartsheet-dev-net')
   end
 end
 
