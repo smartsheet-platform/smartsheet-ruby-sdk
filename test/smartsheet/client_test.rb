@@ -23,6 +23,18 @@ describe Smartsheet::Client do
     ENV['SMARTSHEET_ACCESS_TOKEN'] = TOKEN
     Smartsheet::Client.new
   end
+
+  it 'initializes when all parameters are provided' do
+      Smartsheet::Client.new(
+          token: 'TOKEN',
+          assume_user: 'john.doe@smartsheet.com',
+          json_output: true,
+          max_retry_time: 10,
+          backoff_method: ->(x){ x },
+          logger: Logger.new(STDOUT),
+          log_full_body: true,
+          base_url: 'smartsheet-dev-net')
+  end
 end
 
 
