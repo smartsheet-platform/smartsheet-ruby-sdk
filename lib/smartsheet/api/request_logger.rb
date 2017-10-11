@@ -17,18 +17,6 @@ module Smartsheet
         else
           _censor_hash(h, KEY_TO_STRING, blacklist)
         end
-
-        key_transform =
-            case_insensitive ?
-                KEY_TO_DOWNCASE_STRING :
-                KEY_TO_STRING
-
-        cased_blacklist =
-            case_insensitive ?
-                blacklist.collect { |x| x.downcase } :
-                blacklist
-
-        _censor_hash(h, key_transform, cased_blacklist)
       end
 
       def censor(str)
