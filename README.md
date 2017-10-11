@@ -1,4 +1,4 @@
-# Smartsheet Ruby SDK [![Build Status](https://travis-ci.org/smartsheet-platform/smartsheet-ruby-sdk.svg?branch=master)](https://travis-ci.org/smartsheet-platform/smartsheet-ruby-sdk) [![Coverage Status](https://coveralls.io/repos/github/smartsheet-platform/smartsheet-ruby-sdk/badge.svg?branch=master)](https://coveralls.io/github/smartsheet-platform/smartsheet-ruby-sdk?branch=master)
+# Smartsheet Ruby SDK [![Build Status](https://travis-ci.org/smartsheet-platform/smartsheet-ruby-sdk.svg?branch=master)](https://travis-ci.org/smartsheet-platform/smartsheet-ruby-sdk) [![Coverage Status](https://coveralls.io/repos/github/smartsheet-platform/smartsheet-ruby-sdk/badge.svg?branch=master)](https://coveralls.io/github/smartsheet-platform/smartsheet-ruby-sdk?branch=master) [![Gem Version](https://badge.fury.io/rb/smartsheet.svg)](https://badge.fury.io/rb/smartsheet)
 
 This is an SDK to simplify connecting to the [Smartsheet API](http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
 
@@ -62,7 +62,7 @@ rescue Smartsheet::ApiError => e
 end
 ```
 
-See the [read-write-sheet](read-write-sheet/read_write_sheet.rb) example to see a more robust use case in action.
+See the [read-write-sheet](https://github.com/smartsheet-samples/ruby-read-write-sheet) example to see a more robust use case in action.
 
 ## Basic Configuration
 
@@ -134,7 +134,7 @@ If you have any questions or issues with this SDK please post on [Stack Overflow
 
 Each specific release is available for download via [GitHub](https://github.com/smartsheet-platform/smartsheet-ruby-sdk/tags).
 
-**v1.0.0.beta.0 (October 2017)**
+**v1.0.0.beta (October 2017)**
 Beta release of the Smartsheet SDK for Ruby
 
 *Note*: Minor changes that result in a patch version increment in RubyGems (such as updates to the README) will not be tagged as a Release in GitHub.

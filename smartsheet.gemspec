@@ -12,10 +12,11 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'An SDK to simplify connecting to the Smartsheet API from Ruby applications.'
   spec.description   = <<-EOF
-    This is an SDK to simplify connecting to the [Smartsheet API](http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
-    *Please note that this SDK is beta and may change significantly in the future.*
+    This is an SDK to simplify connecting to the Smartsheet API
+    (http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
+    Please note that this SDK is beta and may change significantly in the future.
   EOF
-  spec.homepage      = 'http://smartsheet.com/developers'
+  spec.homepage      = 'https://github.com/smartsheet-platform/smartsheet-ruby-sdk'
   spec.license       = 'Apache-2.0'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -27,9 +28,11 @@ Gem::Specification.new do |spec|
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(/^(test|spec|features)/)
   end
-  spec.bindir        = 'exe'
+  spec.bindir        = 'bin'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
+
+  spec.required_ruby_version = '~> 2.2'
 
   spec.add_dependency 'faraday', '~> 0.13.1'
   spec.add_dependency 'plissken', '~> 1.2'
