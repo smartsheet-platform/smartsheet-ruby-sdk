@@ -45,6 +45,10 @@ describe Smartsheet::API::RetryNetClientDecorator do
     given_response false
   end
 
+  def given_stubbed_inner_client
+    @client.stubs(:make_request).with(REQUEST).returns @response
+  end
+
   it 'does not retry when a non-retryable failure occurs' do
     given_non_retryable_response
     @client.expects(:make_request).with(REQUEST).returns @response
@@ -68,7 +72,7 @@ describe Smartsheet::API::RetryNetClientDecorator do
 
   it 'logs retry failure count after retrying more than once' do
     given_retryable_response
-    @client.stubs(:make_request).with(REQUEST).returns @response
+    given_stubbed_inner_client
 
     retrier = Smartsheet::API::RetryLogic.new
     stub_sleep(retrier)
@@ -84,7 +88,7 @@ describe Smartsheet::API::RetryNetClientDecorator do
 
   it 'logs retry attempts when a retryable failure occurs' do
     given_retryable_response
-    @client.stubs(:make_request).with(REQUEST).returns @response
+    given_stubbed_inner_client
 
     retrier = Smartsheet::API::RetryLogic.new
     stub_sleep(retrier)
@@ -107,7 +111,7 @@ describe Smartsheet::API::RetryNetClientDecorator do
 
   it 'does not log retry attempts when a non-retryable failure occurs' do
     given_non_retryable_response
-    @client.stubs(:make_request).with(REQUEST).returns @response
+    given_stubbed_inner_client
 
     logger = mock
     logger.stubs(:log_retry_failure)
@@ -120,7 +124,7 @@ describe Smartsheet::API::RetryNetClientDecorator do
 
   it 'logs retry failure count after retrying more than once' do
     given_retryable_response
-    @client.stubs(:make_request).with(REQUEST).returns @response
+    given_stubbed_inner_client
 
     retrier = Smartsheet::API::RetryLogic.new
     stub_sleep(retrier)
@@ -136,7 +140,7 @@ describe Smartsheet::API::RetryNetClientDecorator do
 
   it 'does not log retry failure count after retrying only once' do
     given_non_retryable_response
-    @client.stubs(:make_request).with(REQUEST).returns @response
+    given_stubbed_inner_client
 
     logger = mock
     logger.expects(:log_retry_failure).never
