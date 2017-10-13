@@ -16,8 +16,12 @@ describe Smartsheet::API::FaradayNetClient do
   end
 
   def build_stub_response
+    faraday_env = mock
+    faraday_env.stubs(:'success?').returns true
+    faraday_env.stubs(:'[]').returns nil
+
     response = mock
-    response.stubs(:body).returns Smartsheet::API::FaradayResponse.from_response_env({})
+    response.stubs(:body).returns Smartsheet::API::FaradayResponse.from_response_env(faraday_env)
     response
   end
 

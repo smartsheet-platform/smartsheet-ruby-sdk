@@ -34,7 +34,10 @@ describe Smartsheet::API::ResponseNetClientDecorator do
   end
 
   def given_failure_response
-    @response.stubs(:message).returns('')
+    @response.stubs(:reason_phrase).returns('')
+    @response.stubs(:status_code).returns(500)
+    @response.stubs(:headers).returns({})
+
     given_response false
   end
 
