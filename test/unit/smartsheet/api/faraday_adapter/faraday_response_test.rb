@@ -36,21 +36,26 @@ module Smartsheet
       end
     end
 
+    STATUS = 404
+    REASON_PHRASE = 'Not Found'.freeze
+    RESPONSE_HEADERS = {
+        'date' => 'Tue, 03 Oct 2017 15:46:24 GMT',
+        'content-type' => 'application/json;charset=UTF-8',
+        'content-length' => '1621',
+        'connection' => 'close'
+    }.freeze
+    FARADAY_RESPONSE = {
+        status: STATUS,
+        reason_phrase: REASON_PHRASE,
+        response_headers: RESPONSE_HEADERS
+    }.freeze
+
     describe FaradayErrorResponse do
       RETRYABLE_ERROR_CODE = 4002
       NON_RETRYABLE_ERROR_CODE = 4000
       ERROR_MESSAGE = 'Error'.freeze
       REF_ID = '123abc'.freeze
       DETAIL = [{a: 123}, {b: 234}].freeze
-
-      STATUS = 404
-      REASON_PHRASE = 'Not Found'.freeze
-      RESPONSE_HEADERS = {
-          'date' => 'Tue, 03 Oct 2017 15:46:24 GMT',
-          'content-type' => 'application/json;charset=UTF-8',
-          'content-length' => '1621',
-          'connection' => 'close'
-      }.freeze
       RETRYABLE_ERROR_RESULT = {
         :errorCode => RETRYABLE_ERROR_CODE,
         :message => ERROR_MESSAGE,
@@ -63,11 +68,6 @@ module Smartsheet
         :refId => REF_ID,
         :detail => DETAIL
       }
-      FARADAY_RESPONSE = {
-          status: STATUS,
-          reason_phrase: REASON_PHRASE,
-          response_headers: RESPONSE_HEADERS
-      }.freeze
 
       it 'provides the result error code' do
         FaradayErrorResponse
@@ -131,19 +131,6 @@ module Smartsheet
     end
 
     describe FaradaySuccessResponse do
-      STATUS = 404
-      REASON_PHRASE = 'Not Found'.freeze
-      RESPONSE_HEADERS = {
-          'date' => 'Tue, 03 Oct 2017 15:46:24 GMT',
-          'content-type' => 'application/json;charset=UTF-8',
-          'content-length' => '1621',
-          'connection' => 'close'
-      }.freeze
-      FARADAY_RESPONSE = {
-          status: STATUS,
-          reason_phrase: REASON_PHRASE,
-          response_headers: RESPONSE_HEADERS
-      }.freeze
       RESULT = 'Result'.freeze
       SUCCESS_RESPONSE = FaradaySuccessResponse.new(RESULT, FARADAY_RESPONSE)
 
