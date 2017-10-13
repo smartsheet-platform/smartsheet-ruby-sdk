@@ -2,6 +2,7 @@ require_relative 'url_builder'
 
 module Smartsheet
   module API
+    # Specification for a single endpoint's arguments
     class EndpointSpec
       attr_reader :method, :url_segments, :spec
 

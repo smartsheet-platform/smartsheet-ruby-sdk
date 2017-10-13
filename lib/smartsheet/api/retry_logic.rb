@@ -2,6 +2,9 @@ require 'smartsheet/constants'
 
 module Smartsheet
   module API
+    # Accepts a callable proc and a predicate, calling the proc repeatedly with backoff until the
+    # provided time limit is reached, or until the predicate applied to the proc's result returns
+    # false.
     class RetryLogic
       include Smartsheet::Constants
 

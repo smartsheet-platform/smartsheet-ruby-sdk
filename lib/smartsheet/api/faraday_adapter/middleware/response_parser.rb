@@ -5,6 +5,7 @@ require 'smartsheet/api/faraday_adapter/faraday_response'
 module Smartsheet
   module API
     module Middleware
+      # Wraps responses into {FaradayResponse FaradayResponses}, parsing JSON bodies when applicable
       class ResponseParser < Faraday::Middleware
         def initialize(app)
           super(app)
