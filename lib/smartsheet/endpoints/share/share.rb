@@ -1,4 +1,5 @@
 module Smartsheet
+  # Sharing Endpoints Mixin
   module Share
     def delete_share(share_id:, url:, params:, header_overrides:, **url_args)
       endpoint_spec = Smartsheet::API::EndpointSpec.new(:delete, url + ['shares', :share_id])

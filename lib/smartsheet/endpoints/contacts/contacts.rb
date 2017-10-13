@@ -1,4 +1,6 @@
 module Smartsheet
+  # Contacts Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#contacts API Contacts Docs
   class Contacts
     attr_reader :client
     private :client

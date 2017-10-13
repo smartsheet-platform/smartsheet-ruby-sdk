@@ -1,4 +1,7 @@
 module Smartsheet
+  # Sent Update Requests Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#update-requests API Update Requests
+  #   Docs
   class SentUpdateRequests
     attr_reader :client
     private :client

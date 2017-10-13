@@ -1,4 +1,6 @@
 module Smartsheet
+  # Search Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#search API Search Docs
   class Search
     attr_reader :client
     private :client

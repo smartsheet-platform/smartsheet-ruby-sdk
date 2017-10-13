@@ -1,4 +1,6 @@
 module Smartsheet
+  # Groups Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#groups API Groups Docs
   class Groups
     attr_reader :client
     private :client

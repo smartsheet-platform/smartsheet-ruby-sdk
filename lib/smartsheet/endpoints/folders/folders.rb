@@ -1,4 +1,6 @@
 module Smartsheet
+  # Folders Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#folders API Folders Docs
   class Folders
     attr_reader :client
     private :client

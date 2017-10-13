@@ -1,4 +1,7 @@
 module Smartsheet
+  # Server Information Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#server-information API Server
+  #   Information Docs
   class ServerInfo
     attr_reader :client
     private :client

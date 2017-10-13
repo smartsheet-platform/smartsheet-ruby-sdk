@@ -1,6 +1,11 @@
 require_relative 'alternate_emails'
 
 module Smartsheet
+  # Users Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#users API Users Docs
+  #
+  # @!attribute [r] alternate_emails
+  #   @return [AlternateEmails]
   class Users
     attr_reader :client, :alternate_emails
     private :client

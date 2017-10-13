@@ -25,6 +25,41 @@ require 'smartsheet/endpoints/workspaces/workspaces'
 
 
 module Smartsheet
+  # The entry point to the SDK. API endpoint categories are accessed through this object's readable
+  # attributes.
+  #
+  # @!attribute [r] contacts
+  #   @return [Contacts]
+  # @!attribute [r] favorites
+  #   @return [Favorites]
+  # @!attribute [r] folders
+  #   @return [Folders]
+  # @!attribute [r] groups
+  #   @return [Groups]
+  # @!attribute [r] home
+  #   @return [Home]
+  # @!attribute [r] reports
+  #   @return [Reports]
+  # @!attribute [r] search
+  #   @return [Search]
+  # @!attribute [r] server_info
+  #   @return [ServerInfo]
+  # @!attribute [r] sheets
+  #   @return [Sheets]
+  # @!attribute [r] sights
+  #   @return [Sights]
+  # @!attribute [r] templates
+  #   @return [Templates]
+  # @!attribute [r] token
+  #   @return [Token]
+  # @!attribute [r] update_requests
+  #   @return [UpdateRequests]
+  # @!attribute [r] users
+  #   @return [Users]
+  # @!attribute [r] webhooks
+  #   @return [Webhooks]
+  # @!attribute [r] workspaces
+  #   @return [Workspaces]
   class Client
     include GeneralRequest
     include Smartsheet::Constants
@@ -33,6 +68,23 @@ module Smartsheet
                 :sheets, :sights, :templates, :token, :update_requests, :users, :webhooks,
                 :workspaces
 
+    # @param token [String] access token for the API; if nil or empty, uses environment variable
+    #   `SMARTSHEET_ACCESS_TOKEN`
+    # @param assume_user [String] the email address of the user to impersonate; only available for
+    #   admin roles
+    # @param json_output [Boolean] when true, endpoints return raw JSON strings instead of hashes
+    # @param max_retry_time [Fixnum] overrides the maximum number of seconds during which eligible
+    #   errors will be retried
+    # @param backoff_method [Proc] overrides the backoff calculation method, accepting the index of
+    #   the current retry attempt (0-based) and returning the number of seconds to wait before
+    #   retrying the call again.  Example - Wait 1 second before the first retry, 2 seconds before
+    #   the second, and so on:
+    #     ->(x){ x + 1 }
+    # @param logger [Logger] a logger to which request and response info will be recorded
+    # @param log_full_body [Boolean] when true, request and response bodies will not be truncated in
+    #   the logs
+    # @param base_url [String] overrides the base URL used when constructing API calls; for example,
+    #   the default takes the form of `https://api.smartsheet.com/2.0`
     def initialize(
         token: nil,
         assume_user: nil,
@@ -74,7 +126,6 @@ module Smartsheet
           assume_user: assume_user,
           logger: request_logger
       )
-
       build_categories
     end
 

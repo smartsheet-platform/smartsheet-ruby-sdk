@@ -1,4 +1,7 @@
 module Smartsheet
+  # Alternate Emails Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#alternate-email-addresses API
+  #   Alternate Email Addresses Docs
   class AlternateEmails
     attr_reader :client
     private :client
