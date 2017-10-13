@@ -13,11 +13,27 @@ module Smartsheet
     end
   end
 
-  class ApiError < Error
+  class HttpResponseError < Error
+    attr_reader :status_code, :reason_phrase, :headers
+
+    def initialize(status_code:, reason_phrase:, headers:)
+      super(reason_phrase)
+
+      @status_code = status_code
+      @reason_phrase = reason_phrase
+      @headers = headers
+    end
+  end
+
+  class ApiError < HttpResponseError
     extend Forwardable
 
     def initialize(error_response)
-      super(error_response.message)
+      super(
+          status_code: error_response.status_code,
+          reason_phrase: error_response.reason_phrase,
+          headers: error_response.headers
+      )
       @error_response = error_response
     end
 
