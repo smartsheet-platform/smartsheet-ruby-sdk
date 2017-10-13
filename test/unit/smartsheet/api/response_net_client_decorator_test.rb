@@ -33,6 +33,13 @@ describe Smartsheet::API::ResponseNetClientDecorator do
     @response.stubs(:result).returns('result')
   end
 
+  def given_http_error_response(status_code: 123, reason_phrase: 'because', headers: {h: 1})
+    @error = Smartsheet::HttpResponseError.new(status_code: status_code, reason_phrase: reason_phrase, headers: headers)
+
+    @client.unstub(:make_request)
+    @client.stubs(:make_request).raises @error
+  end
+
   def given_failure_response
     @response.stubs(:reason_phrase).returns('')
     @response.stubs(:status_code).returns(500)
@@ -41,7 +48,7 @@ describe Smartsheet::API::ResponseNetClientDecorator do
     given_response false
   end
 
-  it 'raises an ApiError on failure' do
+  it 'raises an ApiError on api failure' do
     given_failure_response
 
     -> {
@@ -49,6 +56,16 @@ describe Smartsheet::API::ResponseNetClientDecorator do
         .new(@client)
         .make_request({})
     }.must_raise Smartsheet::ApiError
+  end
+
+  it 'raises a HttpResponseError on http failure' do
+    given_http_error_response
+
+    -> {
+      Smartsheet::API::ResponseNetClientDecorator
+          .new(@client)
+          .make_request({})
+    }.must_raise Smartsheet::HttpResponseError
   end
 
   it 'converts camel case to snake case' do
@@ -102,17 +119,31 @@ describe Smartsheet::API::ResponseNetClientDecorator do
         .make_request({})
   end
 
-  it 'logs error responses' do
+  it 'logs api error responses' do
     given_failure_response
 
     request = {}
     logger = mock
-    logger.expects(:log_error_response).with(request, @response)
+    logger.expects(:log_api_error_response).with(request, @response)
 
     proc do
       Smartsheet::API::ResponseNetClientDecorator
           .new(@client, logger: logger)
           .make_request(request)
     end.must_raise Smartsheet::ApiError
+  end
+
+  it 'logs http error responses' do
+    given_http_error_response
+
+    request = {}
+    logger = mock
+    logger.expects(:log_http_error_response).with(request, @error)
+
+    proc do
+      Smartsheet::API::ResponseNetClientDecorator
+          .new(@client, logger: logger)
+          .make_request(request)
+    end.must_raise Smartsheet::HttpResponseError
   end
 end

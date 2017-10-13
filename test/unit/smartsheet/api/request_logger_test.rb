@@ -234,14 +234,14 @@ describe Smartsheet::API::RequestLogger do
     end
   end
 
-  describe 'log_error_response' do
+  describe 'log_api_error_response' do
     it 'censors params' do
       given_mock_request(
           params: {code: 'censorme', client_id: 'censorme', hash: 'censorme', refresh_token: 'censorme'}
       )
       given_mock_error_response
 
-      @request_logger.log_error_response(@mock_request, @mock_response)
+      @request_logger.log_api_error_response(@mock_request, @mock_response)
 
       request_log =
           'Request: GET some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
@@ -252,7 +252,31 @@ describe Smartsheet::API::RequestLogger do
       given_mock_request
       given_mock_error_response(headers: {authorization: 'censorme'})
 
-      @request_logger.log_retry_attempt(@mock_request, @mock_response, 1)
+      @request_logger.log_api_error_response(@mock_request, @mock_response)
+
+      @mock_logger.debug_msgs.must_include 'Response Headers: {:authorization=>"****orme"}'
+    end
+  end
+
+  describe 'log_http_error_response' do
+    it 'censors params' do
+      given_mock_request(
+          params: {code: 'censorme', client_id: 'censorme', hash: 'censorme', refresh_token: 'censorme'}
+      )
+      given_mock_error_response
+
+      @request_logger.log_http_error_response(@mock_request, @mock_response)
+
+      request_log =
+          'Request: GET some/url?code=****orme&client_id=****orme&hash=****orme&refresh_token=****orme'
+      @mock_logger.error_msgs.must_include request_log
+    end
+
+    it 'censors response headers' do
+      given_mock_request
+      given_mock_error_response(headers: {authorization: 'censorme'})
+
+      @request_logger.log_http_error_response(@mock_request, @mock_response)
 
       @mock_logger.debug_msgs.must_include 'Response Headers: {:authorization=>"****orme"}'
     end
