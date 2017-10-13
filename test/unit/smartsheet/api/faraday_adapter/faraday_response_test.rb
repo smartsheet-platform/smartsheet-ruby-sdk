@@ -5,7 +5,7 @@ require 'ostruct'
 module Smartsheet
   module API
     describe FaradayResponse do
-      it 'provides an error response when handed a result that looks like a smartsheet error' do
+      it 'provides an error response when handed a result that looks like a Smartsheet error' do
         result_body = {
             :errorCode => 1000,
             :message => 'Error',
@@ -18,7 +18,7 @@ module Smartsheet
         response.must_be_kind_of FaradayErrorResponse
       end
 
-      it 'raises a http error when handed a result that looks like a non-smartsheet error' do
+      it 'raises a http error when handed a result that looks like a non-Smartsheet error' do
         result_body = '<html>Oh no! An Error!</html>'
         result = { body: result_body, status: 404, reason_phrase: 'Not Found', headers: {} }
         def result.success?() false end
