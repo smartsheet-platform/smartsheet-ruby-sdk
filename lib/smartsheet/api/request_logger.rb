@@ -80,9 +80,14 @@ module Smartsheet
         log_body('Response', response.result)
       end
 
-      def log_error_response(request, error)
+      def log_api_error_response(request, error)
         log_request_basics(Logger::ERROR, request)
         log_api_error(Logger::ERROR, error)
+      end
+
+      def log_http_error_response(request, error)
+        log_request_basics(Logger::ERROR, request)
+        log_http_error(Logger::ERROR, error)
       end
 
       private
@@ -109,6 +114,11 @@ module Smartsheet
         logger.log(level) do
           "#{response.error_code}: #{response.message} - Ref ID: #{response.ref_id}"
         end
+        log_headers('Response', response)
+      end
+
+      def log_http_error(level, response)
+        log_status(level, response)
         log_headers('Response', response)
       end
 
@@ -160,7 +170,10 @@ module Smartsheet
       def log_successful_response(response)
       end
 
-      def log_error_response(request, error)
+      def log_api_error_response(request, error)
+      end
+
+      def log_http_error_response(request, error)
       end
     end
   end

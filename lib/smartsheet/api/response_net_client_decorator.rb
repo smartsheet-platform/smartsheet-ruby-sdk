@@ -12,7 +12,14 @@ module Smartsheet
       end
 
       def make_request(request)
-        parse(request, client.make_request(request))
+        response = begin
+          client.make_request(request)
+        rescue Smartsheet::HttpResponseError => e
+          logger.log_http_error_response(request, e)
+          raise e
+        end
+
+        parse(request, response)
       end
 
       private
@@ -24,7 +31,7 @@ module Smartsheet
            logger.log_successful_response(response)
            parse_success(response)
          else
-           logger.log_error_response(request, response)
+           logger.log_api_error_response(request, response)
            parse_failure(response)
          end
       end

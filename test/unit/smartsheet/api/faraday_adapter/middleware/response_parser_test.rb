@@ -13,6 +13,8 @@ describe Smartsheet::API::Middleware::ResponseParser do
 
   it 'parses and wraps successful JSON responses' do
     env = { response_headers: { 'content-type' => 'application/json' }, body: '{"key":"value"}' }
+    def env.success?() true end
+
     response_parser = build_response_parser(env)
     response_parser.call(env)
 
@@ -22,6 +24,8 @@ describe Smartsheet::API::Middleware::ResponseParser do
 
   it 'wraps successful non-JSON responses' do
     env = { response_headers: {}, body: 'Result' }
+    def env.success?() true end
+
     response_parser = build_response_parser(env)
     response_parser.call(env)
 
@@ -32,6 +36,8 @@ describe Smartsheet::API::Middleware::ResponseParser do
   it 'wraps failed responses' do
     body = '{"errorCode":1001,"message":"Failure","refId":"123abc"}'
     env = { response_headers: { 'content-type' => 'application/json' }, body: body }
+    def env.success?() false end
+
     response_parser = build_response_parser(env)
     response_parser.call(env)
 
