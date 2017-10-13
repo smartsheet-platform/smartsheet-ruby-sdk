@@ -79,7 +79,9 @@ module Smartsheet
     #   the current retry attempt (0-based) and returning the number of seconds to wait before
     #   retrying the call again.  Example - Wait 1 second before the first retry, 2 seconds before
     #   the second, and so on:
-    #     ->(x){ x + 1 }
+    #   ```ruby
+    #   ->(x){ x + 1 }
+    #   ```
     # @param logger [Logger] a logger to which request and response info will be recorded
     # @param log_full_body [Boolean] when true, request and response bodies will not be truncated in
     #   the logs

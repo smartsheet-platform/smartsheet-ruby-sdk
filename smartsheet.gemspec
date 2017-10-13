@@ -47,4 +47,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.49.1'
   spec.add_development_dependency 'reek', '~> 4.7'
   spec.add_development_dependency 'rubycritic', '~> 3.2'
+  spec.add_development_dependency 'yard', '~> 0.9'
+  spec.add_development_dependency 'redcarpet', '~> 3.4'
+  spec.add_development_dependency 'github-markup', '~> 1.6'
 end
