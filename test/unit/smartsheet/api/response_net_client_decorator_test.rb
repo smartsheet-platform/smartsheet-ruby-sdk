@@ -33,14 +33,20 @@ describe Smartsheet::API::ResponseNetClientDecorator do
     @response.stubs(:result).returns('result')
   end
 
-  def given_http_error_response(status_code: 123, reason_phrase: 'because', headers: {h: 1})
-    @error = Smartsheet::HttpResponseError.new(status_code: status_code, reason_phrase: reason_phrase, headers: headers)
+  def given_http_error_response
+    @error = Smartsheet::HttpResponseError.new(
+        status_code: 123,
+        reason_phrase: 'because',
+        headers: {h: 1},
+        message: 'asdf'
+    )
 
     @client.unstub(:make_request)
     @client.stubs(:make_request).raises @error
   end
 
   def given_failure_response
+    @response.stubs(:message).returns('')
     @response.stubs(:reason_phrase).returns('')
     @response.stubs(:status_code).returns(500)
     @response.stubs(:headers).returns({})

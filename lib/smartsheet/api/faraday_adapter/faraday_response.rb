@@ -10,7 +10,8 @@ module Smartsheet
           raise HttpResponseError.new(
               status_code: faraday_env[:status],
               reason_phrase: faraday_env[:reason_phrase],
-              headers: faraday_env[:response_headers]
+              headers: faraday_env[:response_headers],
+              message: "#{faraday_env[:status]} #{faraday_env[:reason_phrase]}"
           )
         end
       end
