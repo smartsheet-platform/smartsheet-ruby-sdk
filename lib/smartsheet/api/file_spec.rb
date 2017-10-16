@@ -15,8 +15,8 @@ module Smartsheet
       end
     end
 
-    # Specification for a file attachment by {File}, target filename, file length, and MIME content
-    # type
+    # Specification for a file attachment by {::File}, target filename, file length, and MIME
+    # content type
     class ObjectFileSpec
       attr_reader :upload_io, :filename, :content_type, :file_length
 

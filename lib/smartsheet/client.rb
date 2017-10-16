@@ -70,31 +70,38 @@ module Smartsheet
 
     # @param token [String] access token for the API; if nil or empty, uses environment variable
     #   `SMARTSHEET_ACCESS_TOKEN`
+    # @param logger [Logger] a logger to which request and response info will be recorded
+    # @param log_full_body [Boolean] when true, request and response bodies will not be truncated in
+    #   the logs
+    # @param json_output [Boolean] when true, endpoints return raw JSON strings instead of hashes
     # @param assume_user [String] the email address of the user to impersonate; only available for
     #   admin roles
-    # @param json_output [Boolean] when true, endpoints return raw JSON strings instead of hashes
     # @param max_retry_time [Fixnum] overrides the maximum number of seconds during which eligible
     #   errors will be retried
     # @param backoff_method [Proc] overrides the backoff calculation method, accepting the index of
     #   the current retry attempt (0-based) and returning the number of seconds to wait before
-    #   retrying the call again.  Example - Wait 1 second before the first retry, 2 seconds before
+    #   retrying the call again, or `:stop` to halt retrying and return the latest error.
+    #
+    #   Example - Wait 1 second before the first retry, 2 seconds before
     #   the second, and so on:
     #   ```ruby
     #   ->(x){ x + 1 }
     #   ```
-    # @param logger [Logger] a logger to which request and response info will be recorded
-    # @param log_full_body [Boolean] when true, request and response bodies will not be truncated in
-    #   the logs
+    #
+    #   Example - Try twice, then halt:
+    #   ```ruby
+    #   ->(x){ if x < 2 then x + 1 else :stop end }
+    #   ```
     # @param base_url [String] overrides the base URL used when constructing API calls; for example,
     #   the default takes the form of `https://api.smartsheet.com/2.0`
     def initialize(
         token: nil,
-        assume_user: nil,
-        json_output: false,
-        max_retry_time: nil,
-        backoff_method: nil,
         logger: nil,
         log_full_body: false,
+        json_output: false,
+        assume_user: nil,
+        max_retry_time: nil,
+        backoff_method: nil,
         base_url: API_URL
     )
 
