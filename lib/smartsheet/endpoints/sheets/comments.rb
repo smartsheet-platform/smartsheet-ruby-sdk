@@ -1,6 +1,11 @@
 require 'smartsheet/endpoints/sheets/comments_attachments'
 
 module Smartsheet
+  # Comments Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#comments API Comments Docs
+  #
+  # @!attribute [r] attachments
+  #   @return [CommentsAttachments]
   class Comments
     attr_reader :client, :attachments
     private :client

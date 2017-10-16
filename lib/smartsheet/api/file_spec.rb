@@ -3,6 +3,7 @@ require 'faraday'
 
 module Smartsheet
   module API
+    # Specification for a file attachment by path, target filename, and MIME content type
     class PathFileSpec
       attr_reader :upload_io, :filename, :content_type, :file_length
 
@@ -14,6 +15,8 @@ module Smartsheet
       end
     end
 
+    # Specification for a file attachment by {::File}, target filename, file length, and MIME
+    # content type
     class ObjectFileSpec
       attr_reader :upload_io, :filename, :content_type, :file_length
 

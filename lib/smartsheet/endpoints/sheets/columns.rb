@@ -1,4 +1,6 @@
 module Smartsheet
+  # Columns Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#columns API Columns Docs
   class Columns
     attr_reader :client
     private :client

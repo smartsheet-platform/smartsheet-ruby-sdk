@@ -1,6 +1,11 @@
 require_relative 'workspaces_share'
 
 module Smartsheet
+  # Workspaces Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#workspaces API Workspaces Docs
+  #
+  # @!attribute [r] share
+  #   @return [WorkspacesShare]
   class Workspaces
     attr_reader :client, :share
     private :client

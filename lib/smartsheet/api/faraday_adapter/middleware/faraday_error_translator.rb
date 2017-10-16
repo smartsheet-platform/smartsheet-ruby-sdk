@@ -4,6 +4,7 @@ require 'smartsheet/error'
 module Smartsheet
   module API
     module Middleware
+      # Raises Faraday request errors as {Smartsheet::RequestError RequestErrors}
       class FaradayErrorTranslator < Faraday::Middleware
         def initialize(app)
           super(app)

@@ -1,5 +1,6 @@
 module Smartsheet
   module API
+    # Builds response objects from Faraday response environments
     class FaradayResponse
       def self.from_response_env(faraday_env)
         if faraday_env[:body].kind_of?(Hash) && faraday_env[:body].key?(:errorCode)
@@ -25,6 +26,7 @@ module Smartsheet
       end
     end
 
+    # Provides a Smartsheet error response from a Faraday response environment
     class FaradayErrorResponse < FaradayResponse
       RETRYABLE_ERRORS = 4001..4004
 
@@ -47,6 +49,7 @@ module Smartsheet
       end
     end
 
+    # Provides a Smartsheet success response from a Faraday response environment
     class FaradaySuccessResponse < FaradayResponse
       attr_reader :result
 

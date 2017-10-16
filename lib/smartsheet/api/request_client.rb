@@ -2,6 +2,8 @@ require 'smartsheet/error'
 
 module Smartsheet
   module API
+    # Composes {EndpointSpec endpoint specifications} and {RequestSpec request specifications} to
+    # form a single {Request} that it submits to the provided client
     class RequestClient
       def initialize(token, client, base_url, assume_user: nil, logger: MuteRequestLogger.new)
         @token = token

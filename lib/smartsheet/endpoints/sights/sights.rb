@@ -1,6 +1,11 @@
 require_relative 'sights_share'
 
 module Smartsheet
+  # Sights Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#sights API Sights Docs
+  #
+  # @!attribute [r] share
+  #   @return [SightsShare]
   class Sights
     attr_reader :client, :share
     private :client

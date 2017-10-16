@@ -2,7 +2,7 @@ require 'smartsheet/constants'
 
 module Smartsheet
   module API
-    # Methods for building Smartsheet API URLs
+    # Constructs parameterized URLs for accessing the Smartsheet API
     class UrlBuilder
       def initialize(endpoint_spec, request_spec, base_url)
         @segments = endpoint_spec.url_segments

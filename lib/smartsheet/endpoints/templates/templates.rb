@@ -1,4 +1,6 @@
 module Smartsheet
+  # Templates Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#templates API Templates Docs
   class Templates
     attr_reader :client
     private :client

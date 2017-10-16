@@ -2,6 +2,8 @@ require 'smartsheet/api/request_logger'
 
 module Smartsheet
   module API
+    # Passes requests to the decorated client, retrying the request based on the provided
+    # {RetryLogic} when retry-eligible errors arise
     class RetryNetClientDecorator
       SHOULD_RETRY = ->(response) { response.should_retry? }
 

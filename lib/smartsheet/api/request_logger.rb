@@ -2,6 +2,7 @@ require 'logger'
 
 module Smartsheet
   module API
+    # Censors strings and hash values for select blacklisted keys
     class Censor
       EXPOSED_CHARS = 4
       KEY_TO_STRING = ->(k){ k.to_s }
@@ -45,6 +46,7 @@ module Smartsheet
       attr_reader :blacklist
     end
 
+    # Logs request and response information, while censoring OAuth-relevant keys
     class RequestLogger
       QUERY_PARAM_CENSOR = Censor.new 'code', 'client_id', 'hash', 'refresh_token'
       HEADER_CENSOR = Censor.new 'authorization'
@@ -157,6 +159,7 @@ module Smartsheet
       end
     end
 
+    # Stubs all request logging methods by doing nothing (see {RequestLogger})
     class MuteRequestLogger
       def log_request(request)
       end

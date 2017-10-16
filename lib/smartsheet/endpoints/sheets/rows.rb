@@ -1,6 +1,11 @@
 require 'smartsheet/endpoints/sheets/rows_attachments'
 
 module Smartsheet
+  # Rows Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#rows API Rows Docs
+  #
+  # @!attribute [r] attachments
+  #   @return [RowsAttachments]
   class Rows
     attr_reader :client, :attachments
     private :client

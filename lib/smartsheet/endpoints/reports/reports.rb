@@ -3,6 +3,11 @@ require 'smartsheet/constants'
 require_relative 'reports_share'
 
 module Smartsheet
+  # Reports Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#reports API Reports Docs
+  #
+  # @!attribute [r] share
+  #   @return [ReportsShare]
   class Reports
     include Smartsheet::Constants
 

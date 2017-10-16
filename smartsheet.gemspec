@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '> 2.2'
+  spec.required_ruby_version = '~> 2.2'
 
   spec.add_dependency 'faraday', '~> 0.13.1'
   spec.add_dependency 'plissken', '~> 1.2'
@@ -47,4 +47,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.49.1'
   spec.add_development_dependency 'reek', '~> 4.7'
   spec.add_development_dependency 'rubycritic', '~> 3.2'
+  spec.add_development_dependency 'yard', '~> 0.9'
+  spec.add_development_dependency 'redcarpet', '~> 3.4'
+  spec.add_development_dependency 'github-markup', '~> 1.6'
 end

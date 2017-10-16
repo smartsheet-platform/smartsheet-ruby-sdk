@@ -1,6 +1,8 @@
 require 'smartsheet/api/file_spec'
 
 module Smartsheet
+  # Rows Attachments Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#attachments API Attachments Docs
   class RowsAttachments
     attr_reader :client
     private :client

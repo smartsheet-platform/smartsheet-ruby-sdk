@@ -11,7 +11,23 @@ require 'smartsheet/endpoints/sheets/sheets_attachments'
 require 'smartsheet/endpoints/sheets/sheets_share'
 
 module Smartsheet
-  # Sheet resource endpoints
+  # Sheets Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#sheets API Sheets Docs
+  #
+  # @!attribute [r] attachments
+  #   @return [SheetsAttachments]
+  # @!attribute [r] cells
+  #   @return [Cells]
+  # @!attribute [r] columns
+  #   @return [Columns]
+  # @!attribute [r] comments
+  #   @return [Comments]
+  # @!attribute [r] discussions
+  #   @return [Discussions]
+  # @!attribute [r] rows
+  #   @return [Rows]
+  # @!attribute [r] share
+  #   @return [SheetsShare]
   class Sheets
     include Smartsheet::Constants
 

@@ -1,4 +1,6 @@
 module Smartsheet
+  # Discussions Attachments Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#attachments API Attachments Docs
   class DiscussionsAttachments
     attr_reader :client
     private :client

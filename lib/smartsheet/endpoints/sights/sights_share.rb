@@ -1,6 +1,8 @@
 require 'smartsheet/endpoints/share/share'
 
 module Smartsheet
+  # Sight Sharing Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#sight-sharing API Sight Sharing Docs
   class SightsShare
     attr_reader :client
     private :client

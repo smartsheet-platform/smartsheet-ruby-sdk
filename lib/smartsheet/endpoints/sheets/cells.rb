@@ -1,6 +1,8 @@
 require 'smartsheet/api/file_spec'
 
 module Smartsheet
+  # Cells Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#cells API Cells Docs
   class Cells
     attr_reader :client
     private :client

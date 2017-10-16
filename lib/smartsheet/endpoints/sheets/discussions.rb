@@ -1,6 +1,11 @@
 require 'smartsheet/endpoints/sheets/discussions_attachments'
 
 module Smartsheet
+  # Discussions Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#discussions API Discussions Docs
+  #
+  # @!attribute [r] attachments
+  #   @return [DiscussionsAttachments]
   class Discussions
     attr_reader :client, :attachments
     private :client

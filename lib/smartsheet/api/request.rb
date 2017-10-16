@@ -4,6 +4,7 @@ require 'smartsheet/api/body_builder'
 
 module Smartsheet
   module API
+    # Full specification for a single request to an endpoint
     class Request
       attr_reader :method, :url, :headers, :params, :body
 

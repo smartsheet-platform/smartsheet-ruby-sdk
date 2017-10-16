@@ -4,6 +4,7 @@ require 'smartsheet/error'
 
 module Smartsheet
   module API
+    # Passes requests to the decorated client, and parses responses into expected result types
     class ResponseNetClientDecorator
       def initialize(client, json_output: false, logger: MuteRequestLogger.new)
         @json_output = json_output

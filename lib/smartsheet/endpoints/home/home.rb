@@ -1,4 +1,6 @@
 module Smartsheet
+  # Home Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#home API Home Docs
   class Home
     attr_reader :client
     private :client

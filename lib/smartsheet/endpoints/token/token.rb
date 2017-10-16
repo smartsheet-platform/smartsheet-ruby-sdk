@@ -1,6 +1,10 @@
 require 'digest'
 
 module Smartsheet
+  # Token Endpoints
+  #
+  # {#get} and {#refresh} do not require an existing token to call
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#token API Token Docs
   class Token
     attr_reader :client
     private :client

@@ -1,6 +1,8 @@
 require 'smartsheet/endpoints/share/share'
 
 module Smartsheet
+  # Report Sharing Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#report-sharing API Report Sharing Docs
   class ReportsShare
     attr_reader :client
     private :client

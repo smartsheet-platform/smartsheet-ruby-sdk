@@ -3,6 +3,7 @@ require 'awrence'
 
 module Smartsheet
   module API
+    # Specification for a single API request's arguments
     class RequestSpec
       attr_reader :file_spec, :url_args, :params, :header_overrides, :body, :filename, :content_type
       private :file_spec

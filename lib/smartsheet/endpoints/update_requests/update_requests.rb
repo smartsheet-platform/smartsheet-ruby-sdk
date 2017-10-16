@@ -1,6 +1,12 @@
 require 'smartsheet/endpoints/update_requests/sent_update_requests'
 
 module Smartsheet
+  # Update Requests Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#update-requests API Update Requests
+  #   Docs
+  #
+  # @!attribute [r] sent
+  #   @return [SentUpdateRequests]
   class UpdateRequests
     attr_reader :client, :sent
     private :client

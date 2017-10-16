@@ -5,6 +5,7 @@ require 'smartsheet/api/faraday_adapter/middleware/response_parser'
 
 module Smartsheet
   module API
+    # Makes calls to the Smartsheet API through Faraday
     class FaradayNetClient
       def initialize
         create_connection

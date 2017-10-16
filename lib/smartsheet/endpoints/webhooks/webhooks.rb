@@ -1,4 +1,6 @@
 module Smartsheet
+  # Webhooks Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#webhooks-reference API Webhooks Docs
   class Webhooks
     attr_reader :client
     private :client

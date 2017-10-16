@@ -1,4 +1,6 @@
 module Smartsheet
+  # Favorites Endpoints
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#favorites API Favorites Docs
   class Favorites
     attr_reader :client
     private :client
