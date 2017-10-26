@@ -10,7 +10,7 @@ class IntegrationTestHelper < Minitest::Test
         define_method "test_#{scenario_name}" do
             begin
                 response = method.call(client, args)
-            rescue Smartsheet::HttpResponseError => e
+            rescue Smartsheet::ApiError => e
                 flunk(e.message) unless should_error
             end
         end
