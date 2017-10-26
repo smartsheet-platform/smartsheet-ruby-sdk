@@ -3,4 +3,10 @@ language: ruby
 rvm:
   - 2.2
   - 2.4
-before_install: gem install bundler -v 1.15.4
+before_install:
+  - ./install_wiremock.sh
+  - gem install bundler -v 1.15.4
+
+script:
+  - ./run_wiremock.sh
+  - rake test
