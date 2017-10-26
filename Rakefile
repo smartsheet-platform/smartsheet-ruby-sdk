@@ -15,9 +15,15 @@ namespace :test do
     t.pattern = 'test/unit/**/*_test.rb'
     t.verbose = true
   end
+
+  Rake::TestTask.new(:integration) do |t|
+    t.libs << 'test'
+    t.pattern = 'test/integration/**/*_test.rb'
+    t.verbose = true
+  end
 end
 
 
 RubyCritic::RakeTask.new
 
-task default: :test
+task default: :'test:units'
