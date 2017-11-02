@@ -4,7 +4,7 @@ rvm:
   - 2.2
   - 2.4
 before_install:
-  - git clone -b add-travis-scripts https://github.com/stollgr/wiremock-scenario-templating.git
+  - git clone https://github.com/stollgr/wiremock-scenario-templating.git
   - wiremock-scenario-templating/travis_scripts/install_wiremock.sh
   - gem install bundler -v 1.15.4
 
