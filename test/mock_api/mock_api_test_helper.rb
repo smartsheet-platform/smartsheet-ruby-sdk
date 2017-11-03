@@ -10,6 +10,7 @@ class MockApiTestHelper < Minitest::Test
         define_method "test_#{scenario_name}" do
             begin
                 response = method.call(client, args)
+                flunk("Expected error, but did not fail.") if should_error
             rescue Smartsheet::ApiError => e
                 flunk(e.message) unless should_error && !scenario_error?(e)
             end
