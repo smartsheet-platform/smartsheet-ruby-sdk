@@ -16,9 +16,9 @@ namespace :test do
     t.verbose = true
   end
 
-  Rake::TestTask.new(:integration) do |t|
+  Rake::TestTask.new(:mock_api) do |t|
     t.libs << 'test'
-    t.pattern = 'test/integration/**/*_test.rb'
+    t.pattern = 'test/mock_api/**/*_test.rb'
     t.verbose = true
   end
 end

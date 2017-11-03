@@ -1,6 +1,6 @@
 require_relative '../test_helper'
 
-class IntegrationTestHelper < Minitest::Test
+class MockApiTestHelper < Minitest::Test
     def setup
         @client = Smartsheet::Client.new(base_url: 'http://localhost:8082')
     end
@@ -11,7 +11,7 @@ class IntegrationTestHelper < Minitest::Test
             begin
                 response = method.call(client, args)
             rescue Smartsheet::ApiError => e
-                flunk(e.message) unless should_error
+                flunk(e.message) unless should_error && !scenario_error?(e)
             end
         end
     end
@@ -25,6 +25,10 @@ class IntegrationTestHelper < Minitest::Test
                 args: test[:args]
             )
         end
+    end
+
+    def scenario_error?(e)
+        e.error_code == 9999
     end
 
     protected

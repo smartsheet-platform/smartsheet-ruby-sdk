@@ -1,7 +1,7 @@
 require_relative '../test_helper'
-require_relative 'integration_test_helper.rb'
+require_relative 'mock_api_test_helper.rb'
 
-class MockApiTest < IntegrationTestHelper
+class MockApiTest < MockApiTestHelper
     def self.tests
         [
             {
