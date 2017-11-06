@@ -1,3 +1,11 @@
+# Usage: ruby gen_tests_from_scenarios.rb scenario_file output_file
+# Summary:
+# This script can be used to generate mock api tests from a scenario.json
+# file. The output will be an array that can be copied into a test file and
+# run. You will need to replace the 'client.TODO_METHOD' string for each
+# test with an actual method call (such as client.sheets.list(**args)) before
+# running the tests.
+
 require 'cli'
 require 'json'
 
