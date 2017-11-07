@@ -581,6 +581,170 @@ class MockApiRowsTest < MockApiTestHelper
             }
           ]
         }
+      },
+      {
+        scenario_name: 'Add Rows - Assign Object Value - Predecessor List',
+        method: ->(client, args) {client.sheets.rows.add(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: [
+            {
+              'cells': [
+                {
+                  'columnId': 101,
+                  'objectValue': {
+                    'objectType': 'PREDECESSOR_LIST',
+                    'predecessors': [
+                      {
+                        'rowId': 10,
+                        'type': 'FS',
+                        'lag': {
+                          'objectType': 'DURATION',
+                          'days': 2,
+                          'hours': 4
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Update Rows - Clear Value - Text Number',
+        method: ->(client, args) {client.sheets.rows.update(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: [
+            {
+              'id': 10,
+              'cells': [
+                {
+                  'columnId': 101,
+                  'value': ''
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Update Rows - Clear Value - Checkbox',
+        method: ->(client, args) {client.sheets.rows.update(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: [
+            {
+              'id': 10,
+              'cells': [
+                {
+                  'columnId': 101,
+                  'value': ''
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Update Rows - Clear Value - Hyperlink',
+        method: ->(client, args) {client.sheets.rows.update(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: [
+            {
+              'id': 10,
+              'cells': [
+                {
+                  'columnId': 101,
+                  'value': '',
+                  'hyperlink': nil
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Update Rows - Clear Value - Cell Link',
+        method: ->(client, args) {client.sheets.rows.update(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: [
+            {
+              'id': 10,
+              'cells': [
+                {
+                  'columnId': 101,
+                  'value': '',
+                  'linkInFromCell': nil
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Update Rows - Invalid - Assign Hyperlink and Cell Link',
+        method: ->(client, args) {client.sheets.rows.update(**args)},
+        should_error: true,
+        args: {
+          sheet_id: 1,
+          body: [
+            {
+              'id': 10,
+              'cells': [
+                {
+                  'columnId': 101,
+                  'value': '',
+                  'linkInFromCell': {
+                    'sheetId': 2,
+                    'rowId': 20,
+                    'columnId': 201
+                  },
+                  'hyperlink': {
+                    'url': 'www.google.com'
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Update Rows - Location - Top',
+        method: ->(client, args) {client.sheets.rows.update(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: [
+            {
+              'id': 10,
+              'toTop': true
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Update Rows - Location - Bottom',
+        method: ->(client, args) {client.sheets.rows.update(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: [
+            {
+              'id': 10,
+              'toBottom': true
+            }
+          ]
+        }
       }
     ]
   end
