@@ -57,7 +57,7 @@ module Smartsheet
 
     def remove_sight(sight_id:, params: {}, header_overrides: {})
       remove_favorite(
-          url: ['sights', :sight_id],
+          url: ['sight', :sight_id],
           params: params,
           header_overrides: header_overrides,
           sight_id: sight_id
@@ -111,7 +111,7 @@ module Smartsheet
 
     def remove_sights(sight_ids:, params: {}, header_overrides: {})
       remove_favorites(
-          url: ['sights'],
+          url: ['sight'],
           params: params,
           header_overrides: header_overrides,
           object_ids: sight_ids
