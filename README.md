@@ -2,8 +2,6 @@
 
 This is an SDK to simplify connecting to the [Smartsheet API](http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
 
-*Please note that this SDK is beta and may change significantly in the future.*
-
 ## System Requirements
 
 The SDK supports Ruby versions 2.2 or later.
@@ -13,7 +11,7 @@ The SDK supports Ruby versions 2.2 or later.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'smartsheet', '>= 1.0.0.beta'
+gem 'smartsheet', '>= 1.0.0'
 ```
 
 And then execute:
@@ -133,6 +131,9 @@ If you have any questions or issues with this SDK please post on [Stack Overflow
 ## Release Notes
 
 Each specific release is available for download via [GitHub](https://github.com/smartsheet-platform/smartsheet-ruby-sdk/tags).
+
+**v1.0.0 (Nov 2017)**
+Full release
 
 **v1.0.0.beta (October 2017)**
 Beta release of the Smartsheet SDK for Ruby
