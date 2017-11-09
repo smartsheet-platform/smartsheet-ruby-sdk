@@ -14,7 +14,6 @@ Gem::Specification.new do |spec|
   spec.description   = <<-EOF
     This is an SDK to simplify connecting to the Smartsheet API
     (http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
-    Please note that this SDK is beta and may change significantly in the future.
   EOF
   spec.homepage      = 'https://github.com/smartsheet-platform/smartsheet-ruby-sdk'
   spec.license       = 'Apache-2.0'

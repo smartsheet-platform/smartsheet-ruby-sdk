@@ -2,8 +2,6 @@
 
 This is an SDK to simplify connecting to the [Smartsheet API](http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
 
-*Please note that this SDK is beta and may change significantly in the future.*
-
 ## System Requirements
 
 The SDK supports Ruby versions 2.2 or later.
@@ -13,7 +11,7 @@ The SDK supports Ruby versions 2.2 or later.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'smartsheet', '>= 1.0.0.beta'
+gem 'smartsheet', '>= 1.0.0'
 ```
 
 And then execute:
@@ -22,7 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install smartsheet --pre
+    $ gem install smartsheet
 
 ## Documentation
 
@@ -41,9 +39,8 @@ The following is a brief sample that shows you how to:
 ```ruby
 require 'smartsheet'
 
-# Initialize the client
+# Initialize the client - use your access token here
 smartsheet_client = Smartsheet::Client.new(token: 'll352u9jujauoqz4gstvsae05')
-
 # The `smartsheet_client` variable now contains access to all of the APIs
 
 begin
@@ -54,7 +51,10 @@ begin
   sheet_id = sheets[:data][0][:id]
 
   # Load the entire sheet
-  puts smartsheet_client.sheets.get(sheet_id: sheet_id)
+  puts "Loading sheet id #{sheet_id}"
+  sheet = smartsheet_client.sheets.get(sheet_id: sheet_id)
+  puts "Loaded #{sheet[:total_row_count]} rows from sheet '#{sheet[:name]}'"
+
 rescue Smartsheet::ApiError => e
   puts "Error Code: #{e.error_code}"
   puts "Message: #{e.message}"
@@ -133,6 +133,9 @@ If you have any questions or issues with this SDK please post on [Stack Overflow
 ## Release Notes
 
 Each specific release is available for download via [GitHub](https://github.com/smartsheet-platform/smartsheet-ruby-sdk/tags).
+
+**v1.0.0 (Nov 2017)**
+Full release
 
 **v1.0.0.beta (October 2017)**
 Beta release of the Smartsheet SDK for Ruby

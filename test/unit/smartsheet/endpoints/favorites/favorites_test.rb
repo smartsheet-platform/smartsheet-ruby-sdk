@@ -55,7 +55,7 @@ class FavoritesTest < Minitest::Test
         {
             symbol: :remove_sight,
             method: :delete,
-            url: ['favorites', 'sights', :sight_id],
+            url: ['favorites', 'sight', :sight_id],
             args: {sight_id: 123},
             has_params: false,
             headers: nil
@@ -106,7 +106,7 @@ class FavoritesTest < Minitest::Test
         {
             symbol: :remove_sights,
             method: :delete,
-            url: ['favorites', 'sights'],
+            url: ['favorites', 'sight'],
             args: {sight_ids: [123, 234, 345]},
             has_params: false,
             expected_params: {objectIds: '123,234,345'},
