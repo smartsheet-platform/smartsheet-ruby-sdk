@@ -20,7 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install smartsheet --pre
+    $ gem install smartsheet
 
 ## Documentation
 
