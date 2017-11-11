@@ -39,9 +39,8 @@ The following is a brief sample that shows you how to:
 ```ruby
 require 'smartsheet'
 
-# Initialize the client
+# Initialize the client - use your access token here
 smartsheet_client = Smartsheet::Client.new(token: 'll352u9jujauoqz4gstvsae05')
-
 # The `smartsheet_client` variable now contains access to all of the APIs
 
 begin
@@ -52,7 +51,9 @@ begin
   sheet_id = sheets[:data][0][:id]
 
   # Load the entire sheet
-  puts smartsheet_client.sheets.get(sheet_id: sheet_id)
+  puts "Loading sheet id #{sheet_id}"
+  sheet = smartsheet_client.sheets.get(sheet_id: sheet_id)
+  puts "Loaded #{sheet[:total_row_count]} rows from sheet '#{sheet[:name]}'"
 
 rescue Smartsheet::ApiError => e
   puts "Error Code: #{e.error_code}"
