@@ -3,4 +3,11 @@ language: ruby
 rvm:
   - 2.2
   - 2.4
-before_install: gem install bundler -v 1.15.4
+before_install:
+  - git clone https://github.com/stollgr/wiremock-scenario-templating.git
+  - wiremock-scenario-templating/travis_scripts/install_wiremock.sh
+  - gem install bundler -v 1.15.4
+
+script:
+  - wiremock-scenario-templating/travis_scripts/start_wiremock.sh
+  - rake test
