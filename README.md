@@ -28,7 +28,7 @@ The Smartsheet API documentation with corresponding SDK example code can be foun
 
 ## Example Usage
 
-To call the API, you must have an access token, which looks something like this example: ll352u9jujauoqz4gstvsae05. You can find the access token in the UI at Account > Personal Settings > API Access. 
+To call the API, you must have an access token, which looks something like this example: ll352u9jujauoqz4gstvsae05. You can find the access token in the UI at Account > Personal Settings > API Access.
 
 The following is a brief sample that shows you how to:
 
@@ -117,9 +117,21 @@ The default implementation performs exponential backoff with jitter.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests, with code coverage provided automatically by the Coveralls gem. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
+
+### Running the Tests
+#### All
+1. Run `rake test`. Note, the mock API tests will fail unless the mock server is running. See [Mock API Tests](#mock-api-tests)
+
+#### Unit Tests
+1. Run `rake test:units`
+
+#### Mock API Tests
+1. Clone the [Smartsheet SDK tests](https://github.com/smartsheet-platform/smartsheet-sdk-tests) repo and follow the instructions from the README to start the mock server
+2. Run `rake test:mock_api`
+
 
 ## Contributing
 
