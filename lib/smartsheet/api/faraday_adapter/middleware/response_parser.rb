@@ -13,7 +13,7 @@ module Smartsheet
 
         def call(env)
           @app.call(env).on_complete do |response_env|
-            if response_env[:response_headers]['content-type'] =~ /\bjson\b/
+            if response_env[:response_headers]['content-type'] =~ /\bapplication\/json\b/
               response_env[:body] = JSON.parse(response_env[:body], symbolize_names: true)
             end
 
