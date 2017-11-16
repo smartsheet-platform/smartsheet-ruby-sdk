@@ -28,7 +28,7 @@ The Smartsheet API documentation with corresponding SDK example code can be foun
 
 ## Example Usage
 
-To call the API, you must have an access token, which looks something like this example: ll352u9jujauoqz4gstvsae05. You can find the access token in the UI at Account > Personal Settings > API Access.
+To call the API, you must have an access token, which looks something like this example: `ll352u9jujauoqz4gstvsae05`. You can find the access token in the UI at Account > Personal Settings > API Access.
 
 The following is a brief sample that shows you how to:
 
@@ -47,7 +47,7 @@ begin
   # List all sheets
   sheets = smartsheet_client.sheets.list
 
-  # Default to first sheet
+  # Select first sheet
   sheet_id = sheets[:data][0][:id]
 
   # Load the entire sheet
@@ -68,6 +68,8 @@ See the [read-write-sheet](https://github.com/smartsheet-samples/ruby-read-write
 
 When creating the client object, pass an object with any of the following properties to tune its behavior.
 
+* `token` - Your smartsheet API access token. If you omit this property (or pass an empty string) then the access token will be read from the system environment variable `SMARTSHEET_ACCESS_TOKEN`.
+
 * `max_retry_time` - The maximum time in seconds to retry intermittent errors. (Defaults to 15 seconds.)
 
 ## Advanced Configuration Options
@@ -77,7 +79,7 @@ Smartsheet expects a standard Ruby logger.  For example, to enable console loggi
 
 ```ruby
 logger = Logger.new(STDOUT)
-logger.level = Logger::WARN
+logger.level = Logger::INFO
 smartsheet = Smartsheet::Client.new(logger: logger)
 ```
 
@@ -107,9 +109,12 @@ The function must return the number of seconds to wait before making the subsequ
 
 The default implementation performs exponential backoff with jitter.
 
-### JSON Output
+### JSON Input and Output
+* `json_output` - A flag indicating if data should be returned as a JSON string. 
 
-* `json_output` - A flag indicating if data should be returned as a JSON string. Defaults to Hash output when not specified.
+    By default, the Ruby SDK converts the raw JSON API response (with camelCase properties) to a Ruby hash with snake_case properties. If you prefer to receive results as the original JSON string, initialize the client with `json_output: true`.
+
+    Regardless of this setting, the SDK will accept `body` parameters as a hash or JSON, and in either camelCase or snake_case.
 
 ### Assume User
 

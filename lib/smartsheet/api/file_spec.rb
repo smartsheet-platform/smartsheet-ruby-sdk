@@ -9,7 +9,7 @@ module Smartsheet
 
       def initialize(path, filename, content_type)
         @file_length = File.size(path)
-        @filename = filename.nil? ? File.basename(path) : filename
+        @filename = (filename.nil? || filename.empty?) ? File.basename(path) : filename
         @upload_io = Faraday::UploadIO.new(path, content_type, CGI::escape(@filename))
         @content_type = content_type
       end

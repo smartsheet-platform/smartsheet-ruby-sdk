@@ -58,7 +58,7 @@ module Smartsheet
         row_id:,
         column_id:,
         path:,
-        filename: '',
+        filename: nil,
         content_type: '',
         params: {},
         header_overrides: {}
