@@ -5,7 +5,7 @@ module Smartsheet
   module API
     # Specification for a single API request's arguments
     class RequestSpec
-      attr_reader :file_spec, :url_args, :params, :header_overrides, :body, :filename, :content_type
+      attr_reader :file_spec, :url_args, :params, :header_overrides, :body
       private :file_spec
 
       def initialize(params: {}, header_overrides: {}, body: nil, file_spec: nil, **url_args)
