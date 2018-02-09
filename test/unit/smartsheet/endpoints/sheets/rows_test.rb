@@ -70,6 +70,14 @@ class RowsTest < Minitest::Test
             has_params: true,
             headers: nil
         },
+        {
+            symbol: :sort,
+            method: :post,
+            url: ['sheets', :sheet_id, 'sort'],
+            args: {sheet_id: 123, body: {}},
+            has_params: true,
+            headers: nil
+        }
     ]
   end
 
