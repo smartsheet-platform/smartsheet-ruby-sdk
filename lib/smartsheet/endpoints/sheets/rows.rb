@@ -92,5 +92,16 @@ module Smartsheet
       )
       client.make_request(endpoint_spec, request_spec)
     end
+
+    def sort(sheet_id:, body:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['sheets', :sheet_id, 'sort'], body_type: :json)
+      request_spec = Smartsheet::API::RequestSpec.new(
+        header_overrides: header_overrides,
+        body: body,
+        params: params,
+        sheet_id: sheet_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
   end
 end
