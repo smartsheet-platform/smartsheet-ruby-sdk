@@ -2,6 +2,7 @@ require 'smartsheet/api/endpoint_spec'
 require 'smartsheet/api/request_spec'
 require 'smartsheet/constants'
 
+require 'smartsheet/endpoints/sheets/automation_rules'
 require 'smartsheet/endpoints/sheets/cells'
 require 'smartsheet/endpoints/sheets/columns'
 require 'smartsheet/endpoints/sheets/comments'
@@ -16,6 +17,8 @@ module Smartsheet
   #
   # @!attribute [r] attachments
   #   @return [SheetsAttachments]
+  # @!attribute [r] automation_rules
+  #   @return [AutomationRules]
   # @!attribute [r] cells
   #   @return [Cells]
   # @!attribute [r] columns
@@ -31,13 +34,14 @@ module Smartsheet
   class Sheets
     include Smartsheet::Constants
 
-    attr_reader :client, :attachments, :cells, :columns, :comments, :discussions, :rows, :share
+    attr_reader :client, :attachments, :automation_rules, :cells, :columns, :comments, :discussions, :rows, :share
     private :client
 
     def initialize(client)
       @client = client
 
       @attachments = SheetsAttachments.new(client)
+      @automation_rules = AutomationRules.new(client)
       @cells = Cells.new(client)
       @columns = Columns.new(client)
       @comments = Comments.new(client)
