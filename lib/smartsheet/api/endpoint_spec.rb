@@ -13,7 +13,7 @@ module Smartsheet
       #   added as literal segments, while symbols are mapped to corresponding values in a request
       #   specification
       # 
-      # @param spec [Hash{Symbol=>Object}] Optional params, the following of which are supported:
+      # @param **spec [Hash{Symbol=>Object}] Optional params, the following of which are supported:
       #
       #    - `:no_auth` - If specified as a key, the endpoint can be called without authentication.
       #        To preserve meaning, it is recommended to associate `:no_auth` with the value `true`.
