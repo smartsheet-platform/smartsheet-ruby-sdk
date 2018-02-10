@@ -19,7 +19,7 @@ module Smartsheet
       # @param file_spec [PathFileSpec, ObjectFileSpec] Specification for files, to be used when
       #   an endpoint requires a file upload
       #
-      # @param url_args [Hash{Symbol=>Object}] Values that will be used to fill in parameterized
+      # @param **url_args [Hash{Symbol=>Object}] Values that will be used to fill in parameterized
       #   segments of an endpoint path specificaiton
       def initialize(params: {}, header_overrides: {}, body: nil, file_spec: nil, **url_args)
         @url_args = url_args
