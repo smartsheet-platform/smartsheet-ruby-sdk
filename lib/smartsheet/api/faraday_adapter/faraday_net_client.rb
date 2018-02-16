@@ -1,4 +1,5 @@
 require 'faraday'
+require 'faraday_middleware'
 require 'smartsheet/api/request'
 require 'smartsheet/api/faraday_adapter/middleware/faraday_error_translator'
 require 'smartsheet/api/faraday_adapter/middleware/response_parser'
@@ -32,6 +33,8 @@ module Smartsheet
         @conn = Faraday.new do |conn|
           conn.use Middleware::FaradayErrorTranslator
           conn.use Middleware::ResponseParser
+
+          conn.use :gzip
 
           conn.adapter Faraday.default_adapter
         end

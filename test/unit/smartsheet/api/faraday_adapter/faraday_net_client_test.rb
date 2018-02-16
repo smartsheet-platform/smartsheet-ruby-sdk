@@ -63,6 +63,7 @@ describe Smartsheet::API::FaradayNetClient do
     conn.stubs(:get).yields(faraday_request).returns response
     conn.expects(:use).with(Smartsheet::API::Middleware::FaradayErrorTranslator)
     conn.expects(:use).with(Smartsheet::API::Middleware::ResponseParser)
+    conn.expects(:use).with(:gzip)
     conn.expects(:adapter).with(faraday_adapter)
     Faraday.stubs(:new).yields(conn).returns(conn)
   end
