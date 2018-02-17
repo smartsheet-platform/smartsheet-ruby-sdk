@@ -164,4 +164,13 @@ describe Smartsheet::API::HeaderBuilder do
     @headers.must_be_kind_of Hash
     (@headers.key? :'Assume-User').must_equal false
   end
+
+  it 'allows assume user to be overriden on a per-request basis' do
+    given_endpoint_spec
+    given_request_spec(header_overrides: {:'Assume-User' => CGI::escape('john.doe@smartsheet.com')})
+
+    when_headers_are_built(assume_user: 'jane.doe@smartsheet.com')
+
+    @headers[:'Assume-User'].must_equal 'john.doe%40smartsheet.com'
+  end
 end
