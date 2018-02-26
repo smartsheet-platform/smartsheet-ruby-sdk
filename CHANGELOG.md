@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Empty filenames in file-accepting endpoints are now equivalent to nil filenames
+- Specifying `Assume-User` header override in a request will now override the `assume_user` value configured in a client
 
 ### Removed
 - Unsupported `filename` and `content_type` attributes in `RequestSpec` (internal)

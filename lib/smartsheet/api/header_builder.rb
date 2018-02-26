@@ -17,12 +17,12 @@ module Smartsheet
 
       def build
         base_headers
+            .merge(assume_user)
             .merge(endpoint_headers)
             .merge(content_type)
             .merge(content_disposition)
             .merge(content_length)
             .merge(request_headers)
-            .merge(assume_user)
       end
 
       private
