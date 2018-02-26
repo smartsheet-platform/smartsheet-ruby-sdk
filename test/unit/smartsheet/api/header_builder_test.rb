@@ -36,9 +36,15 @@ describe Smartsheet::API::HeaderBuilder do
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, [], **spec)
   end
 
-  def when_headers_are_built(assume_user: nil)
-    @headers = Smartsheet::API::HeaderBuilder.new(TOKEN,@endpoint_spec,@request_spec, assume_user: assume_user)
-                  .build
+  def when_headers_are_built(assume_user: nil, app_user_agent: nil)
+    @headers = Smartsheet::API::HeaderBuilder.new(
+      TOKEN,
+      @endpoint_spec,
+      @request_spec,
+      assume_user: assume_user,
+      app_user_agent: app_user_agent
+    )
+    .build
   end
 
   it 'applies defaults' do
@@ -163,5 +169,25 @@ describe Smartsheet::API::HeaderBuilder do
 
     @headers.must_be_kind_of Hash
     (@headers.key? :'Assume-User').must_equal false
+  end
+
+  it 'appends app user agent correctly when set' do
+    given_endpoint_spec
+    given_request_spec
+
+    when_headers_are_built(app_user_agent: 'my-app')
+
+    @headers.must_be_kind_of Hash
+    @headers[:'User-Agent'].must_equal "smartsheet-ruby-sdk/#{Smartsheet::VERSION}/my-app"
+  end
+
+  it 'does not append app user agent when not set' do
+    given_endpoint_spec
+    given_request_spec
+
+    when_headers_are_built
+
+    @headers.must_be_kind_of Hash
+    @headers[:'User-Agent'].must_equal "smartsheet-ruby-sdk/#{Smartsheet::VERSION}"
   end
 end
