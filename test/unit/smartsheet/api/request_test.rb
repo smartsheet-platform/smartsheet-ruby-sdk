@@ -14,17 +14,28 @@ describe Smartsheet::API::Request do
     @base_url = 'base'
   end
 
-  def given_custom_request_builders
+  def given_mock_url_builder
     mock_url_builder = mock
     mock_url_builder.stubs(:build).returns(@some_url.clone)
     Smartsheet::API::UrlBuilder.stubs(:new).returns(mock_url_builder)
+  end
+
+  def given_mock_header_builder
     mock_header_builder = mock
     mock_header_builder.stubs(:build).returns(@some_header.clone)
     Smartsheet::API::HeaderBuilder.stubs(:new).returns(mock_header_builder)
+  end
+  
+  def given_mock_body_builder
     mock_body_builder = mock
     mock_body_builder.stubs(:build).returns(@some_body.clone)
     Smartsheet::API::BodyBuilder.stubs(:new).returns(mock_body_builder)
+  end
 
+  def given_custom_request_builders
+    given_mock_url_builder
+    given_mock_header_builder
+    given_mock_body_builder
   end
 
   it 'provides method' do
@@ -70,6 +81,46 @@ describe Smartsheet::API::Request do
     Smartsheet::API::Request
       .new(TOKEN, @endpoint_spec, request_spec, @base_url)
       .body.must_equal @some_body
+  end
+
+  it "includes the 'app user agent' header when provided" do
+    given_mock_url_builder
+    given_mock_body_builder
+
+    mock_app_user_agent = 'app-user-agent'
+    mock_header_builder = mock
+    mock_header_builder.stubs(:build).returns(@some_header.clone)
+    Smartsheet::API::HeaderBuilder
+      .expects(:new)
+      .with do |_token, _endpoind_spec, _request_spec, app_user_agent:, assume_user:|
+        app_user_agent == mock_app_user_agent
+      end
+      .returns(mock_header_builder)
+
+    request_spec = Smartsheet::API::RequestSpec.new
+    
+    Smartsheet::API::Request
+      .new(TOKEN, @endpoint_spec, request_spec, @base_url, app_user_agent: mock_app_user_agent)
+  end
+
+  it "includes the 'assume user' header when provided" do
+    given_mock_url_builder
+    given_mock_body_builder
+
+    mock_assume_user = 'assume-user'
+    mock_header_builder = mock
+    mock_header_builder.stubs(:build).returns(@some_header.clone)
+    Smartsheet::API::HeaderBuilder
+      .expects(:new)
+      .with do |_token, _endpoind_spec, _request_spec, app_user_agent:, assume_user:|
+        assume_user == mock_assume_user
+      end
+      .returns(mock_header_builder)
+
+    request_spec = Smartsheet::API::RequestSpec.new
+    
+    Smartsheet::API::Request
+      .new(TOKEN, @endpoint_spec, request_spec, @base_url, assume_user: mock_assume_user)
   end
 
   it 'should not be equal to other classes' do

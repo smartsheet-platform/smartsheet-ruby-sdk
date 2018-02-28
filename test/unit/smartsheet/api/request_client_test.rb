@@ -7,10 +7,19 @@ describe Smartsheet::API::RequestClient do
 
   before do
     @base_url = 'base'
+    @app_user_agent = 'user-agent'
+    @assume_user = 'john.doe'
 
     @endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['x'])
     @request_spec = Smartsheet::API::RequestSpec.new(body: 'body')
-    @expected_request = Smartsheet::API::Request.new(TOKEN, @endpoint_spec, @request_spec, @base_url)
+    @expected_request = Smartsheet::API::Request.new(
+      TOKEN,
+      @endpoint_spec,
+      @request_spec,
+      @base_url,
+      app_user_agent: @app_user_agent,
+      assume_user: @assume_user
+    )
   end
 
   it 'delegates constructed requests to its client' do
@@ -26,7 +35,14 @@ describe Smartsheet::API::RequestClient do
         end
         .returns(return_value)
 
-    Smartsheet::API::RequestClient.new(TOKEN, client, @base_url).make_request(@endpoint_spec, @request_spec)
+    Smartsheet::API::RequestClient.new(
+      TOKEN,
+      client,
+      @base_url,
+      app_user_agent: @app_user_agent,
+      assume_user: @assume_user
+    )
+    .make_request(@endpoint_spec, @request_spec)
   end
 
   it 'returns the result of the client being called' do

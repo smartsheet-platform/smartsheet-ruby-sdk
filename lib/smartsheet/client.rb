@@ -73,6 +73,8 @@ module Smartsheet
     # @param logger [Logger] a logger to which request and response info will be recorded
     # @param log_full_body [Boolean] when true, request and response bodies will not be truncated in
     #   the logs
+    # @param user_agent [String] the name of the application, sent as part of the user agent for
+    #   requests; defaults as the name of the application
     # @param json_output [Boolean] when true, endpoints return raw JSON strings instead of hashes
     # @param assume_user [String] the email address of the user to impersonate; only available for
     #   admin roles
@@ -98,6 +100,7 @@ module Smartsheet
         token: nil,
         logger: nil,
         log_full_body: false,
+        user_agent: nil,
         json_output: false,
         assume_user: nil,
         max_retry_time: nil,
@@ -111,6 +114,8 @@ module Smartsheet
               API::MuteRequestLogger.new
 
       token = token_env_var if token.nil? || token.empty?
+
+      app_user_agent = user_agent.nil? ? File.basename($PROGRAM_NAME) : user_agent
 
       net_client = API::FaradayNetClient.new
 
@@ -132,6 +137,7 @@ module Smartsheet
           token,
           response_client,
           base_url,
+          app_user_agent: app_user_agent,
           assume_user: assume_user,
           logger: request_logger
       )

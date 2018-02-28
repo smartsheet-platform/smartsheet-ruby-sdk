@@ -7,10 +7,11 @@ module Smartsheet
     # Constructs headers for accessing the Smartsheet API
     class HeaderBuilder
       include Smartsheet::Constants
-      def initialize(token, endpoint_spec, request_spec, assume_user: nil)
+      def initialize(token, endpoint_spec, request_spec, app_user_agent: nil, assume_user: nil)
         @token = token
         @endpoint_spec = endpoint_spec
         @request_spec = request_spec
+        @app_user_agent = app_user_agent
         @assume_user = assume_user
       end
 
@@ -32,11 +33,16 @@ module Smartsheet
       def base_headers
         base = {
             Accept: JSON_TYPE,
-            'User-Agent': "#{USER_AGENT}/#{Smartsheet::VERSION}"
+            'User-Agent': user_agent
         }
         base[:Authorization] = "Bearer #{token}" if endpoint_spec.requires_auth?
 
         base
+      end
+
+      def user_agent
+        "#{USER_AGENT}/#{Smartsheet::VERSION}" +
+          (@app_user_agent.nil? ? '' : "/#{@app_user_agent}")
       end
 
       def assume_user
