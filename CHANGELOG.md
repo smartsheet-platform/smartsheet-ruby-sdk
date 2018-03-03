@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Endpoint for 'sort rows in sheet'
 - Endpoints for cross-sheet references
 - Support for looser JSON content types in responses
+- Support for custom app name in the user agent header
 - This changelog
 
 ### Changed
