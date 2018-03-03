@@ -13,6 +13,11 @@ module Smartsheet
       @client = client
     end
 
+    def build_authorization_url(client_id:, scopes:)
+      scopes_string = scopes.join('%20')
+      "https://app.smartsheet.com/b/authorize?response_type=code&client_id=#{client_id}&scope=#{scopes_string}"
+    end
+
     def get(client_id:, hash:, code:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :post,
