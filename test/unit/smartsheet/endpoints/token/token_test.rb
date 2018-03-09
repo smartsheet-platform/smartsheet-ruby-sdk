@@ -56,4 +56,16 @@ class TokenTest < Minitest::Test
   define_endpoints_tests
 end
 
+describe Smartsheet::Token do
+  describe 'authorization' do
+    it 'should produce an authorization URL with the provided client ID and scopes' do
+        client = Smartsheet::Client.new(token: TOKEN)
 
+        auth_url = client.token.build_authorization_url(
+            client_id: 'client-id',
+            scopes: ['READ_SHEETS', 'WRITE_SHEETS'])
+        
+        auth_url.must_equal 'https://app.smartsheet.com/b/authorize?response_type=code&client_id=client-id&scope=READ_SHEETS%20WRITE_SHEETS'
+    end
+  end
+end
