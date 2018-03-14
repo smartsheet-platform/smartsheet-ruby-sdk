@@ -26,6 +26,8 @@ Or install it yourself as:
 
 The Smartsheet API documentation with corresponding SDK example code can be found [here](http://www.smartsheet.com/developers/api-documentation).
 
+The generated SDK RubyDoc is available at [http://www.rubydoc.info/gems/smartsheet/Smartsheet](http://www.rubydoc.info/gems/smartsheet/Smartsheet).
+
 ## Example Usage
 
 To call the API, you must have an access token, which looks something like this example: `ll352u9jujauoqz4gstvsae05`. You can find the access token in the UI at Account > Personal Settings > API Access.
