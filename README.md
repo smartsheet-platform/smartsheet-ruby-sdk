@@ -72,6 +72,8 @@ When creating the client object, pass an object with any of the following proper
 
 * `max_retry_time` - The maximum time in seconds to retry intermittent errors. (Defaults to 15 seconds.)
 
+* `base_url` - By default, the SDK connects to the production API URL. Provide a custom base URL to connect to other environments.
+
 ## Advanced Configuration Options
 ### Logging Configuration
 
@@ -119,6 +121,10 @@ The default implementation performs exponential backoff with jitter.
 ### Assume User
 
 * `assume_user` - Allows an admin to act on behalf of, or impersonate, the user to make API calls. The email address should NOT be URI encoded.
+
+### User Agent
+
+* `user_agent` - A custom app name to add to the user agent header; this helps Smartsheet diagnose any issues you may have while using the SDK.
 
 ## Development
 
