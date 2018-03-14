@@ -26,7 +26,7 @@ Or install it yourself as:
 
 The Smartsheet API documentation with corresponding SDK example code can be found [here](http://www.smartsheet.com/developers/api-documentation).
 
-The generated SDK RubyDoc is available at [http://www.rubydoc.info/gems/smartsheet/Smartsheet](http://www.rubydoc.info/gems/smartsheet/Smartsheet).
+The generated SDK RubyDoc is available [here](http://www.rubydoc.info/gems/smartsheet/Smartsheet).
 
 ## Example Usage
 
