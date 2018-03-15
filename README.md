@@ -26,6 +26,8 @@ Or install it yourself as:
 
 The Smartsheet API documentation with corresponding SDK example code can be found [here](http://www.smartsheet.com/developers/api-documentation).
 
+The generated SDK RubyDoc is available [here](http://www.rubydoc.info/gems/smartsheet/Smartsheet).
+
 ## Example Usage
 
 To call the API, you must have an access token, which looks something like this example: `ll352u9jujauoqz4gstvsae05`. You can find the access token in the UI at Account > Personal Settings > API Access.
@@ -143,6 +145,58 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 1. Clone the [Smartsheet SDK tests](https://github.com/smartsheet-platform/smartsheet-sdk-tests) repo and follow the instructions from the README to start the mock server
 2. Run `rake test:mock_api`
 
+## Passthrough Option
+
+If there is an API Feature that is not yet supported by the Ruby SDK, there is a passthrough option that allows you to call arbitrary API endpoints.
+
+To invoke the passthrough, your code can call one of the following three methods:
+
+`response = smartsheet.request(method:, url_path:, body:, params:, header_overrides:)`
+
+`response = smartsheet.request_with_file(method:, url_path:, file:, file_length:, filename:, content_type:, params:, header_overrides:)`
+
+`response = smartsheet.request_with_file_from_path(method:, url_path:, path:, filename:, content_type:, params:, header_overrides:)`
+
+* `method`: The method to invoke, one of `:get`, `:post`, `:put`, or `:delete`
+* `url_path`: The specific API endpoint you wish to invoke. The client object base URL gets prepended to the caller’s endpoint URL argument.  For example, passing a `url_path` of `sheets/1` to a standard client would give a URL like `https://api.smartsheet.com/2.0/sheets/1`
+* `body`: An optional hash of data to be passed as a JSON request body
+* `file`: An opened `File` object to read as the request body, generally for file attachment endpoints
+* `path`: The path of a file to be read as the request body, generally for file attachment endpoints
+* `file_length`: The length of a file body in octets
+* `filename`: The name of a file body
+* `content_type`: The MIME type of a file body
+* `params`: An optional hash of query parameters
+* `header_overrides`: An optional hash of HTTP header overrides
+
+All calls to passthrough methods return a JSON result, converted to a hash using symbol keys, in the same manner as the rest of the SDK. For example, after a `PUT` operation, the API's result message could be contained in `response[:message]`. If you prefer raw JSON instead of a hash, create a client with `json_output` configured; see client documentation above for more info.
+
+### Passthrough Example
+
+The following example shows how to POST data to `https://api.smartsheet.com/2.0/sheets` using the passthrough method and a hash:
+
+```ruby
+payload = {
+  name: 'my new sheet',
+  columns: [
+    {
+      title: 'Favorite',
+      type: 'CHECKBOX',
+      symbol: 'STAR'
+    },
+    {
+      title: 'Primary Column',
+      primary: true,
+      type: 'TEXT_NUMBER'
+    }
+  ]
+}
+
+response = smartsheet.request(
+  method: :post,
+  url_path: 'sheets',
+  body: payload
+)
+```
 
 ## Contributing
 
