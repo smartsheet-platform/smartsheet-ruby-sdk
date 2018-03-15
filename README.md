@@ -147,27 +147,32 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Passthrough Option
 
-If there is an API Feature that is not yet supported by the Python SDK, there is a passthrough option that allows you to pass and receive raw JSON objects.
+If there is an API Feature that is not yet supported by the Ruby SDK, there is a passthrough option that allows you to call arbitrary API endpoints.
 
-To invoke the passthrough, your code can call one of the following four methods:
+To invoke the passthrough, your code can call one of the following three methods:
 
-`response = smartsheet.passthrough.get(endpoint, query_params)`
+`response = smartsheet.request(method:, url_path:, body:, params:, header_overrides:)`
 
-`response = smartsheet.passthrough.post(endpoint, payload, query_params)`
+`response = smartsheet.request_with_file(method:, url_path:, file:, file_length:, filename:, content_type:, params:, header_overrides:)`
 
-`response = smartsheet.passthrough.put(endpoint, payload, query_parameters)`
+`response = smartsheet.request_with_file_from_path(method:, url_path:, path:, filename:, content_type:, params:, header_overrides:)`
 
-`response = smartsheet.passthrough.delete(endpoint)`
+* `method`: The method to invoke, one of `:get`, `:post`, `:put`, or `:delete`
+* `url_path`: The specific API endpoint you wish to invoke. The client object base URL gets prepended to the caller’s endpoint URL argument.  For example, passing a `url_path` of `sheets/1` to a standard client would give a URL like `https://api.smartsheet.com/2.0/sheets/1`
+* `body`: An optional hash of data to be passed as a JSON request body
+* `file`: An opened `File` object to read as the request body, generally for file attachment endpoints
+* `path`: The path of a file to be read as the request body, generally for file attachment endpoints
+* `file_length`: The length of a file body in octets
+* `filename`: The name of a file body
+* `content_type`: The MIME type of a file body
+* `params`: An optional hash of query parameters
+* `header_overrides`: An optional hash of HTTP header overrides
 
-* `endpoint`: The specific API endpoint you wish to invoke. The client object base URL gets prepended to the caller’s endpoint URL argument, so in the above `get` example, if endpoint is `'/sheets'` an HTTP GET is requested from the URL `https://api.smartsheet.com/2.0/sheets`
-* `payload`: The data to be passed through, can be either a dictionary or string.
-* `query_params`: An optional dictionary of query parameters.
-
-All calls to passthrough methods return a JSON result. The `data` attribute contains the JSON result as a dictionary. For example, after a PUT operation the API's result message will be contained in `response.data['message']`. If you prefer raw JSON instead of a dictionary, you can use the `to_json()` method, for example `response.to_json()`. 
+All calls to passthrough methods return a JSON result, converted to a hash using symbol keys, in the same manner as the rest of the SDK. For example, after a `PUT` operation, the API's result message could be contained in `response[:message]`. If you prefer raw JSON instead of a hash, create a client with `json_output` configured; see client documentation above for more info.
 
 ### Passthrough Example
 
-The following example shows how to POST data to `https://api.smartsheet.com/2.0/sheets` using the passthrough method and a dictionary:
+The following example shows how to POST data to `https://api.smartsheet.com/2.0/sheets` using the passthrough method and a hash:
 
 ```ruby
 payload = {
@@ -186,9 +191,10 @@ payload = {
   ]
 }
 
-response = smartsheet.passthrough.post(
-  '/sheets',
-  payload
+response = smartsheet.request(
+  method: :post,
+  url_path: 'sheets',
+  body: payload
 )
 ```
 
