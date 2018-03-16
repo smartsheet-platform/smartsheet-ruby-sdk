@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+N/A
+
+## [1.1.0] - 2018-03-16
 ### Added
 - Integration test suite (see https://github.com/smartsheet-platform/smartsheet-sdk-tests)
 - Endpoints for automation rules
@@ -91,7 +95,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Support for logging
 - Test suite with unit tests and two-column-accounting endpoint tests
 
-[Unreleased]: https://github.com/smartsheet-platform/smartsheet-ruby-sdk/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/smartsheet-platform/smartsheet-ruby-sdk/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/smartsheet-platform/smartsheet-ruby-sdk/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/smartsheet-platform/smartsheet-ruby-sdk/compare/v1.0.0.beta.2...v1.0.0
 [1.0.0.beta.2]: https://github.com/smartsheet-platform/smartsheet-ruby-sdk/compare/v1.0.0.beta.1...v1.0.0.beta.2
 [1.0.0.beta.1]: https://github.com/smartsheet-platform/smartsheet-ruby-sdk/compare/v1.0.0.beta.0...v1.0.0.beta.1
