@@ -62,7 +62,7 @@ class MockApiSerializationsTest < MockApiTestHelper
         method: ->(client, args) {client.contacts.get(**args)},
         should_error: false,
         args: {
-          contact_id: 1
+          contact_id: 'ABC'
         }
       },
       {
@@ -327,6 +327,201 @@ class MockApiSerializationsTest < MockApiTestHelper
                 }
               }
             ]
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Favorite',
+        method: ->(client, args) {client.favorites.add(**args)},
+        should_error: false,
+        args: {
+          body: {
+            'type': 'sheet',
+            'objectId': 1
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Report',
+        method: ->(client, args) {client.reports.get(**args)},
+        should_error: false,
+        args: {
+          report_id: 1
+        }
+      },
+      {
+        scenario_name: 'Serialization - Share',
+        method: ->(client, args) {client.sheets.share.create(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          params: {
+            'sendEmail': true
+          },
+          body: {
+            'email': 'john.doe@smartsheet.com',
+            'accessLevel': 'VIEWER',
+            'subject': 'Check out this sheet',
+            'message': 'Let me know what you think. Thanks!',
+            'ccMe': true
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Send via Email',
+        method: ->(client, args) {client.sheets.send_via_email(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: {
+            'sendTo': [
+              {
+                'email': 'john.doe@smartsheet.com'
+              },
+              {
+                'groupId': 2
+              }
+            ],
+            'subject': 'Some subject',
+            'message': 'Some message',
+            'ccMe': true,
+            'format': 'PDF',
+            'formatDetails': {
+              'paperSize': 'LETTER'
+            }
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Row Email',
+        method: ->(client, args) {client.sheets.rows.send_via_email(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: {
+            'sendTo': [
+              {
+                'groupId': 2
+              }
+            ],
+            'subject': 'Some subject',
+            'message': 'Some message',
+            'columnIds': [
+              3
+            ],
+            'includeAttachments': false,
+            'includeDiscussions': true,
+            'layout': 'VERTICAL',
+            'rowIds': [
+              4
+            ]
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Template',
+        method: ->(client, args) {client.templates.list_public(**args)},
+        should_error: false,
+        args: {
+        }
+      },
+      {
+        scenario_name: 'Serialization - Update Request',
+        method: ->(client, args) {client.update_requests.create(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: {
+            'sendTo': [
+              {
+                'email': 'john.doe@smartsheet.com'
+              }
+            ],
+            'rowIds': [
+              2
+            ],
+            'columnIds': [
+              3
+            ],
+            'includeAttachments': true,
+            'includeDiscussions': false,
+            'subject': 'Some subject',
+            'message': 'Some message',
+            'ccMe': true,
+            'schedule': {
+              'type': 'MONTHLY',
+              'startAt': '2018-03-01T19:00:00Z',
+              'endAt': '2018-06-01T00:00:00Z',
+              'dayOrdinal': 'FIRST',
+              'dayDescriptors': [
+                'FRIDAY'
+              ],
+              'repeatEvery': 1
+            }
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Sent Update Requests',
+        method: ->(client, args) {client.update_requests.sent.get(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          sent_update_request_id: 2
+        }
+      },
+      {
+        scenario_name: 'Serialization - Sheet Settings',
+        method: ->(client, args) {client.sheets.update(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: {
+            'userSettings': {
+              'criticalPathEnabled': true,
+              'displaySummaryTasks': true
+            },
+            'projectSettings': {
+              'workingDays': [
+                'MONDAY',
+                'TUESDAY'
+              ],
+              'nonWorkingDays': [
+                '2018-04-04',
+                '2018-05-05',
+                '2018-06-06'
+              ],
+              'lengthOfDay': 23.5
+            }
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Container Destination',
+        method: ->(client, args) {client.folders.copy(**args)},
+        should_error: false,
+        args: {
+          folder_id: 1,
+          body: {
+            'destinationType': 'home',
+            'destinationId': nil,
+            'newName': 'Copy of Some Folder'
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Cross Sheet Reference',
+        method: ->(client, args) {client.sheets.cross_sheet_references.create(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: {
+            'name': 'Some Cross Sheet Reference',
+            'sourceSheetId': 2,
+            'startRowId': 3,
+            'endRowId': 4,
+            'startColumnId': 5,
+            'endColumnId': 6
           }
         }
       }
