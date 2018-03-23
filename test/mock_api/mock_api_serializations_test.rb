@@ -215,6 +215,121 @@ class MockApiSerializationsTest < MockApiTestHelper
         should_error: false,
         args: {
         }
+      },
+      {
+        scenario_name: 'Serialization - Image',
+        method: ->(client, args) {client.sheets.rows.get(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          row_id: 2
+        }
+      },
+      {
+        scenario_name: 'Serialization - Image Urls',
+        method: ->(client, args) {client.sheets.list_image_urls(**args)},
+        should_error: false,
+        args: {
+          body: [
+            {
+              'imageId': 'abc',
+              'height': 100,
+              'width': 200
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Serialization - BulkFailure',
+        method: ->(client, args) {client.sheets.rows.add(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          params: {
+            'allowPartialSuccess': true
+          },
+          body: [
+            {
+              'toBottom': true,
+              'cells': [
+                {
+                  'columnId': 2,
+                  'value': 'Some Value'
+                }
+              ]
+            },
+            {
+              'toBottom': true,
+              'cells': [
+                {
+                  'columnId': 3,
+                  'value': 'Some Value'
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        scenario_name: 'Serialization - Rows',
+        method: ->(client, args) {client.sheets.rows.add(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: {
+            'expanded': true,
+            'format': ',,,,,,,,4,,,,,,,',
+            'cells': [
+              {
+                'columnId': 2,
+                'value': 'url link',
+                'strict': false,
+                'hyperlink': {
+                  'url': 'https://google.com'
+                }
+              },
+              {
+                'columnId': 3,
+                'value': 'sheet id link',
+                'strict': false,
+                'hyperlink': {
+                  'sheetId': 4
+                }
+              },
+              {
+                'columnId': 5,
+                'value': 'report id link',
+                'strict': false,
+                'hyperlink': {
+                  'reportId': 6
+                }
+              }
+            ],
+            'locked': false
+          }
+        }
+      },
+      {
+        scenario_name: 'Serialization - Cell Link',
+        method: ->(client, args) {client.sheets.rows.update(**args)},
+        should_error: false,
+        args: {
+          sheet_id: 1,
+          body: {
+            'id': 2,
+            'cells': [
+              {
+                'columnId': 3,
+                'value': nil,
+                'linkInFromCell': {
+                  'sheetId': 4,
+                  'rowId': 5,
+                  'columnId': 6
+                }
+              }
+            ]
+          }
+        }
       }
     ]
   end
