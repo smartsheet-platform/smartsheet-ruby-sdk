@@ -43,6 +43,7 @@ replace_pattern(json_output, '"args"', 'args')
 replace_pattern(json_output, '"body"', 'body')
 replace_pattern(json_output, Regexp.escape('"->(client, args) {client.TODO_METHOD(**args)}"'), '->(client, args) {client.TODO_METHOD(**args)}')
 replace_pattern(json_output, '"', "'")
+replace_pattern(json_output, 'null', 'nil')
 
 # save to file
 File.open(config.output_file, 'w') do |f|
