@@ -150,8 +150,7 @@ class MockApiSerializationsTest < MockApiTestHelper
                 'autoNumberFormat': {
                   'prefix': '{YYYY}-{MM}-{DD}-',
                   'suffix': '-SUFFIX',
-                  'fill': '000000',
-                  'startingNumber': 42
+                  'fill': '000000'
                 }
               }
             ]
