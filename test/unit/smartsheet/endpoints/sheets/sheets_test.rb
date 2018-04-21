@@ -92,6 +92,102 @@ class SheetTest < Minitest::Test
             args: {folder_id: 123, body: {}},
         },
         {
+            symbol: :import_from_file,
+            method: :post,
+            url: ['sheets', 'import'],
+            args: {file: {}, file_type: :csv, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file,
+            method: :post,
+            url: ['sheets', 'import'],
+            args: {file: {}, file_type: :xlsx, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path,
+            method: :post,
+            url: ['sheets', 'import'],
+            args: {path: 'file', file_type: :csv},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path,
+            method: :post,
+            url: ['sheets', 'import'],
+            args: {path: 'file', file_type: :xlsx},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_into_folder,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets', 'import'],
+            args: {folder_id: 123, file: {}, file_type: :csv, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_into_folder,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets', 'import'],
+            args: {folder_id: 123, file: {}, file_type: :xlsx, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path_into_folder,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets', 'import'],
+            args: {folder_id: 123, path: 'file', file_type: :csv},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path_into_folder,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets', 'import'],
+            args: {folder_id: 123, path: 'file', file_type: :xlsx},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_into_workspace,
+            method: :post,
+            url: ['workspaces', :workspace_id, 'sheets', 'import'],
+            args: {workspace_id: 123, file: {}, file_type: :csv, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_into_workspace,
+            method: :post,
+            url: ['workspaces', :workspace_id, 'sheets', 'import'],
+            args: {workspace_id: 123, file: {}, file_type: :xlsx, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path_into_workspace,
+            method: :post,
+            url: ['workspaces', :workspace_id, 'sheets', 'import'],
+            args: {workspace_id: 123, path: 'file', file_type: :csv},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path_into_workspace,
+            method: :post,
+            url: ['workspaces', :workspace_id, 'sheets', 'import'],
+            args: {workspace_id: 123, path: 'file', file_type: :xlsx},
+            has_params: true,
+            headers: nil
+        },
+        {
             symbol: :copy,
             method: :post,
             url: ['sheets', :sheet_id, 'copy'],
