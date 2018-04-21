@@ -9,6 +9,8 @@ module Smartsheet
     EXCEL_TYPE = 'application/vnd.ms-excel'.freeze
     PDF_TYPE = 'application/pdf'.freeze
     CSV_TYPE = 'text/csv'.freeze
+    OPENXML_SPREADSHEET_TYPE =
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.freeze
 
     DEFAULT_MAX_RETRY_TIME = 15
     DEFAULT_BACKOFF_METHOD = proc { |iteration, _result| 2**iteration + rand }
