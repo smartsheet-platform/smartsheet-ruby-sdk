@@ -1,4 +1,5 @@
 require 'smartsheet/constants'
+require 'smartsheet/error'
 
 require_relative '../../../../test_helper'
 require_relative '../endpoint_test_helper'
@@ -246,4 +247,18 @@ class SheetTest < Minitest::Test
 
   define_setup
   define_endpoints_tests
+end
+
+describe Smartsheet::Sheets do
+  describe 'sheet imports' do
+    it 'should raise an error when provided with an invalid file type for sheet import' do
+      client = Smartsheet::Client.new(token: TOKEN)
+
+      invalid_file_type = :invalid
+
+      -> {
+        client.sheets.import_from_file_path(path: '', file_type: invalid_file_type, params: {})
+      }.must_raise Smartsheet::Error
+    end
+  end
 end
