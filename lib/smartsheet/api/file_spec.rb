@@ -27,5 +27,29 @@ module Smartsheet
         @content_type = content_type
       end
     end
+
+    # Specification for file sheet import by path and MIME content type
+    class ImportPathFileSpec
+      attr_reader :upload_io, :filename, :content_type, :file_length
+
+      def initialize(path, content_type)
+        @file_length = File.size(path)
+        @filename = nil
+        @upload_io = Faraday::UploadIO.new(path, content_type)
+        @content_type = content_type
+      end
+    end
+
+    # Specification for file sheet import by {::File}, file length, and MIME content type
+    class ImportObjectFileSpec
+      attr_reader :upload_io, :filename, :content_type, :file_length
+
+      def initialize(file, file_length, content_type)
+        @file_length = file_length
+        @filename = nil
+        @upload_io = Faraday::UploadIO.new(file, content_type)
+        @content_type = content_type
+      end
+    end
   end
 end
