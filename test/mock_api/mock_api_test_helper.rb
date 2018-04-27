@@ -19,13 +19,28 @@ class MockApiTestHelper < Minitest::Test
         end
     end
 
+    def self.define_skipped_integration_test(scenario_name:, reason:)
+        define_method "test_#{scenario_name}" do
+            skip("Skipping #{scenario_name}: #{reason}")
+        end
+    end
+
     def self.define_tests
-        tests.each do |test|
+        to_skip, to_run = tests.partition { |test| test.has_key? :skip }
+
+        to_run.each do |test|
             define_integration_test(
                 scenario_name: test[:scenario_name],
                 method: test[:method],
                 should_error: test.fetch(:should_error, false),
                 args: test[:args]
+            )
+        end
+
+        to_skip.each do |test|
+            define_skipped_integration_test(
+                scenario_name: test[:scenario_name],
+                reason: test[:skip]
             )
         end
     end
