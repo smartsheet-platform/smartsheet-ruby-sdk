@@ -1,6 +1,7 @@
 require 'smartsheet/api/endpoint_spec'
 require 'smartsheet/api/request_spec'
 require 'smartsheet/constants'
+require 'smartsheet/error'
 
 require 'smartsheet/endpoints/sheets/automation_rules'
 require 'smartsheet/endpoints/sheets/cells'
@@ -214,6 +215,172 @@ module Smartsheet
       client.make_request(endpoint_spec, request_spec)
     end
 
+    def import_from_file(file:, file_type:, file_length:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['sheets', 'import'],
+          body_type: :file
+      )
+      content_type = file_type_to_content_type(file_type)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
+          header_overrides: header_overrides,
+          file_spec: Smartsheet::API::ImportObjectFileSpec.new(file, file_length, content_type)
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def import_from_file_path(path:, file_type:, params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['sheets', 'import'],
+          body_type: :file
+      )
+      content_type = file_type_to_content_type(file_type)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
+          header_overrides: header_overrides,
+          file_spec: Smartsheet::API::ImportPathFileSpec.new(path, content_type)
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def import_from_file_into_folder(
+        folder_id:,
+        file:,
+        file_type:,
+        file_length:,
+        params: {},
+        header_overrides: {}
+    )
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['folders', :folder_id, 'sheets', 'import'],
+          body_type: :file
+      )
+      content_type = file_type_to_content_type(file_type)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
+          header_overrides: header_overrides,
+          file_spec: Smartsheet::API::ImportObjectFileSpec.new(file, file_length, content_type),
+          folder_id: folder_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def import_from_file_path_into_folder(
+        folder_id:,
+        path:,
+        file_type:,
+        params: {},
+        header_overrides: {}
+    )
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['folders', :folder_id, 'sheets', 'import'],
+          body_type: :file
+      )
+      content_type = file_type_to_content_type(file_type)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
+          header_overrides: header_overrides,
+          file_spec: Smartsheet::API::ImportPathFileSpec.new(path, content_type),
+          folder_id: folder_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def import_from_file_into_workspace(
+        workspace_id:,
+        file:,
+        file_type:,
+        file_length:,
+        params: {},
+        header_overrides: {}
+    )
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['workspaces', :workspace_id, 'sheets', 'import'],
+          body_type: :file
+      )
+      content_type = file_type_to_content_type(file_type)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
+          header_overrides: header_overrides,
+          file_spec: Smartsheet::API::ImportObjectFileSpec.new(file, file_length, content_type),
+          workspace_id: workspace_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def import_from_file_path_into_workspace(
+        workspace_id:,
+        path:,
+        file_type:,
+        params: {},
+        header_overrides: {}
+    )
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['workspaces', :workspace_id, 'sheets', 'import'],
+          body_type: :file
+      )
+      content_type = file_type_to_content_type(file_type)
+      request_spec = Smartsheet::API::RequestSpec.new(
+          params: params,
+          header_overrides: header_overrides,
+          file_spec: Smartsheet::API::ImportPathFileSpec.new(path, content_type),
+          workspace_id: workspace_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    ### These endpoints are not yet implemented; these endpoints can be re-included once they are
+    ### active
+
+    # def import_and_replace_sheet_from_file(
+    #     sheet_id:,
+    #     file:,
+    #     file_type:,
+    #     file_length:,
+    #     params: {},
+    #     header_overrides: {}
+    # )
+    #   endpoint_spec = Smartsheet::API::EndpointSpec.new(
+    #       :post,
+    #       ['sheets', :sheet_id, 'import'],
+    #       body_type: :file
+    #   )
+    #   content_type = file_type_to_content_type(file_type)
+    #   request_spec = Smartsheet::API::RequestSpec.new(
+    #       params: params,
+    #       header_overrides: header_overrides,
+    #       file_spec: Smartsheet::API::ImportObjectFileSpec.new(file, file_length, content_type)
+    #   )
+    #   client.make_request(endpoint_spec, request_spec)
+    # end
+
+    # def import_and_replace_sheet_from_file_path(
+    #     sheet_id:,
+    #     path:,
+    #     file_type:,
+    #     params: {},
+    #     header_overrides: {}
+    # )
+    #   endpoint_spec = Smartsheet::API::EndpointSpec.new(
+    #       :post,
+    #       ['sheets', :sheet_id, 'import'],
+    #       body_type: :file
+    #   )
+    #   content_type = file_type_to_content_type(file_type)
+    #   request_spec = Smartsheet::API::RequestSpec.new(
+    #       params: params,
+    #       header_overrides: header_overrides,
+    #       file_spec: Smartsheet::API::ImportPathFileSpec.new(path, content_type)
+    #   )
+    #   client.make_request(endpoint_spec, request_spec)
+    # end
+
     def copy(sheet_id:, body:, params: {}, header_overrides: {})
       endpoint_spec = Smartsheet::API::EndpointSpec.new(
           :post,
@@ -321,6 +488,23 @@ module Smartsheet
           body: body
       )
       client.make_request(endpoint_spec, request_spec)
+    end
+
+    private
+
+    def file_type_to_content_type(file_type)
+      mapping = {
+        csv: Constants::CSV_TYPE,
+        xlsx: Constants::OPENXML_SPREADSHEET_TYPE
+      }
+
+      mapping.fetch(file_type) do |_|
+        available_types = mapping.keys.join(', ')
+
+        raise Smartsheet::Error.new(
+          "Unsupported file type: #{file_type}\nValid types: #{available_types}"
+        )
+      end
     end
   end
 end

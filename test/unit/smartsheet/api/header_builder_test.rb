@@ -24,6 +24,24 @@ describe Smartsheet::API::HeaderBuilder do
     )
   end
 
+  def given_import_path_file_request_spec(path: 'path/to/file', file_length: 10, content_type: '')
+    File.stubs(:size).returns(file_length)
+    File.stubs(:open).returns({})
+    @request_spec = Smartsheet::API::RequestSpec.new(
+      file_spec: Smartsheet::API::ImportPathFileSpec.new(path, content_type)
+    )
+  end
+
+  def given_import_object_file_request_spec(file_length: 10, content_type: '')
+    File.stubs(:size).returns(file_length)
+    file_obj = mock
+    file_obj.stubs(:read)
+
+    @request_spec = Smartsheet::API::RequestSpec.new(
+      file_spec: Smartsheet::API::ImportObjectFileSpec.new(file_obj, file_length, content_type)
+    )
+  end
+
   def given_request_spec(body: nil, header_overrides: {})
     @request_spec = Smartsheet::API::RequestSpec.new(body: body, header_overrides: header_overrides)
   end
@@ -141,6 +159,16 @@ describe Smartsheet::API::HeaderBuilder do
     @headers[:'Content-Disposition'].must_equal 'attachment; filename="fn"'
   end
 
+  it 'applies content disposition correctly for uploads via path without a filename' do
+    given_file_endpoint_spec
+    given_import_path_file_request_spec
+
+    when_headers_are_built
+
+    @headers.must_be_kind_of Hash
+    @headers[:'Content-Disposition'].must_equal 'attachment'
+  end
+
   it 'applies content disposition correctly for uploads via obj' do
     given_file_endpoint_spec
     given_object_file_request_spec(filename: 'some_file')
@@ -149,6 +177,16 @@ describe Smartsheet::API::HeaderBuilder do
 
     @headers.must_be_kind_of Hash
     @headers[:'Content-Disposition'].must_equal 'attachment; filename="some_file"'
+  end
+
+  it 'applies content disposition correctly for uploads via object without a filename' do
+    given_file_endpoint_spec
+    given_import_object_file_request_spec
+
+    when_headers_are_built
+
+    @headers.must_be_kind_of Hash
+    @headers[:'Content-Disposition'].must_equal 'attachment'
   end
 
   it 'applies assume user correctly when set' do

@@ -1,4 +1,5 @@
 require 'smartsheet/constants'
+require 'smartsheet/error'
 
 require_relative '../../../../test_helper'
 require_relative '../endpoint_test_helper'
@@ -92,6 +93,102 @@ class SheetTest < Minitest::Test
             args: {folder_id: 123, body: {}},
         },
         {
+            symbol: :import_from_file,
+            method: :post,
+            url: ['sheets', 'import'],
+            args: {file: {}, file_type: :csv, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file,
+            method: :post,
+            url: ['sheets', 'import'],
+            args: {file: {}, file_type: :xlsx, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path,
+            method: :post,
+            url: ['sheets', 'import'],
+            args: {path: 'file', file_type: :csv},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path,
+            method: :post,
+            url: ['sheets', 'import'],
+            args: {path: 'file', file_type: :xlsx},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_into_folder,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets', 'import'],
+            args: {folder_id: 123, file: {}, file_type: :csv, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_into_folder,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets', 'import'],
+            args: {folder_id: 123, file: {}, file_type: :xlsx, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path_into_folder,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets', 'import'],
+            args: {folder_id: 123, path: 'file', file_type: :csv},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path_into_folder,
+            method: :post,
+            url: ['folders', :folder_id, 'sheets', 'import'],
+            args: {folder_id: 123, path: 'file', file_type: :xlsx},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_into_workspace,
+            method: :post,
+            url: ['workspaces', :workspace_id, 'sheets', 'import'],
+            args: {workspace_id: 123, file: {}, file_type: :csv, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_into_workspace,
+            method: :post,
+            url: ['workspaces', :workspace_id, 'sheets', 'import'],
+            args: {workspace_id: 123, file: {}, file_type: :xlsx, file_length: 123},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path_into_workspace,
+            method: :post,
+            url: ['workspaces', :workspace_id, 'sheets', 'import'],
+            args: {workspace_id: 123, path: 'file', file_type: :csv},
+            has_params: true,
+            headers: nil
+        },
+        {
+            symbol: :import_from_file_path_into_workspace,
+            method: :post,
+            url: ['workspaces', :workspace_id, 'sheets', 'import'],
+            args: {workspace_id: 123, path: 'file', file_type: :xlsx},
+            has_params: true,
+            headers: nil
+        },
+        {
             symbol: :copy,
             method: :post,
             url: ['sheets', :sheet_id, 'copy'],
@@ -150,4 +247,18 @@ class SheetTest < Minitest::Test
 
   define_setup
   define_endpoints_tests
+end
+
+describe Smartsheet::Sheets do
+  describe 'sheet imports' do
+    it 'should raise an error when provided with an invalid file type for sheet import' do
+      client = Smartsheet::Client.new(token: TOKEN)
+
+      invalid_file_type = :invalid
+
+      -> {
+        client.sheets.import_from_file_path(path: '', file_type: invalid_file_type, params: {})
+      }.must_raise Smartsheet::Error
+    end
+  end
 end

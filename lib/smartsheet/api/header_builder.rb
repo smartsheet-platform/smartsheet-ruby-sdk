@@ -69,7 +69,12 @@ module Smartsheet
 
       def content_disposition
         if endpoint_spec.sending_file?
-          {'Content-Disposition': "attachment; filename=\"#{CGI::escape(request_spec.filename)}\""}
+          filename_suffix =
+            if request_spec.filename.nil?
+              then ''
+              else "; filename=\"#{CGI::escape(request_spec.filename)}\""
+              end
+          {'Content-Disposition': "attachment#{filename_suffix}"}
         else
           {}
         end
