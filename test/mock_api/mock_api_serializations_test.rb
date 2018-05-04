@@ -77,6 +77,7 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Column',
+        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.columns.add(**args)},
         should_error: false,
         args: {
@@ -172,6 +173,7 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Predecessor',
+        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.rows.add(**args)},
         should_error: false,
         args: {
@@ -271,6 +273,7 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Rows',
+        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.rows.add(**args)},
         should_error: false,
         args: {
@@ -310,6 +313,7 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Cell Link',
+        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.rows.update(**args)},
         should_error: false,
         args: {
@@ -332,6 +336,7 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Favorite',
+        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.favorites.add(**args)},
         should_error: false,
         args: {
@@ -351,6 +356,7 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Share',
+        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.share.create(**args)},
         should_error: false,
         args: {
@@ -498,6 +504,7 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Container Destination',
+        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.folders.copy(**args)},
         should_error: false,
         args: {
