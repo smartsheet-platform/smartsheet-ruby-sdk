@@ -77,24 +77,25 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Column',
-        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.columns.add(**args)},
         should_error: false,
         args: {
           sheet_id: 1,
-          body: {
-            'title': 'A Brave New Column',
-            'type': 'PICKLIST',
-            'options': [
-              'option1',
-              'option2',
-              'option3'
-            ],
-            'index': 2,
-            'validation': false,
-            'width': 42,
-            'locked': false
-          }
+          body: [
+            {
+              'title': 'A Brave New Column',
+              'type': 'PICKLIST',
+              'options': [
+                'option1',
+                'option2',
+                'option3'
+              ],
+              'index': 2,
+              'validation': false,
+              'width': 42,
+              'locked': false
+            }
+          ]
         }
       },
       {
@@ -173,7 +174,6 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Predecessor',
-        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.rows.add(**args)},
         should_error: false,
         args: {
@@ -181,33 +181,35 @@ class MockApiSerializationsTest < MockApiTestHelper
           params: {
             include: 'objectValue'
           },
-          body: {
-            'cells': [
-              {
-                'columnId': 2,
-                'objectValue': {
-                  'objectType': 'PREDECESSOR_LIST',
-                  'predecessors': [
-                    {
-                      'rowId': 3,
-                      'type': 'FS',
-                      'lag': {
-                        'objectType': 'DURATION',
-                        'negative': false,
-                        'elapsed': false,
-                        'weeks': 1.5,
-                        'days': 2.5,
-                        'hours': 3.5,
-                        'minutes': 4.5,
-                        'seconds': 5.5,
-                        'milliseconds': 6
+          body: [
+            {
+              'cells': [
+                {
+                  'columnId': 2,
+                  'objectValue': {
+                    'objectType': 'PREDECESSOR_LIST',
+                    'predecessors': [
+                      {
+                        'rowId': 3,
+                        'type': 'FS',
+                        'lag': {
+                          'objectType': 'DURATION',
+                          'negative': false,
+                          'elapsed': false,
+                          'weeks': 1.5,
+                          'days': 2.5,
+                          'hours': 3.5,
+                          'minutes': 4.5,
+                          'seconds': 5.5,
+                          'milliseconds': 6
+                        }
                       }
-                    }
-                  ]
+                    ]
+                  }
                 }
-              }
-            ]
-          }
+              ]
+            }
+          ]
         }
       },
       {
@@ -273,77 +275,80 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Rows',
-        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.rows.add(**args)},
         should_error: false,
         args: {
           sheet_id: 1,
-          body: {
-            'expanded': true,
-            'format': ',,,,,,,,4,,,,,,,',
-            'cells': [
-              {
-                'columnId': 2,
-                'value': 'url link',
-                'strict': false,
-                'hyperlink': {
-                  'url': 'https://google.com'
+          body: [
+            {
+              'expanded': true,
+              'format': ',,,,,,,,4,,,,,,,',
+              'cells': [
+                {
+                  'columnId': 2,
+                  'value': 'url link',
+                  'strict': false,
+                  'hyperlink': {
+                    'url': 'https://google.com'
+                  }
+                },
+                {
+                  'columnId': 3,
+                  'value': 'sheet id link',
+                  'strict': false,
+                  'hyperlink': {
+                    'sheetId': 4
+                  }
+                },
+                {
+                  'columnId': 5,
+                  'value': 'report id link',
+                  'strict': false,
+                  'hyperlink': {
+                    'reportId': 6
+                  }
                 }
-              },
-              {
-                'columnId': 3,
-                'value': 'sheet id link',
-                'strict': false,
-                'hyperlink': {
-                  'sheetId': 4
-                }
-              },
-              {
-                'columnId': 5,
-                'value': 'report id link',
-                'strict': false,
-                'hyperlink': {
-                  'reportId': 6
-                }
-              }
-            ],
-            'locked': false
-          }
+              ],
+              'locked': false
+            }
+          ]
         }
       },
       {
         scenario_name: 'Serialization - Cell Link',
-        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.rows.update(**args)},
         should_error: false,
         args: {
           sheet_id: 1,
-          body: {
-            'id': 2,
-            'cells': [
-              {
-                'columnId': 3,
-                'value': nil,
-                'linkInFromCell': {
-                  'sheetId': 4,
-                  'rowId': 5,
-                  'columnId': 6
+          body: [
+            {
+              'id': 2,
+              'cells': [
+                {
+                  'columnId': 3,
+                  'value': nil,
+                  'linkInFromCell': {
+                    'sheetId': 4,
+                    'rowId': 5,
+                    'columnId': 6
+                  }
                 }
-              }
-            ]
-          }
+              ]
+            }
+          ]
         }
       },
       {
         scenario_name: 'Serialization - Favorite',
-        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.favorites.add(**args)},
         should_error: false,
         args: {
-          body: {
-            'type': 'sheet',
-            'objectId': 1
-          }
+          body: [
+            {
+              'type': 'sheet',
+              'objectId': 1
+            }
+          ]
         }
       },
       {
@@ -356,7 +361,6 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Share',
-        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.sheets.share.create(**args)},
         should_error: false,
         args: {
@@ -364,13 +368,15 @@ class MockApiSerializationsTest < MockApiTestHelper
           params: {
             'sendEmail': true
           },
-          body: {
-            'email': 'john.doe@smartsheet.com',
-            'accessLevel': 'VIEWER',
-            'subject': 'Check out this sheet',
-            'message': 'Let me know what you think. Thanks!',
-            'ccMe': true
-          }
+          body: [
+            {
+              'email': 'john.doe@smartsheet.com',
+              'accessLevel': 'VIEWER',
+              'subject': 'Check out this sheet',
+              'message': 'Let me know what you think. Thanks!',
+              'ccMe': true
+            }
+          ]
         }
       },
       {
@@ -504,14 +510,12 @@ class MockApiSerializationsTest < MockApiTestHelper
       },
       {
         scenario_name: 'Serialization - Container Destination',
-        skip: 'Awaiting updated API scenario',
         method: ->(client, args) {client.folders.copy(**args)},
         should_error: false,
         args: {
           folder_id: 1,
           body: {
-            'destinationType': 'home',
-            'destinationId': nil,
+            'destinationType': 'HOME',
             'newName': 'Copy of Some Folder'
           }
         }
