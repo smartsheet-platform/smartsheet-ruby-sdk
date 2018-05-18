@@ -73,7 +73,7 @@ module Smartsheet
             if request_spec.filename.nil?
               then ''
               else "; filename=\"#{CGI::escape(request_spec.filename)}\""
-              end
+            end
           {'Content-Disposition': "attachment#{filename_suffix}"}
         else
           {}
