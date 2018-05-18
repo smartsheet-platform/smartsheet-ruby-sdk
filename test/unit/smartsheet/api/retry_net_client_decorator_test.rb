@@ -10,7 +10,7 @@ describe Smartsheet::API::RetryNetClientDecorator do
       'token',
       Smartsheet::API::EndpointSpec.new(:get, ['sheets']),
       Smartsheet::API::RequestSpec.new,
-      @base_url
+      'base'
   )
 
   before do
@@ -22,8 +22,6 @@ describe Smartsheet::API::RetryNetClientDecorator do
     @response.stubs(:reason_phrase).returns 'Not Found'
     @response.stubs(:headers).returns({})
     @client = mock
-
-    @base_url = 'base'
 
     Timecop.freeze
   end

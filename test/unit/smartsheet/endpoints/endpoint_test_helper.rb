@@ -38,7 +38,7 @@ module Smartsheet
       end
 
       def define_valid_call(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_valid_call" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "valid_call") do
           Smartsheet::API::RequestClient.unstub(:new)
           mock_body = Object.new
           mock_body.stubs(:'should_retry?').returns(false)
@@ -55,8 +55,6 @@ module Smartsheet
           mock_conn.stubs(:delete).returns(mock_response)
           Faraday.stubs(:new).returns(mock_conn)
 
-
-
           @smartsheet_client = Smartsheet::Client.new(token: 'token')
 
           category.send(endpoint[:symbol], **endpoint[:args])
@@ -64,7 +62,7 @@ module Smartsheet
       end
 
       def define_valid_url(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_valid_url" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "valid_url") do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             Smartsheet::Test::UrlValidator.new(endpoint_spec, request_spec).validate
           end
@@ -74,7 +72,7 @@ module Smartsheet
       end
 
       def define_valid_expected_params(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_valid_expected_params" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "valid_expected_params") do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:expected_params], request_spec.params)
           end
@@ -84,7 +82,7 @@ module Smartsheet
       end
 
       def define_valid_headers(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_valid_headers" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "valid_headers") do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:headers], endpoint_spec.headers)
           end
@@ -94,7 +92,7 @@ module Smartsheet
       end
 
       def define_valid_body(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_valid_body" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "valid_body") do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:args].key?(:body), endpoint_spec.requires_body? && !endpoint_spec.sending_file?)
           end
@@ -104,7 +102,7 @@ module Smartsheet
       end
 
       def define_valid_file(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_valid_file" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "valid_file") do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             should_be_file = endpoint[:args].key?(:file) || endpoint[:args].key?(:path)
             assert_equal(should_be_file, endpoint_spec.sending_file?)
@@ -115,7 +113,7 @@ module Smartsheet
       end
 
       def define_endpoint_spec_is_valid(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_valid_endpoint_spec" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "valid_endpoint_spec") do
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(endpoint[:method], endpoint_spec.method)
             assert_equal(endpoint[:url], endpoint_spec.url_segments)
@@ -127,7 +125,7 @@ module Smartsheet
       end
 
       def define_accepts_params(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_accepts_params" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "accepts_params") do
           params = {p: ''}
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             expected_params = endpoint[:expected_params].nil? ?
@@ -142,13 +140,21 @@ module Smartsheet
       end
 
       def define_accepts_header_overrides(endpoint)
-        define_method "test_#{self.name}_#{endpoint[:symbol]}_accepts_header_overrides" do
+        define_method generate_test_name(self.name, endpoint[:symbol], "accepts_header_overrides") do
           header_overrides = {h: ''}
           @mock_client.expects(:make_request).with do |endpoint_spec, request_spec|
             assert_equal(header_overrides, request_spec.header_overrides)
           end
           category.send(endpoint[:symbol], **endpoint[:args], header_overrides: header_overrides.clone)
         end
+      end
+
+      private
+
+      def generate_test_name(class_name, method_name, test_suffix)
+        random_id = Random.rand(1_000_000)
+
+        "test_#{class_name}_#{method_name}_#{test_suffix}_#{random_id}"
       end
     end
   end
