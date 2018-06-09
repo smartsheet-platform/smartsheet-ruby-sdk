@@ -11,6 +11,7 @@ require 'smartsheet/endpoints/sheets/cross_sheet_references'
 require 'smartsheet/endpoints/sheets/discussions'
 require 'smartsheet/endpoints/sheets/rows'
 require 'smartsheet/endpoints/sheets/sheets_attachments'
+require 'smartsheet/endpoints/sheets/sheets_summaries'
 require 'smartsheet/endpoints/sheets/sheets_share'
 
 module Smartsheet
@@ -31,6 +32,8 @@ module Smartsheet
   #   @return [CrossSheetReferences]
   # @!attribute [r] discussions
   #   @return [Discussions]
+  # @!attribute [r] summaries
+  #   @return [Summaries]
   # @!attribute [r] rows
   #   @return [Rows]
   # @!attribute [r] share
@@ -39,7 +42,7 @@ module Smartsheet
     include Smartsheet::Constants
 
     attr_reader :client, :attachments, :automation_rules, :cells, :columns, :comments,
-        :cross_sheet_references, :discussions, :rows, :share
+        :cross_sheet_references, :discussions, :summaries, :rows, :share
     private :client
 
     def initialize(client)
@@ -52,6 +55,7 @@ module Smartsheet
       @comments = Comments.new(client)
       @cross_sheet_references = CrossSheetReferences.new(client)
       @discussions = Discussions.new(client)
+      @summaries = SheetsSummaries.new(client)
       @rows = Rows.new(client)
       @share = SheetsShare.new(client)
     end
