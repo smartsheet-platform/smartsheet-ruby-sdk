@@ -66,6 +66,28 @@ end
 
 See the [read-write-sheet](https://github.com/smartsheet-samples/ruby-read-write-sheet) example to see a more robust use case in action.
 
+## Conventions
+
+Each endpoint may take a number of keyword arguments, including the special keyword argument `body` for requests that accept a request body. Smartsheet's API Ruby documentation provides the parameters expected for each endpoint.
+
+Each endpoint also provides two optional keyword arguments:
+
+* `params` - This option is common for specifying enhancements or additional features for an API call. It specifies the query string for the call's URL.
+
+  This must be a hash of URL query string fields to their values. For example, to make a call with the query string `?include=comments&includeAll=true`, an API call would look like the following:
+
+  ```ruby
+  ...get( ..., params: {include: 'comments', includeAll: true})
+  ```
+
+* `header_overrides` - This option is less frequently used, as it overrides the HTTP headers sent by API calls on an individual basis. _Use with caution_, as some headers are required to allow the SDK to function properly.
+  
+  This must be a hash of headers to override values. For example, to make a call with a modified `Assume-User` header set to `jane.doe@smartsheet.com`, an API call would look like the following:
+
+  ```ruby
+  ...get( ..., header_overrides: {'Assume-User' => 'jane.doe@smartsheet.com'})
+  ```
+
 ## Basic Configuration
 
 When creating the client object, pass an object with any of the following properties to tune its behavior.
