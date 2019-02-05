@@ -96,7 +96,8 @@ When creating the client object, pass an object with any of the following proper
 
 * `max_retry_time` - The maximum time in seconds to retry intermittent errors. (Defaults to 15 seconds.)
 
-* `base_url` - By default, the SDK connects to the production API URL. Provide a custom base URL to connect to other environments.
+* `base_url` - By default, the SDK connects to the production API URL. Provide a custom base URL to connect to other environments. For example, to access SmartsheetGov, the `base_url` will be `https://api.smartsheetgov.com/2.0`.
+
 
 ## Advanced Configuration Options
 ### Logging Configuration
