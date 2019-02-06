@@ -4,7 +4,6 @@ module Smartsheet
 
     USER_AGENT = 'smartsheet-ruby-sdk'.freeze
     API_URL = 'https://api.smartsheet.com/2.0'.freeze
-    GOV_API_URL = 'https://api.smartsheetgov.com/2.0'.freeze
 
     JSON_TYPE = 'application/json'.freeze
     EXCEL_TYPE = 'application/vnd.ms-excel'.freeze
