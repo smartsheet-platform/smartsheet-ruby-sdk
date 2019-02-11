@@ -11,7 +11,7 @@ The SDK supports Ruby versions 2.2 or later.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'smartsheet', '>= 1.0.0'
+gem 'smartsheet', '>= 1.3.0'
 ```
 
 And then execute:
