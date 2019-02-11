@@ -36,4 +36,23 @@ describe Smartsheet::API::UrlBuilder do
       @url.must_equal @base_url + '/a/123/b/234'
     end
   end
+  describe '#build_urls_with_specific_base_url' do
+    before do
+      @base_url = Smartsheet::Constants::GOV_API_URL
+    end
+
+    def when_url_is_built(url, **url_args)
+      url_builder = Smartsheet::API::UrlBuilder.new(
+          Smartsheet::API::EndpointSpec.new(:get, url),
+          Smartsheet::API::RequestSpec.new(**url_args),
+          @base_url)
+      @url = url_builder.build
+    end
+
+    it 'has correct base' do
+      when_url_is_built([])
+
+      @url.must_equal @base_url
+    end
+  end
 end

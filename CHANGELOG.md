@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 - Added constant for smartsheetgov 
-- Updated documentation regarding the usage of baseUrl to clarify how clients can access smartsheetgov
+- Updated documentation regarding the usage of base_url to clarify how clients can access smartsheetgov
 
 ## [1.2.0] - 2018-06-29
 ### Added
