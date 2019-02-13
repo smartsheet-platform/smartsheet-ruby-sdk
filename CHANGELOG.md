@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-Updated documentation regarding the usage of baseUrl to clarify how clients can access smartsheetgov
+
+## [1.3.0] - 2019-02-11
+- Added constant for smartsheetgov 
+- Updated documentation regarding the usage of base_url to clarify how clients can access smartsheetgov
 
 ## [1.2.0] - 2018-06-29
 ### Added

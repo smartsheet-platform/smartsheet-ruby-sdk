@@ -1,9 +1,10 @@
 module Smartsheet
   module Constants
-    VERSION = '1.2.0'.freeze
+    VERSION = '1.3.0'.freeze
 
     USER_AGENT = 'smartsheet-ruby-sdk'.freeze
     API_URL = 'https://api.smartsheet.com/2.0'.freeze
+    GOV_API_URL = 'https://api.smartsheetgov.com/2.0'.freeze
 
     JSON_TYPE = 'application/json'.freeze
     EXCEL_TYPE = 'application/vnd.ms-excel'.freeze

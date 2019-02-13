@@ -11,7 +11,7 @@ The SDK supports Ruby versions 2.2 or later.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'smartsheet', '>= 1.0.0'
+gem 'smartsheet', '>= 1.3.0'
 ```
 
 And then execute:
@@ -97,6 +97,7 @@ When creating the client object, pass an object with any of the following proper
 * `max_retry_time` - The maximum time in seconds to retry intermittent errors. (Defaults to 15 seconds.)
 
 * `base_url` - By default, the SDK connects to the production API URL. Provide a custom base URL to connect to other environments. For example, to access SmartsheetGov, the `base_url` will be `https://api.smartsheetgov.com/2.0`.
+  * To access Smartsheetgov, you will need to specify the Smartsheetgov API URI, `https://api.smartsheetgov.com/2.0/`, as the `base_url` during creation of the Smartsheet client object. The Smartsheetgov URI is defined as a constant (`GOV_API_URL`).
 
 
 ## Advanced Configuration Options
@@ -181,7 +182,7 @@ To invoke the passthrough, your code can call one of the following three methods
 `response = smartsheet.request_with_file_from_path(method:, url_path:, path:, filename:, content_type:, params:, header_overrides:)`
 
 * `method`: The method to invoke, one of `:get`, `:post`, `:put`, or `:delete`
-* `url_path`: The specific API endpoint you wish to invoke. The client object base URL gets prepended to the caller’s endpoint URL argument.  For example, passing a `url_path` of `sheets/1` to a standard client would give a URL like `https://api.smartsheet.com/2.0/sheets/1`
+* `url_path`: The specific API endpoint you wish to invoke. The client object base URL gets prepended to the caller’s endpoint URL argument.
 * `body`: An optional hash of data to be passed as a JSON request body
 * `file`: An opened `File` object to read as the request body, generally for file attachment endpoints
 * `path`: The path of a file to be read as the request body, generally for file attachment endpoints
@@ -232,6 +233,6 @@ If you have any questions or issues with this SDK please post on [Stack Overflow
 
 ## Release Notes
 
-Each specific release is available for download via [GitHub](https://github.com/smartsheet-platform/smartsheet-ruby-sdk/tags).  Detailed release notes are available in [CHANGELOG.md].
+Each specific release is available for download via [GitHub](https://github.com/smartsheet-platform/smartsheet-ruby-sdk/tags). Detailed release notes are available in [CHANGELOG.md].
 
 *Note*: Minor changes that result in a patch version increment in RubyGems (such as updates to the README) will not be tagged as a Release in GitHub.
