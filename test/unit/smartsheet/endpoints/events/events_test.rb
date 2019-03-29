@@ -1,6 +1,6 @@
 require_relative '../endpoint_test_helper'
 
-class ContactsTest < Minitest::Test
+class EventsTest < Minitest::Test
   extend Smartsheet::Test::EndpointHelper
 
   attr_accessor :mock_client
@@ -16,8 +16,8 @@ class ContactsTest < Minitest::Test
             symbol: :get,
             method: :get,
             url: ['events'],
-            args: {since: `2018-01-09T17:41:05Z`},
-            has_params: false,
+            args: {},
+            has_params: true,
             headers: nil
         }
     ]

@@ -10,8 +10,8 @@ module Smartsheet
       @client = client
     end
   
-    def get_events(params: {}, header_overrides: {})
-      endpoint_spec = Smartsheet::API::EndpointSpec.new(:post, ['events'], body_type: :json)
+    def get(params: {}, header_overrides: {})
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(:get, ['events'])
       request_spec = Smartsheet::API::RequestSpec.new(
           header_overrides: header_overrides,
           params: params
