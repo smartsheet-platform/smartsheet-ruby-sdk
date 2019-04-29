@@ -7,7 +7,6 @@ require 'smartsheet/api/request_logger'
 require 'smartsheet/general_request'
 
 require 'smartsheet/endpoints/contacts/contacts'
-require 'smartsheet/endpoints/events/events'
 require 'smartsheet/endpoints/favorites/favorites'
 require 'smartsheet/endpoints/folders/folders'
 require 'smartsheet/endpoints/groups/groups'
@@ -65,7 +64,7 @@ module Smartsheet
     include GeneralRequest
     include Smartsheet::Constants
 
-    attr_reader :contacts, :events, :favorites, :folders, :groups, :home, :reports, :search, :server_info,
+    attr_reader :contacts, :favorites, :folders, :groups, :home, :reports, :search, :server_info,
                 :sheets, :sights, :templates, :token, :update_requests, :users, :webhooks,
                 :workspaces
 
@@ -160,7 +159,6 @@ module Smartsheet
 
     def build_categories
       @contacts = Contacts.new(client)
-      @events = Events.new(client)
       @favorites = Favorites.new(client)
       @folders = Folders.new(client)
       @groups = Groups.new(client)
