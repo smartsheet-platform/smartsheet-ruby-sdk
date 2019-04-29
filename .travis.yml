@@ -1,25 +1,13 @@
 sudo: false
 language: ruby
 rvm:
-- 2.2
-- 2.4
+  - 2.2
+  - 2.4
 before_install:
-- git clone https://github.com/smartsheet-platform/smartsheet-sdk-tests.git
-- smartsheet-sdk-tests/travis_scripts/install_wiremock.sh
-- gem install bundler -v 1.15.4
+  - git clone https://github.com/smartsheet-platform/smartsheet-sdk-tests.git
+  - smartsheet-sdk-tests/travis_scripts/install_wiremock.sh
+  - gem install bundler -v 1.15.4
+
 script:
-- smartsheet-sdk-tests/travis_scripts/start_wiremock.sh
-- rake test
-# before_deploy:
-# - gem build smartsheet.gemspec
-# - gem install smartsheet-x-x-x.gem
-deploy:
-  provider: rubygems
-  api_key:
-    secure: TMJZSpK3uHov1p0mvnOVjt75OZ3PrcwvufEESWd68K2A8DLwICbAMgC+uyf7VZV4Wg1nI5JOCrcBoty4xslHcCwAdG/HqVxV+JNsBhoFmaECv/YxaB+0QRQOhaMxIfIcindtXdguzDq162D8i1Xh4rdTTBuNwXnTYckqrpqNJ9erZ4pKFZbOr3nEhqnS+FyK7yZ2ihzsrWM7Ad/UL6x4rurvwb4+PgwoVF3Z6X3XJDYekTTs3klmGkDkMX+rhHZ54kW7l0dE2mHV2Mc60lwvDX1E1lHhCWuF3sxxr+TGWHCuT/5uskX3YYdwvGsRN17edqBrDYxE3J6lwPm7YEY75D4lHEXqipB+48HnoOemZUrQwieArDHtnba4x0Z61ftIropHYK154IX0Ieo7oQcNZdg6Zsj9mR42+WcY7Ih64i8/DfUsh2umOQ4iGlXxm8+JtybYzrG83guWQTXu97nMHIZqfmW4dgehr58hah108wruI8NEiqtUzk5ZAzH2Z4LBVXpVBRktragP+NMyRPCgSXGg4qHOkb/wsBLvaFee25Ps1+pZInvegU7TlsKZpxyt5TvS7X5yShHiZznLllDwqZ8wm36vTQbCunFkCfZxVK6/pCkPpJcISeVie4TJKVOtT93PDYI5HzSZuRQXlnfcPL4vJgo0Diw1P9NTVArtr1g=
-  gem: smartsheet
-  gemspec: smartsheet.gemspec
-  on:
-    tags: true
-    repo: smartsheet-platform/smartsheet-ruby-sdk
-    branch: master
+  - smartsheet-sdk-tests/travis_scripts/start_wiremock.sh
+  - rake test
