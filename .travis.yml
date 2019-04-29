@@ -10,9 +10,6 @@ before_install:
 script:
 - smartsheet-sdk-tests/travis_scripts/start_wiremock.sh
 - rake test
-# before_deploy:
-# - gem build smartsheet.gemspec
-# - gem install smartsheet-x-x-x.gem
 deploy:
   provider: rubygems
   api_key:
