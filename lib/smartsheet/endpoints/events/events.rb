@@ -1,7 +1,6 @@
 module Smartsheet
   # Events Endpoints
-  # TODO - fill in with the correct URL
-  # @see https://smartsheet-platform.github.io/api-docs/?ruby#{events_url} API Events Docs
+  # @see https://smartsheet-platform.github.io/api-docs/?ruby#event-reporting API Events Docs
   class Events
     attr_reader :client
     private :client

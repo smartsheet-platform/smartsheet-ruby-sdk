@@ -12,14 +12,14 @@ class EventsTest < Minitest::Test
 
   def self.endpoints
     [
-        {
-            symbol: :get,
-            method: :get,
-            url: ['events'],
-            args: {},
-            has_params: true,
-            headers: nil
-        }
+      {
+        symbol: :get,
+        method: :get,
+        url: ['events'],
+        args: {},
+        has_params: true,
+        headers: nil
+      }
     ]
   end
 
