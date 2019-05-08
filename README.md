@@ -222,6 +222,9 @@ response = smartsheet.request(
 )
 ```
 
+## Advanced Topics
+For details about more advanced features, see [Advanced Topics](ADVANCED.md).
+
 ## Contributing
 
 If you would like to contribute a change to the SDK, please fork a branch and then submit a pull request.
