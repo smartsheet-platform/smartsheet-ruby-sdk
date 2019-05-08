@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.77.0] - 2019-05-08
+- Added events endpoint to retrieve events that are occurring in your Smartsheet plan.
+
 ## [1.3.0] - 2019-02-11
 - Added constant for smartsheetgov 
 - Updated documentation regarding the usage of base_url to clarify how clients can access smartsheetgov
