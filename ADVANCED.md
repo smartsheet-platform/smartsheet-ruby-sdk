@@ -19,7 +19,6 @@ require 'date'
 require 'pp'
 
 # Initialize the client - use your access token here
-## TODO - remove token
 $smartsheet_client = Smartsheet::Client.new(token: '1234')
 # The `client` variable now contains access to all of the APIs
 
