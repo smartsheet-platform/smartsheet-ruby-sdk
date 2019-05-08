@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [1.4.0] - 2019-04-08
+## [2.77.0] - 2019-05-08
 - Added events endpoint to retrieve events that are occurring in your Smartsheet plan.
 
 ## [1.3.0] - 2019-02-11
