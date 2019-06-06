@@ -19,7 +19,7 @@ deploy:
   gem: smartsheet
   gemspec: smartsheet.gemspec
   on:
-    tags: true
+    # tags: true
     repo: smartsheet-platform/smartsheet-ruby-sdk
     branch: master
 after_deploy: "echo 'Finished deployment process'"
