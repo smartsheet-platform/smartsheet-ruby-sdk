@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Automate Travis build to trigger when branches are merged into master and are git tagged
 
 ## [2.77.0] - 2019-05-08
 - Added events endpoint to retrieve events that are occurring in your Smartsheet plan.
