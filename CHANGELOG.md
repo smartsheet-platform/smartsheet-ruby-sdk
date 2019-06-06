@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.77.2] - 2019-06-06
+- Automated publication process to RubyGems using Travis CI
+
 ## [2.77.0] - 2019-05-08
 - Added events endpoint to retrieve events that are occurring in your Smartsheet plan.
 
