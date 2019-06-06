@@ -8,6 +8,8 @@ before_install:
   - smartsheet-sdk-tests/travis_scripts/install_wiremock.sh
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
   - gem install bundler -v 1.15.4
+
+
 script:
 - smartsheet-sdk-tests/travis_scripts/start_wiremock.sh
 - rake test
