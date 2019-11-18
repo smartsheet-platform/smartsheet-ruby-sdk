@@ -1,4 +1,5 @@
 require_relative 'alternate_emails'
+require_relative 'profile_image'
 
 module Smartsheet
   # Users Endpoints
@@ -6,14 +7,17 @@ module Smartsheet
   #
   # @!attribute [r] alternate_emails
   #   @return [AlternateEmails]
+  # @!attribute [r] profile_image
+  #   @return [ProfileImage]
   class Users
-    attr_reader :client, :alternate_emails
+    attr_reader :client, :alternate_emails, :profile_image
     private :client
 
     def initialize(client)
       @client = client
 
       @alternate_emails = AlternateEmails.new(client)
+      @profile_image = ProfileImage.new(client)
     end
 
     def add(body:, params: {}, header_overrides: {})
