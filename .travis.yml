@@ -24,4 +24,5 @@ deploy:
   on:
     repo: smartsheet-platform/smartsheet-ruby-sdk
     branch: master
+    rvm: 2.4
 after_deploy: "echo 'Finished deployment process'"
