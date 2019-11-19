@@ -1,5 +1,4 @@
 require_relative 'alternate_emails'
-require_relative 'profile_image'
 
 module Smartsheet
   # Users Endpoints
@@ -7,17 +6,14 @@ module Smartsheet
   #
   # @!attribute [r] alternate_emails
   #   @return [AlternateEmails]
-  # @!attribute [r] profile_image
-  #   @return [ProfileImage]
   class Users
-    attr_reader :client, :alternate_emails, :profile_image
+    attr_reader :client, :alternate_emails
     private :client
 
     def initialize(client)
       @client = client
 
       @alternate_emails = AlternateEmails.new(client)
-      @profile_image = ProfileImage.new(client)
     end
 
     def add(body:, params: {}, header_overrides: {})
@@ -78,5 +74,51 @@ module Smartsheet
       )
       client.make_request(endpoint_spec, request_spec)
     end
+
+    def add_profile_image(
+        user_id:,
+        file:,
+        filename:,
+        file_length:,
+        content_type: '',
+        params: {},
+        header_overrides: {}
+    )
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['users', :user_id, 'profileimage'],
+          body_type: :file
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+          header_overrides: header_overrides,
+          params: params,
+          file_spec: Smartsheet::API::ObjectFileSpec.new(file, filename, file_length, content_type),
+          user_id: user_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
+    def add_profile_image_from_path(
+        user_id:,
+        path:,
+        filename: nil,
+        content_type: '',
+        params: {},
+        header_overrides: {}
+    )
+      endpoint_spec = Smartsheet::API::EndpointSpec.new(
+          :post,
+          ['users', :user_id, 'profileimage'],
+          body_type: :file
+      )
+      request_spec = Smartsheet::API::RequestSpec.new(
+          header_overrides: header_overrides,
+          params: params,
+          file_spec: Smartsheet::API::PathFileSpec.new(path, filename, content_type),
+          user_id: user_id
+      )
+      client.make_request(endpoint_spec, request_spec)
+    end
+
   end
 end
