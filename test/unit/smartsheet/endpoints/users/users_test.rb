@@ -61,6 +61,22 @@ class UsersTest < Minitest::Test
             has_params: false,
             headers: nil
         },
+        {
+            symbol: :add_profile_image,
+            method: :post,
+            url: ['users', :user_id, 'profileimage'],
+            args: {user_id: 123, file: {}, filename: 'file', file_length: 123},
+            has_params: false,
+            headers: nil
+        },
+        {
+            symbol: :add_profile_image_from_path,
+            method: :post,
+            url: ['users', :user_id, 'profileimage'],
+            args: {user_id: 123, path: 'file'},
+            has_params: false,
+            headers: nil
+        },
     ]
   end
 

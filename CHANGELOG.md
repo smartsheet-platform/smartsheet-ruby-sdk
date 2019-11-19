@@ -6,19 +6,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.86.0] - 2019-11-18
+### Added
+- Support for sheet summary endpoints
+- Missing implementation for add profile image
+
 ## [2.77.2] - 2019-06-06
+### Added
 - Automated publication process to RubyGems using Travis CI
 
 ## [2.77.0] - 2019-05-08
-- Added events endpoint to retrieve events that are occurring in your Smartsheet plan.
+### Added
+- Events endpoint to retrieve events that are occurring in your Smartsheet plan.
 
 ## [1.3.0] - 2019-02-11
-- Added constant for smartsheetgov 
-- Updated documentation regarding the usage of base_url to clarify how clients can access smartsheetgov
+### Added
+- Constant for smartsheetgov
+
+### Changed 
+- Documentation regarding the usage of base_url to clarify how clients can access smartsheetgov
 
 ## [1.2.0] - 2018-06-29
 ### Added
-- Added support for 'import sheet from XLSX, CSV file' endpoints
+- Support for 'import sheet from XLSX, CSV file' endpoints
 
 ## [1.1.0] - 2018-03-16
 ### Added

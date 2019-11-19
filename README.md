@@ -158,6 +158,8 @@ After checking out the repo, run `bin/setup` to install dependencies. You can al
 
 To install this gem onto your local machine, run `bundle exec rake install`.
 
+If you are developing with Ruby 2.2.x, you may encounter basic SSL connection errors when making calls with the API.  We recommend either updating to Ruby 2.3+, or following the directions in this Faraday issue: https://github.com/lostisland/faraday/issues/392
+
 ### Running the Tests
 #### All
 1. Run `rake test`. Note, the mock API tests will fail unless the mock server is running. See [Mock API Tests](#mock-api-tests)
