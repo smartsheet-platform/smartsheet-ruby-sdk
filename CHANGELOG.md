@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [2.86.0] - 2019-11-18
+## [2.86.1] - 2019-11-18
 ### Added
 - Support for sheet summary endpoints
 - Missing implementation for add profile image
