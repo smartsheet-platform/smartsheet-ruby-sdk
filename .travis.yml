@@ -2,13 +2,14 @@ dist: trusty
 sudo: false
 language: ruby
 rvm:
-  - 2.2
-  - 2.4
+  - 2.7
+  - 2.6
+  - 2.5
 before_install:
   - git clone https://github.com/smartsheet-platform/smartsheet-sdk-tests.git
   - smartsheet-sdk-tests/travis_scripts/install_wiremock.sh
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
-  - gem install bundler -v 1.15.4
+  - gem install bundler -v 1.17.3
 
 
 script:
@@ -24,5 +25,5 @@ deploy:
   on:
     repo: smartsheet-platform/smartsheet-ruby-sdk
     branch: master
-    rvm: 2.4
+    rvm: 2.7
 after_deploy: "echo 'Finished deployment process'"
