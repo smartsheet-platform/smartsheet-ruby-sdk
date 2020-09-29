@@ -38,7 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'plissken', '~> 1.2'
   spec.add_dependency 'awrence', '~> 1.0'
 
-  spec.add_development_dependency 'bundler', '~> 1.15'
+  spec.add_development_dependency 'bundler', '~> 1.17'
   spec.add_development_dependency 'coveralls', '~> 0.8.21'
   spec.add_development_dependency 'cli', '~> 1.3'
   spec.add_development_dependency 'rake', '~> 10.0'
