@@ -64,8 +64,19 @@ describe Smartsheet::Token do
         auth_url = client.token.build_authorization_url(
             client_id: 'client-id',
             scopes: ['READ_SHEETS', 'WRITE_SHEETS'])
-        
+
         auth_url.must_equal 'https://app.smartsheet.com/b/authorize?response_type=code&client_id=client-id&scope=READ_SHEETS%20WRITE_SHEETS'
+    end
+
+    it 'supports a `state` param' do
+        client = Smartsheet::Client.new(token: TOKEN)
+
+        auth_url = client.token.build_authorization_url(
+            client_id: 'client-id',
+            scopes: ['READ_SHEETS', 'WRITE_SHEETS'],
+            state: 'apples')
+
+        auth_url.must_equal 'https://app.smartsheet.com/b/authorize?response_type=code&client_id=client-id&scope=READ_SHEETS%20WRITE_SHEETS&state=apples'
     end
   end
 end
