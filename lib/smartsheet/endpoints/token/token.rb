@@ -13,9 +13,13 @@ module Smartsheet
       @client = client
     end
 
-    def build_authorization_url(client_id:, scopes:)
+    def build_authorization_url(client_id:, scopes:, state: nil)
       scopes_string = scopes.join('%20')
-      "https://app.smartsheet.com/b/authorize?response_type=code&client_id=#{client_id}&scope=#{scopes_string}"
+      url = "https://app.smartsheet.com/b/authorize?response_type=code&client_id=#{client_id}&scope=#{scopes_string}"
+      if state.present?
+        return "#{url}&state=#{state}"
+      end
+      return url
     end
 
     def get(client_id:, hash:, code:, params: {}, header_overrides: {})
