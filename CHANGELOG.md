@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.101.1] - 2020-12-07
+### Added
+- Support for state parameter for OAuth
+
 ## [2.101.0] - 2020-09-28
 ### Changed
 - Include modern Faraday 1.x as an allowed dependency
