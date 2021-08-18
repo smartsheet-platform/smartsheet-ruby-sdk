@@ -30,7 +30,7 @@ The generated SDK RubyDoc is available [here](http://www.rubydoc.info/gems/smart
 
 ## Example Usage
 
-To call the API, you must have an access token, which looks something like this example: `ll352u9jujauoqz4gstvsae05`. You can find the access token in the UI at Account > Personal Settings > API Access.
+To call the API, you must have an access token, which looks something like this example: `JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789`. You can find the access token in the UI at Account > Personal Settings > API Access.
 
 The following is a brief sample that shows you how to:
 
@@ -42,7 +42,7 @@ The following is a brief sample that shows you how to:
 require 'smartsheet'
 
 # Initialize the client - use your access token here
-smartsheet_client = Smartsheet::Client.new(token: 'll352u9jujauoqz4gstvsae05')
+smartsheet_client = Smartsheet::Client.new(token: 'JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789')
 # The `smartsheet_client` variable now contains access to all of the APIs
 
 begin

@@ -19,7 +19,7 @@ require 'date'
 require 'pp'
 
 # Initialize the client - use your access token here
-$smartsheet_client = Smartsheet::Client.new(token: '1234')
+$smartsheet_client = Smartsheet::Client.new(token: 'JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789')
 # The `client` variable now contains access to all of the APIs
 
 today = (DateTime.now)
