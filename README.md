@@ -98,6 +98,7 @@ When creating the client object, pass an object with any of the following proper
 
 * `base_url` - By default, the SDK connects to the production API URL. Provide a custom base URL to connect to other environments. For example, to access SmartsheetGov, the `base_url` will be `https://api.smartsheetgov.com/2.0`.
   * To access Smartsheetgov, you will need to specify the Smartsheetgov API URI, `https://api.smartsheetgov.com/2.0/`, as the `base_url` during creation of the Smartsheet client object. The Smartsheetgov URI is defined as a constant (`GOV_API_URL`).
+  * To access Smartsheet.eu, you will need to specify the Smartsheet.eu API URI, `https://api.smartsheet.eu/2.0/`, as the `base_url` during creation of the Smartsheet client object. The Smartsheet.eu URI is defined as a constant (`EU.API_URL`).
 
 
 ## Advanced Configuration Options
