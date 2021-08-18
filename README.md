@@ -1,6 +1,6 @@
 # Smartsheet Ruby SDK [![Build Status](https://travis-ci.org/smartsheet-platform/smartsheet-ruby-sdk.svg?branch=master)](https://travis-ci.org/smartsheet-platform/smartsheet-ruby-sdk) [![Coverage Status](https://coveralls.io/repos/github/smartsheet-platform/smartsheet-ruby-sdk/badge.svg?branch=master)](https://coveralls.io/github/smartsheet-platform/smartsheet-ruby-sdk?branch=master) [![Gem Version](https://badge.fury.io/rb/smartsheet.svg)](https://badge.fury.io/rb/smartsheet)
 
-This is an SDK to simplify connecting to the [Smartsheet API](http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
+This is an SDK to simplify connecting to the [Smartsheet API](https://www.smartsheet.redoc.ly) from Ruby applications.
 
 ## System Requirements
 
@@ -24,7 +24,7 @@ Or install it yourself as:
 
 ## Documentation
 
-The Smartsheet API documentation with corresponding SDK example code can be found [here](http://www.smartsheet.com/developers/api-documentation).
+The Smartsheet API documentation with corresponding SDK example code can be found [here](https://www.smartsheet.redoc.ly).
 
 The generated SDK RubyDoc is available [here](http://www.rubydoc.info/gems/smartsheet/Smartsheet).
 

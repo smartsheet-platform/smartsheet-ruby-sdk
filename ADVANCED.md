@@ -9,7 +9,7 @@ To consume the next list of events after the initial list of events is returned,
 
 Note that the `more_available` attribute in a response indicates whether more events are immediately available for consumption. If events aren't immediately available, they may still be generating so subsequent requests should keep using the same `stream_position` value until the next list of events is retrieved.
 
-Many events have additional information available as a part of the event. That information can be accessed from the data stored in the `additional_details` attribute. Information about the additional details provided can be found [here](https://smartsheet-platform.github.io/api-docs/?ruby#event-reporting).
+Many events have additional information available as a part of the event. That information can be accessed from the data stored in the `additional_details` attribute. Information about the additional details provided can be found [here](https://smartsheet.redoc.ly/tag/eventsDescription).
 
 
 ```Ruby
