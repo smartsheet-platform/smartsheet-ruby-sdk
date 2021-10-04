@@ -1,6 +1,6 @@
 # Smartsheet Ruby SDK [![Build Status](https://travis-ci.org/smartsheet-platform/smartsheet-ruby-sdk.svg?branch=master)](https://travis-ci.org/smartsheet-platform/smartsheet-ruby-sdk) [![Coverage Status](https://coveralls.io/repos/github/smartsheet-platform/smartsheet-ruby-sdk/badge.svg?branch=master)](https://coveralls.io/github/smartsheet-platform/smartsheet-ruby-sdk?branch=master) [![Gem Version](https://badge.fury.io/rb/smartsheet.svg)](https://badge.fury.io/rb/smartsheet)
 
-This is an SDK to simplify connecting to the [Smartsheet API](http://www.smartsheet.com/developers/api-documentation) from Ruby applications.
+This is an SDK to simplify connecting to the [Smartsheet API](https://www.smartsheet.redoc.ly) from Ruby applications.
 
 ## System Requirements
 
@@ -24,13 +24,13 @@ Or install it yourself as:
 
 ## Documentation
 
-The Smartsheet API documentation with corresponding SDK example code can be found [here](http://www.smartsheet.com/developers/api-documentation).
+The Smartsheet API documentation with corresponding SDK example code can be found [here](https://www.smartsheet.redoc.ly).
 
 The generated SDK RubyDoc is available [here](http://www.rubydoc.info/gems/smartsheet/Smartsheet).
 
 ## Example Usage
 
-To call the API, you must have an access token, which looks something like this example: `ll352u9jujauoqz4gstvsae05`. You can find the access token in the UI at Account > Personal Settings > API Access.
+To call the API, you must have an access token, which looks something like this example: `JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789`. You can find the access token in the UI at Account > Personal Settings > API Access.
 
 The following is a brief sample that shows you how to:
 
@@ -42,7 +42,7 @@ The following is a brief sample that shows you how to:
 require 'smartsheet'
 
 # Initialize the client - use your access token here
-smartsheet_client = Smartsheet::Client.new(token: 'll352u9jujauoqz4gstvsae05')
+smartsheet_client = Smartsheet::Client.new(token: 'JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789')
 # The `smartsheet_client` variable now contains access to all of the APIs
 
 begin
@@ -98,6 +98,7 @@ When creating the client object, pass an object with any of the following proper
 
 * `base_url` - By default, the SDK connects to the production API URL. Provide a custom base URL to connect to other environments. For example, to access SmartsheetGov, the `base_url` will be `https://api.smartsheetgov.com/2.0`.
   * To access Smartsheetgov, you will need to specify the Smartsheetgov API URI, `https://api.smartsheetgov.com/2.0/`, as the `base_url` during creation of the Smartsheet client object. The Smartsheetgov URI is defined as a constant (`GOV_API_URL`).
+  * To access Smartsheet.eu, you will need to specify the Smartsheet.eu API URI, `https://api.smartsheet.eu/2.0/`, as the `base_url` during creation of the Smartsheet client object. The Smartsheet.eu URI is defined as a constant (`EU_API_URL`).
 
 
 ## Advanced Configuration Options
